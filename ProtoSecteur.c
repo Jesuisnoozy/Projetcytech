@@ -195,6 +195,6 @@ int main(){
          printf("Niveau actuel: %d\n", position);
          
          }
-         
+         }
       return 0;
       }
