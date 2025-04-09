@@ -1,0 +1,42 @@
+typedef struct{
+     int attack, defence, agility, hp, poison, stun, confused, light, medium, heavy, stamina;
+     char *name;
+} Bot;
+     
+Bot Builder(int a, int d, int ag,int hp, int l, int m, int h, int stam){
+     Bot a;
+     printf("Nom du Personnage\n");
+     scanf("%s",a.name);
+     a.attack=a;
+     a.defence=d;
+     a.agility=ag;
+     a.hp=hp;
+     a.poison=0;
+     a.confused=0;
+     a.stun=0;
+     a.light=l;
+     a.medium=m;
+     a.heavy=h;
+     a.stam=3;
+     return a;
+}
+
+Bot CharacterBuilder(int num){
+    Bot a;
+    switch(num){
+        case 1:
+          a=Builder();
+          break;
+        case 2:
+          a=Builder();
+          break;
+        case 3:
+          a=Builder();
+          break;
+        case 4:
+          a=Builder();
+          break;
+        
+    }
+   return a; 
+}
