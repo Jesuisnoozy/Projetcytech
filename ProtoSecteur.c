@@ -8,8 +8,15 @@ int main(){
    int position=0;
    int choix;
    int avancer;
+   int victoire;
    
-   printf("Position initiale: 0\n");
+   
+   printf("Niveau initial: 0\n");
+   while(position!=13){
+   
+   if(victoire==1){
+    
+   printf("Passez au prochain niveau:\n");
    
    switch(position){
          case 0:
@@ -179,5 +186,15 @@ int main(){
              return position;
     
       }
+      
+      printf("Niveau actuel: %d\n", position);
+      }
+      
+      else{
+         printf("Niveau invaincu, réessayez!\n");
+         printf("Niveau actuel: %d\n", position);
+         
+         }
+         
       return 0;
       }
