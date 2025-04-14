@@ -1,42 +1,88 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <time.h>
+#include <errno.h>
+#define NAMESIZE 21
 typedef struct{
-     int attack, defence, agility, hp, poison, stun, confused, light, medium, heavy, stamina;
-     char *name;
+     char name[NAMESIZE];
+     int damage, focusdamage, heal, focusheal, effect, poison, stun, confused;
+} Attack;
+
+typedef struct{
+     char name[NAMESIZE];
+     int defence, agility, hp, stamina, poison, stun, confused, pv;
+     Attack normal, special, unique;
 } Bot;
+
+
+Attack Attackbuilder(int num){
+    Attack att;
+    switch(num){
+        case 1:
+          att.damage=0;
+          att.focusdamage=50;
+          att.heal=0;
+          att.focusheal=0;
+          att.effect=0;
+          memcpy(att.name, "Coup simple", 12);
+          break;
+        case 2:
+          att.damage=0;
+          att.focusdamage=50;
+          att.heal=0;
+          att.focusheal=0;
+          att.effect=0;
+          memcpy(att.name, "Coup double", 12);
+          break;
+        case 3:
+          att.damage=0;
+          att.focusdamage=50;
+          att.heal=0;
+          att.focusheal=0;
+          att.effect=0;
+          memcpy(att.name, "Coup triple", 12);
+          break;
+        
+    }
+   return att; 
+}
      
-Bot Builder(int a, int d, int ag,int hp, int l, int m, int h, int stam){
+Bot Builder(int defen, int agil, int health, int norm, int spec, int uniq){
      Bot a;
-     printf("Nom du Personnage\n");
-     scanf("%s",a.name);
-     a.attack=a;
-     a.defence=d;
-     a.agility=ag;
-     a.hp=hp;
-     a.poison=0;
+     a.defence=defen;
+     a.agility=agil;
+     a.hp=health;
+     a.normal=Attackbuilder(norm);
+     a.special=Attackbuilder(spec);
+     a.unique=Attackbuilder(uniq);
+     a.pv=health;
+     a.poison=0; 
+     a.stun=0; 
      a.confused=0;
-     a.stun=0;
-     a.light=l;
-     a.medium=m;
-     a.heavy=h;
-     a.stam=3;
+     a.stamina=5;
      return a;
 }
 
 Bot CharacterBuilder(int num){
     Bot a;
     switch(num){
-        case 1:
-          a=Builder();
-          break;
-        case 2:
-          a=Builder();
-          break;
-        case 3:
-          a=Builder();
-          break;
-        case 4:
-          a=Builder();
+            //(défence, agilité, points de vie, att normale, att spéciale, att unique)
+        case 1000:
+          a=Builder(5, 50, 150, 1, 2, 3);
+          memcpy(a.name, "Test", 5);
           break;
         
     }
    return a; 
+}
+
+int main(){
+    Bot a=CharacterBuilder(1000);
+    for(int i=0; i<1000; i++){
+        printf("%c", *(a.name+i));
+    }
+    
+ return 0;   
 }
