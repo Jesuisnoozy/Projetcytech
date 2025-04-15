@@ -6,12 +6,12 @@
 #include <errno.h>
 #define NAMESIZE 21
 typedef struct{
-     char name[NAMESIZE];
+     char *name;
      int damage, focusdamage, heal, focusheal, effect, poison, stun, confused;
 } Attack;
 
 typedef struct{
-     char name[NAMESIZE];
+     char *name;
      int defence, agility, hp, stamina, poison, stun, confused, pv;
      Attack normal, special, unique;
 } Bot;
@@ -26,7 +26,9 @@ Attack Attackbuilder(int num){
           att.heal=0;
           att.focusheal=0;
           att.effect=0;
-          memcpy(att.name, "Coup simple", 12);
+          att.name=malloc(sizeof(char)*12);
+          if(att.name==NULL){ exit(1); }
+          strcpy(att.name , "Coup Simple");
           break;
         case 2:
           att.damage=0;
@@ -34,7 +36,9 @@ Attack Attackbuilder(int num){
           att.heal=0;
           att.focusheal=0;
           att.effect=0;
-          memcpy(att.name, "Coup double", 12);
+          att.name=malloc(sizeof(char)*12);
+          if(att.name==NULL){ exit(1); }
+          strcpy(att.name, "Coup double");
           break;
         case 3:
           att.damage=0;
@@ -42,7 +46,9 @@ Attack Attackbuilder(int num){
           att.heal=0;
           att.focusheal=0;
           att.effect=0;
-          memcpy(att.name, "Coup triple", 12);
+          att.name=malloc(sizeof(char)*12);
+          if(att.name==NULL){ exit(1); }
+          strcpy(att.name, "Coup triple");
           break;
         
     }
@@ -71,7 +77,9 @@ Bot CharacterBuilder(int num){
             //(défence, agilité, points de vie, att normale, att spéciale, att unique)
         case 1000:
           a=Builder(5, 50, 150, 1, 2, 3);
-          memcpy(a.name, "Test", 5);
+          a.name=malloc(sizeof(char)*5);
+          if(a.name==NULL){ exit(1); }
+          strcpy(a.name, "Test");
           break;
         
     }
@@ -80,9 +88,16 @@ Bot CharacterBuilder(int num){
 
 int main(){
     Bot a=CharacterBuilder(1000);
-    for(int i=0; i<1000; i++){
+    
+    for(int i=0; i<strlen(a.name); i++){
         printf("%c", *(a.name+i));
     }
+    printf("\n%d\n",a.pv);
+    
+    for(int i=0; i<strlen(a.normal.name); i++){
+        printf("%c", *(a.normal.name+i));
+    }
+    printf("\n%d\n",a.special.focusdamage);
     
  return 0;   
 }
