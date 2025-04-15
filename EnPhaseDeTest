@@ -50,7 +50,9 @@ Attack Attackbuilder(int num){
           if(att.name==NULL){ exit(1); }
           strcpy(att.name, "Coup triple");
           break;
-        
+        default:
+            printf("ERREUR: Mauvais numéro saisie pour le switchcase Attackbuilder\n");
+            exit(1);
     }
    return att; 
 }
@@ -71,23 +73,25 @@ Bot Builder(int defen, int agil, int health, int norm, int spec, int uniq){
      return a;
 }
 
-Bot CharacterBuilder(int num){
+Bot Characterbuilder(int num){
     Bot a;
     switch(num){
             //(défence, agilité, points de vie, att normale, att spéciale, att unique)
         case 1000:
-          a=Builder(5, 50, 150, 1, 2, 3);
-          a.name=malloc(sizeof(char)*5);
-          if(a.name==NULL){ exit(1); }
-          strcpy(a.name, "Test");
-          break;
-        
+            a=Builder(5, 50, 150, 1, 2, 3);
+            a.name=malloc(sizeof(char)*5);
+            if(a.name==NULL){ exit(1); }
+            strcpy(a.name, "Test");
+            break;
+        default:
+            printf("ERREUR: Mauvais numéro saisie pour le switchcase Characterbuilder\n");
+            exit(1);
     }
    return a; 
 }
 
 int main(){
-    Bot a=CharacterBuilder(1000);
+    Bot a=Characterbuilder(1000);
     
     for(int i=0; i<strlen(a.name); i++){
         printf("%c", *(a.name+i));
