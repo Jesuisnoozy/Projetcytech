@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int chargerNiveauSauvegarde() {
+    FILE *fichier = fopen("save.txt", "r");//futur sauvegarde si elle existe
+    if (fichier == NULL) {
+        return 1;
+}
+
+int niveau = 1;
+    fscanf(fichier, "niveau=%d", &niveau);
+    fclose(fichier);
+    return niveau;
+}
+
+void sauvegarderNiveau(int niveau) {
+    FILE *fichier = fopen("save.txt", "w");
+    if (fichier == NULL) {
+        printf("Erreur lors de la sauvegarde !\n");
+        return;
+    }
+
+    fprintf(fichier, "niveau=%d\n", niveau);
+    fclose(fichier);
+
+}
+
+void afficherEcranDemarrage() {
+    system("clear");
+
+    printf("======================================================================================================\n");
+    printf("                                              BATTLE ARENA                                            \n");
+    printf("======================================================================================================\n\n");
+
+
+    printf("                                       Prêt pour le combat?\n\n");
+
+    printf("   Appuie sur Entrée pour continuer...\n");
+    getchar(); // attend une touche
+}
+
+void afficherMenuPrincipal() {
+    system("clear");
+    printf("============================================= MENU PRINCIPAL =========================================\n");
+    printf("1. Continuer la partie\n");
+    printf("2. Nouvelle partie\n");
+    printf("3. Quitter\n");
+}
+
+int main() {
+    afficherEcranDemarrage();
+
+    int niveauActuel = chargerNiveauSauvegarde();
+    int choix;
+
+    afficherMenuPrincipal();
+    scanf("%d", &choix);
+
+    if (choix == 1) {
+        printf("\n  Chargement de ta partie au niveau %d...\n", niveauActuel);
+        sleep(1);
+    } else if (choix == 2) {
+        niveauActuel = 1;
+        sauvegarderNiveau(niveauActuel);
+        printf("\n  Nouvelle partie lancée ! Niveau : %d\n", niveauActuel);
+        sleep(1);
+    } else {
+        printf("\n  À bientôt ! \n");
+        sleep(1);
+
+   return 0;
+}
