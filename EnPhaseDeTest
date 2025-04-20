@@ -106,11 +106,11 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc){
 int choixP, choixA, choixD; // choixP= selection du personnage, choixA= choix de l'attaque, choixD= choix du personnage affecté
 if(who==0){
    do{ printf("Choisir son personnage (1, 2 ou 3)\n");
-       scanf("%d", &choixP); }while(choixP!=1 || choixP!=2 || choixP!=3);
+       scanf("%d", &choixP); }while(choixP!=1 && choixP!=2 && choixP!=3);
    do{ printf("Choisir son attaque (1, 2 ou 3)\n");
-       scanf("%d", &choixA); }while(choixA!=1 || choixA!=2 || choixA!=3);
-   do{ printf("Choisir son attaque (1, 2 ou 3)\n");
-       scanf("%d", &choixA); }while(choixA!=1 || choixA!=2 || choixA!=3);
+       scanf("%d", &choixA); }while(choixA!=1 && choixA!=2 && choixA!=3);
+   do{ printf("Choisir le personnage affecté (1, 2 ou 3)\n");
+       scanf("%d", &choixD); }while(choixD!=1 && choixD!=2 && choixD!=3);
 }else{// Faut faire appelle à l'IA qui va choisir l'attaque si 'who' est différent de 0
 }
     switch(choixP){
@@ -374,6 +374,9 @@ int main(){
         printf("%c", *(ja.normal.name+i));
     }
     printf("\n%d\n",ja.special.focusdamage);
+    printf("\n%d\n",ba.pv);
+    Turn(0, &ja, &jb, &jc, &ba, &bb, &bc);
+    printf("\n%d\n",ba.pv);
     
  return 0;   
 }
