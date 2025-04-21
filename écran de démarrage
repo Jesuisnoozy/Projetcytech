@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "sauvegarde.h"
 
 int chargerNiveauSauvegarde() {
     FILE *fichier = fopen("save.txt", "r");//futur sauvegarde si elle existe
@@ -23,6 +24,7 @@ void sauvegarderNiveau(int niveau) {
 
     fprintf(fichier, "niveau=%d\n", niveau);
     fclose(fichier);
+    printf("Sauvegarde effectuée (niveau %d).\n", niveau);
 
 }
 
