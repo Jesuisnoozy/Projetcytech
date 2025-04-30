@@ -5,378 +5,721 @@
 #include <time.h>
 #include <errno.h>
 #define NAMESIZE 21
-typedef struct{
-     char *name;
-     int damage, focusdamage, heal, focusheal, poison, stun, confused;
+typedef struct {
+	char *name;
+	int damage, focusdamage, heal, focusheal, poison, stun, confused;
 } Attack;
 
-typedef struct{
-     char *name;
-     int defence, agility, hp, stamina, poison, stun, confused, pv;
-     Attack normal, special, unique;
+typedef struct {
+	char *name;
+	int defence, agility, pvmax, stamina, poison, stun, confused, pv, dead, utiliunique;
+	Attack normal, special, unique;
 } Bot;
 
 
-Attack Attackbuilder(int num){
-    Attack att;
-    switch(num){
-        case 1:
+Attack Attackbuilder(int num) {
+	Attack att;
+	switch(num) { // attaque normale (0-99) ; attaque spC)ciale (100-199) ; attaque normale (200-299)
+    case 0:
+		att.damage=0;
+		att.focusdamage=50;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*12);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Coup Simple");
+		break;
+	case 1:
+		att.damage=0;
+		att.focusdamage=30;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=1;
+		att.stun=0;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*16);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Coup EmpoisonnC)");
+		break;
+	case 100:
+		att.damage=0;
+		att.focusdamage=75;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*12);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Coup double");
+		break;
+	case 101:
+		att.damage=0;
+		att.focusdamage=75;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*19);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Coup double poison");
+		break;
+	case 200:
+		att.damage=0;
+		att.focusdamage=100;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*12);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Coup triple");
+		break;
+    case 201:
           att.damage=0;
-          att.focusdamage=50;
+          att.focusdamage=100;
           att.heal=0;
           att.focusheal=0;
           att.poison=0;
           att.stun=0;
           att.confused=0;
-          att.name=malloc(sizeof(char)*12);
+          att.name=malloc(sizeof(char)*19);
           if(att.name==NULL){ exit(1); }
-          strcpy(att.name , "Coup Simple");
+          strcpy(att.name, "Coup triple poison");
           break;
-        case 2:
-          att.damage=0;
-          att.focusdamage=50;
-          att.heal=0;
-          att.focusheal=0;
-          att.poison=0;
-          att.stun=0;
-          att.confused=0;
-          att.name=malloc(sizeof(char)*12);
-          if(att.name==NULL){ exit(1); }
-          strcpy(att.name, "Coup double");
-          break;
-        case 3:
-          att.damage=0;
-          att.focusdamage=50;
-          att.heal=0;
-          att.focusheal=0;
-          att.poison=0;
-          att.stun=0;
-          att.confused=0;
-          att.name=malloc(sizeof(char)*12);
-          if(att.name==NULL){ exit(1); }
-          strcpy(att.name, "Coup triple");
-          break;
-        default:
-            printf("ERREUR: Mauvais numéro saisie pour le switchcase Attackbuilder\n");
-            exit(1);
-    }
-   return att; 
-}
-     
-Bot Builder(int defen, int agil, int health, int norm, int spec, int uniq){
-     Bot a;
-     a.defence=defen;
-     a.agility=agil;
-     a.hp=health;
-     a.normal=Attackbuilder(norm);
-     a.special=Attackbuilder(spec);
-     a.unique=Attackbuilder(uniq);
-     a.pv=health;
-     a.poison=0; 
-     a.stun=0; 
-     a.confused=0;
-     a.stamina=5;
-     return a;
+	default:
+		printf("ERREUR: Mauvais numC)ro saisie pour le switchcase Attackbuilder\n");
+		exit(1);
+	}
+	return att;
 }
 
-Bot Characterbuilder(int num){
-    Bot a;
-    switch(num){
-            //(défence, agilité, points de vie, att normale, att spéciale, att unique)
-        case 1000:
-            a=Builder(5, 50, 150, 1, 2, 3);
-            a.name=malloc(sizeof(char)*5);
-            if(a.name==NULL){ exit(1); }
-            strcpy(a.name, "Test");
-            break;
-        default:
-            printf("ERREUR: Mauvais numéro saisie pour le switchcase Characterbuilder\n");
-            exit(1);
-    }
-   return a; 
+Bot Builder(int defen, int agil, int health, int norm, int spec, int uniq) {
+	Bot a;
+	a.defence=defen;
+	a.agility=agil;
+	a.pvmax=health;
+	a.normal=Attackbuilder(norm);
+	a.special=Attackbuilder(spec);
+	a.unique=Attackbuilder(uniq);
+	a.pv=health;
+	a.poison=0;
+	a.stun=0;
+	a.confused=0;
+	a.stamina=4;
+	a.dead=0;
+	a.utiliunique=0;
+	return a;
 }
 
-int Coinflip(){ 
-    int coin=rand()%2;
-    return coin;
+Bot Characterbuilder(int num) {
+	Bot a;
+	switch(num) {
+	// defence, agilite, points de vie, att normale, att speciale, att unique)
+	case 1000:
+		a=Builder(5, 50, 150, 0, 100, 200);
+		a.name=malloc(sizeof(char)*5);
+		if(a.name==NULL) {
+			exit(1);
+		}
+		strcpy(a.name, "Test");
+		break;
+	case 1001:
+		a=Builder(5, 50, 150, 1, 101, 201);
+		a.name=malloc(sizeof(char)*5);
+		if(a.name==NULL) {
+			exit(1);
+		}
+		strcpy(a.name, "TestPoison");
+		break;
+	default:
+		printf("ERREUR: Mauvais numC)ro saisie pour le switchcase Characterbuilder\n");
+		exit(1);
+	}
+	return a;
 }
 
-
-void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc){
-int choixP, choixA, choixD; // choixP= selection du personnage, choixA= choix de l'attaque, choixD= choix du personnage affecté
-if(who==0){
-   do{ printf("Choisir son personnage (1, 2 ou 3)\n");
-       scanf("%d", &choixP); }while(choixP!=1 && choixP!=2 && choixP!=3);
-   do{ printf("Choisir son attaque (1, 2 ou 3)\n");
-       scanf("%d", &choixA); }while(choixA!=1 && choixA!=2 && choixA!=3);
-   do{ printf("Choisir le personnage affecté (1, 2 ou 3)\n");
-       scanf("%d", &choixD); }while(choixD!=1 && choixD!=2 && choixD!=3);
-}else{// Faut faire appelle à l'IA qui va choisir l'attaque si 'who' est différent de 0
+int Coinflip() {
+	int coin=rand()%2;
+	return coin;
 }
-    switch(choixP){
-        case 1:
-        switch(choixA){
-            case 1:
-                if(aa->normal.damage!=0){
-                   da->pv=da->pv-aa->normal.damage;
-                   db->pv=db->pv-aa->normal.damage;
-                   dc->pv=dc->pv-aa->normal.damage;}
-                if(aa->normal.heal!=0){
-                   aa->pv=aa->pv+aa->normal.heal;
-                   ab->pv=ab->pv+aa->normal.heal;
-                   ac->pv=ac->pv+aa->normal.heal;}
-                switch(choixD){
-                   case 1:
-                   da->pv=da->pv-aa->normal.focusdamage;
-                   aa->pv=aa->pv+aa->normal.focusheal;
-                   break;
-                   case 2:
-                   db->pv=db->pv-aa->normal.focusdamage;
-                   ab->pv=ab->pv+aa->normal.focusheal;
-                   break;
-                   case 3:
-                   dc->pv=dc->pv-aa->normal.focusdamage;
-                   ac->pv=ac->pv+aa->normal.focusheal;
-                   break;
-                }
-              break;
-            case 2:
-                if(aa->special.damage!=0){
-                   da->pv=da->pv-aa->special.damage;
-                   db->pv=db->pv-aa->special.damage;
-                   dc->pv=dc->pv-aa->special.damage;}
-                if(aa->special.heal!=0){
-                   aa->pv=aa->pv+aa->special.heal;
-                   ab->pv=ab->pv+aa->special.heal;
-                   ac->pv=ac->pv+aa->special.heal;}
-                switch(choixD){
-                   case 1:
-                   da->pv=da->pv-aa->special.focusdamage;
-                   aa->pv=aa->pv+aa->special.focusheal;
-                   break;
-                   case 2:
-                   db->pv=db->pv-aa->special.focusdamage;
-                   ab->pv=ab->pv+aa->special.focusheal;
-                   break;
-                   case 3:
-                   dc->pv=dc->pv-aa->special.focusdamage;
-                   ac->pv=ac->pv+aa->special.focusheal;
-                   break;
-                }
-              break;
-            case 3:
-                if(aa->unique.damage!=0){
-                   da->pv=da->pv-aa->unique.damage;
-                   db->pv=db->pv-aa->unique.damage;
-                   dc->pv=dc->pv-aa->unique.damage;}
-                if(aa->unique.heal!=0){
-                   aa->pv=aa->pv+aa->unique.heal;
-                   ab->pv=ab->pv+aa->unique.heal;
-                   ac->pv=ac->pv+aa->unique.heal;}
-                switch(choixD){
-                   case 1:
-                   da->pv=da->pv-aa->unique.focusdamage;
-                   aa->pv=aa->pv+aa->unique.focusheal;
-                   break;
-                   case 2:
-                   db->pv=db->pv-aa->unique.focusdamage;
-                   ab->pv=ab->pv+aa->unique.focusheal;
-                   break;
-                   case 3:
-                   dc->pv=dc->pv-aa->unique.focusdamage;
-                   ac->pv=ac->pv+aa->unique.focusheal;
-                   break;
-                }
-              break;
+
+int CheckPerso(int choix, Bot *ja, Bot*jb, Bot *jc){
+    switch(choix) {
+    case 1:
+        if(ja->dead==1){
+            return 1;
+        }else{ 
+            return 0;
+            
         }
-        break;
-        case 2:
-        switch(choixA){
-            case 1:
-                if(ab->normal.damage!=0){
-                   da->pv=da->pv-ab->normal.damage;
-                   db->pv=db->pv-ab->normal.damage;
-                   dc->pv=dc->pv-ab->normal.damage;}
-                if(ab->normal.heal!=0){
-                   aa->pv=aa->pv+ab->normal.heal;
-                   ab->pv=ab->pv+ab->normal.heal;
-                   ac->pv=ac->pv+ab->normal.heal;}
-                switch(choixD){
-                   case 1:
-                   da->pv=da->pv-ab->normal.focusdamage;
-                   aa->pv=aa->pv+ab->normal.focusheal;
-                   break;
-                   case 2:
-                   db->pv=db->pv-ab->normal.focusdamage;
-                   ab->pv=ab->pv+ab->normal.focusheal;
-                   break;
-                   case 3:
-                   dc->pv=dc->pv-ab->normal.focusdamage;
-                   ac->pv=ac->pv+ab->normal.focusheal;
-                   break;
-                }
-              break;
-            case 2:
-                if(ab->special.damage!=0){
-                   da->pv=da->pv-ab->special.damage;
-                   db->pv=db->pv-ab->special.damage;
-                   dc->pv=dc->pv-ab->special.damage;}
-                if(ab->special.heal!=0){
-                   aa->pv=aa->pv+ab->special.heal;
-                   ab->pv=ab->pv+ab->special.heal;
-                   ac->pv=ac->pv+ab->special.heal;}
-                switch(choixD){
-                   case 1:
-                   da->pv=da->pv-ab->special.focusdamage;
-                   aa->pv=aa->pv+ab->special.focusheal;
-                   break;
-                   case 2:
-                   db->pv=db->pv-ab->special.focusdamage;
-                   ab->pv=ab->pv+ab->special.focusheal;
-                   break;
-                   case 3:
-                   dc->pv=dc->pv-ab->special.focusdamage;
-                   ac->pv=ac->pv+ab->special.focusheal;
-                   break;
-                }
-              break;
-            case 3:
-                if(ab->unique.damage!=0){
-                   da->pv=da->pv-ab->unique.damage;
-                   db->pv=db->pv-ab->unique.damage;
-                   dc->pv=dc->pv-ab->unique.damage;}
-                if(ab->unique.heal!=0){
-                   aa->pv=aa->pv+ab->unique.heal;
-                   ab->pv=ab->pv+ab->unique.heal;
-                   ac->pv=ac->pv+ab->unique.heal;}
-                switch(choixD){
-                   case 1:
-                   da->pv=da->pv-ab->unique.focusdamage;
-                   aa->pv=aa->pv+ab->unique.focusheal;
-                   break;
-                   case 2:
-                   db->pv=db->pv-ab->unique.focusdamage;
-                   ab->pv=ab->pv+ab->unique.focusheal;
-                   break;
-                   case 3:
-                   dc->pv=dc->pv-ab->unique.focusdamage;
-                   ac->pv=ac->pv+ab->unique.focusheal;
-                   break;
-                }
-              break;
+    case 2:
+        if(jb->dead==1){
+            return 1;
+        }else{ 
+            return 0;
+            
         }
-        break;
-        case 3:
-        switch(choixA){
-            case 1:
-                if(ac->normal.damage!=0){
-                   da->pv=da->pv-ac->normal.damage;
-                   db->pv=db->pv-ac->normal.damage;
-                   dc->pv=dc->pv-ac->normal.damage;}
-                if(ac->normal.heal!=0){
-                   aa->pv=aa->pv+ac->normal.heal;
-                   ab->pv=ab->pv+ac->normal.heal;
-                   ac->pv=ac->pv+ac->normal.heal;}
-                switch(choixD){
-                   case 1:
-                   da->pv=da->pv-ac->normal.focusdamage;
-                   aa->pv=aa->pv+ac->normal.focusheal;
-                   break;
-                   case 2:
-                   db->pv=db->pv-ac->normal.focusdamage;
-                   ab->pv=ab->pv+ac->normal.focusheal;
-                   break;
-                   case 3:
-                   dc->pv=dc->pv-ac->normal.focusdamage;
-                   ac->pv=ac->pv+ac->normal.focusheal;
-                   break;
-                }
-              break;
-            case 2:
-                if(ac->special.damage!=0){
-                   da->pv=da->pv-ac->special.damage;
-                   db->pv=db->pv-ac->special.damage;
-                   dc->pv=dc->pv-ac->special.damage;}
-                if(ac->special.heal!=0){
-                   aa->pv=aa->pv+ac->special.heal;
-                   ab->pv=ab->pv+ac->special.heal;
-                   ac->pv=ac->pv+ac->special.heal;}
-                switch(choixD){
-                   case 1:
-                   da->pv=da->pv-ac->special.focusdamage;
-                   aa->pv=aa->pv+ac->special.focusheal;
-                   break;
-                   case 2:
-                   db->pv=db->pv-ac->special.focusdamage;
-                   ab->pv=ab->pv+ac->special.focusheal;
-                   break;
-                   case 3:
-                   dc->pv=dc->pv-ac->special.focusdamage;
-                   ac->pv=ac->pv+ac->special.focusheal;
-                   break;
-                }
-              break;
-            case 3:
-                if(ac->unique.damage!=0){
-                   da->pv=da->pv-ac->unique.damage;
-                   db->pv=db->pv-ac->unique.damage;
-                   dc->pv=dc->pv-ac->unique.damage;}
-                if(ac->unique.heal!=0){
-                   aa->pv=aa->pv+ac->unique.heal;
-                   ab->pv=ab->pv+ac->unique.heal;
-                   ac->pv=ac->pv+ac->unique.heal;}
-                switch(choixD){
-                   case 1:
-                   da->pv=da->pv-ac->unique.focusdamage;
-                   aa->pv=aa->pv+ac->unique.focusheal;
-                   break;
-                   case 2:
-                   db->pv=db->pv-ac->unique.focusdamage;
-                   ab->pv=ab->pv+ac->unique.focusheal;
-                   break;
-                   case 3:
-                   dc->pv=dc->pv-ac->unique.focusdamage;
-                   ac->pv=ac->pv+ac->unique.focusheal;
-                   break;
-                }
-              break;
+    case 3:
+        if(jc->dead==1){
+            return 1;
+        }else{ 
+            return 0;
+            
         }
-        break;
-    }    
+    default:
+        return 1;
+    }
+}
+
+int CheckStamina(int choix, Bot *ja, Bot*jb, Bot *jc) {
+    switch(choix) {
+    case 1: 
+        if(ja->stamina<3){
+            return 1;
+        }else{
+            return 0;
+        }
+    case 2: 
+        if(ja->stamina<8){
+            return 1;
+        }else{
+            return 0;
+        }  
+    case 3: 
+        if(ja->utiliunique==1){
+            return 1;
+        }else{
+            return 0;
+        }
+    default:
+        return 1;
+    }
+}
+
+void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
+	int choixP, choixA, choixD; // choixP= selection du personnage, choixA= choix de l'attaque, choixD= choix du personnage affectC)
+	if(who==0) {
+		do {
+			printf("Choisir son personnage (1, 2 ou 3)\n");
+			scanf("%d", &choixP);
+		}
+		while(CheckPerso(choixP, aa, ab, ac));
+		do {
+			printf("Choisir son attaque (1, 2 ou 3)\n");
+			scanf("%d", &choixA);
+		}
+		while(CheckStamina(choixA, aa, ab, ac));
+		do {
+			printf("Choisir le personnage affecte (1, 2 ou 3)\n");
+			scanf("%d", &choixD);
+		}
+		while(CheckPerso(choixD, da, db, dc));
+	} else { // Faut faire appelle C  l'IA qui va choisir l'attaque si 'who' est diffC)rent de 0
+	}
+	switch(choixP) {
+	case 1:
+		switch(choixA) {
+		case 1:
+			if(aa->normal.damage!=0) {
+				da->pv=da->pv-aa->normal.damage;
+				db->pv=db->pv-aa->normal.damage;
+				dc->pv=dc->pv-aa->normal.damage;
+			}
+			if(aa->normal.heal!=0) {
+				aa->pv=aa->pv+aa->normal.heal;
+				ab->pv=ab->pv+aa->normal.heal;
+				ac->pv=ac->pv+aa->normal.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			if(aa->normal.poison==1) {
+			    da->poison=1;
+			}
+			switch(choixD) {
+			case 1:
+				da->pv=da->pv-aa->normal.focusdamage;
+				if(aa->normal.focusheal!=0){
+				   aa->poison=0; 
+				   aa->pv=aa->pv+aa->normal.focusheal;
+				}
+				break;
+			case 2:
+				db->pv=db->pv-aa->normal.focusdamage;
+				if(aa->normal.focusheal!=0){
+				   ab->poison=0;
+				   ab->pv=ab->pv+aa->normal.focusheal;
+				}
+				break;
+			case 3:
+				dc->pv=dc->pv-aa->normal.focusdamage;
+				if(aa->normal.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+aa->normal.focusheal;
+				}
+				break;
+			}
+			break;
+		case 2:
+			if(aa->special.damage!=0) {
+				da->pv=da->pv-aa->special.damage;
+				db->pv=db->pv-aa->special.damage;
+				dc->pv=dc->pv-aa->special.damage;
+			}
+			if(aa->special.heal!=0) {
+				aa->pv=aa->pv+aa->special.heal;
+				ab->pv=ab->pv+aa->special.heal;
+				ac->pv=ac->pv+aa->special.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			if(aa->special.poison==1) {
+			    da->poison=1;
+			}
+			switch(choixD) {
+			case 1:
+				da->pv=da->pv-aa->special.focusdamage;
+				if(aa->special.focusheal!=0){
+				   aa->poison=0;
+				   aa->pv=aa->pv+aa->special.focusheal;
+				}
+				break;
+			case 2:
+				db->pv=db->pv-aa->special.focusdamage;
+				if(aa->special.focusheal!=0){
+				   ab->poison=0;
+				   ab->pv=ab->pv+aa->special.focusheal;
+				}
+				break;
+			case 3:
+				dc->pv=dc->pv-aa->special.focusdamage;
+				if(aa->special.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+aa->special.focusheal;
+				}
+				break;
+			}
+			break;
+		case 3:
+			if(aa->unique.damage!=0) {
+				da->pv=da->pv-aa->unique.damage;
+				db->pv=db->pv-aa->unique.damage;
+				dc->pv=dc->pv-aa->unique.damage;
+			}
+			if(aa->unique.heal!=0) {
+				aa->pv=aa->pv+aa->unique.heal;
+				ab->pv=ab->pv+aa->unique.heal;
+				ac->pv=ac->pv+aa->unique.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			if(aa->unique.poison==1) {
+			    da->poison=1;
+			}
+			switch(choixD) {
+			case 1:
+				da->pv=da->pv-aa->unique.focusdamage;
+				if(aa->unique.focusheal!=0){
+				   aa->poison=0;
+				   aa->pv=aa->pv+aa->unique.focusheal;
+				}
+				break;
+			case 2:
+				db->pv=db->pv-aa->unique.focusdamage;
+				if(aa->unique.focusheal!=0){
+				   ab->poison=0;
+				   ab->pv=ab->pv+aa->unique.focusheal;
+				}
+				break;
+			case 3:
+				dc->pv=dc->pv-aa->unique.focusdamage;
+				if(aa->unique.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+aa->unique.focusheal;
+				}
+				break;
+			}
+			break;
+		}
+		break;
+	case 2:
+		switch(choixA) {
+		case 1:
+			if(ab->normal.damage!=0) {
+				da->pv=da->pv-ab->normal.damage;
+				db->pv=db->pv-ab->normal.damage;
+				dc->pv=dc->pv-ab->normal.damage;
+			}
+			if(ab->normal.heal!=0) {
+				aa->pv=aa->pv+ab->normal.heal;
+				ab->pv=ab->pv+ab->normal.heal;
+				ac->pv=ac->pv+ab->normal.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			if(ab->normal.poison==1) {
+			    da->poison=1;
+			}
+			switch(choixD) {
+			case 1:
+				da->pv=da->pv-ab->normal.focusdamage;
+				if(ab->normal.focusheal!=0){
+				   aa->poison=0;
+				   aa->pv=aa->pv+ab->normal.focusheal;
+				}
+				break;
+			case 2:
+				db->pv=db->pv-ab->normal.focusdamage;
+				if(ab->normal.focusheal!=0){
+				   ab->poison=0;
+				   ab->pv=ab->pv+ab->normal.focusheal;
+				}
+				break;
+			case 3:
+				dc->pv=dc->pv-ab->normal.focusdamage;
+				if(ab->normal.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+ab->normal.focusheal;
+				}
+				break;
+			}
+			break;
+		case 2:
+			if(ab->special.damage!=0) {
+				da->pv=da->pv-ab->special.damage;
+				db->pv=db->pv-ab->special.damage;
+				dc->pv=dc->pv-ab->special.damage;
+			}
+			if(ab->special.heal!=0) {
+				aa->pv=aa->pv+ab->special.heal;
+				ab->pv=ab->pv+ab->special.heal;
+				ac->pv=ac->pv+ab->special.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			if(ab->special.poison==1) {
+			    da->poison=1;
+			}
+			switch(choixD) {
+			case 1:
+				da->pv=da->pv-ab->special.focusdamage;
+				if(ab->special.focusheal!=0){
+				   aa->poison=0;
+				   aa->pv=aa->pv+ab->special.focusheal;
+				}
+				break;
+			case 2:
+				db->pv=db->pv-ab->special.focusdamage;
+				if(ab->special.focusheal!=0){
+				   ab->poison=0;
+				   ab->pv=ab->pv+ab->special.focusheal;
+				}
+				break;
+			case 3:
+				dc->pv=dc->pv-ab->special.focusdamage;
+				if(ab->special.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+ab->special.focusheal;
+				}
+				break;
+			}
+			break;
+		case 3:
+			if(ab->unique.damage!=0) {
+				da->pv=da->pv-ab->unique.damage;
+				db->pv=db->pv-ab->unique.damage;
+				dc->pv=dc->pv-ab->unique.damage;
+			}
+			if(ab->unique.heal!=0) {
+				aa->pv=aa->pv+ab->unique.heal;
+				ab->pv=ab->pv+ab->unique.heal;
+				ac->pv=ac->pv+ab->unique.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			if(ab->unique.poison==1) {
+			    da->poison=1;
+			}
+			switch(choixD) {
+			case 1:
+				da->pv=da->pv-ab->unique.focusdamage;
+				if(ab->unique.focusheal!=0){
+				   aa->poison=0;
+				   aa->pv=aa->pv+ab->unique.focusheal;
+				}
+				break;
+			case 2:
+				db->pv=db->pv-ab->unique.focusdamage;
+				if(ab->unique.focusheal!=0){
+				   ab->poison=0;
+				   ab->pv=ab->pv+ab->unique.focusheal;
+				}
+				break;
+			case 3:
+				dc->pv=dc->pv-ab->unique.focusdamage;
+				if(ab->unique.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+ab->unique.focusheal;
+				}
+				break;
+			}
+			break;
+		}
+		break;
+	case 3:
+		switch(choixA) {
+		case 1:
+			if(ac->normal.damage!=0) {
+				da->pv=da->pv-ac->normal.damage;
+				db->pv=db->pv-ac->normal.damage;
+				dc->pv=dc->pv-ac->normal.damage;
+			}
+			if(ac->normal.heal!=0) {
+				aa->pv=aa->pv+ac->normal.heal;
+				ab->pv=ab->pv+ac->normal.heal;
+				ac->pv=ac->pv+ac->normal.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			if(ac->normal.poison==1) {
+			    da->poison=1;
+			}
+			switch(choixD) {
+			case 1:
+				da->pv=da->pv-ac->normal.focusdamage;
+				if(ac->normal.focusheal!=0){
+				   aa->poison=0;
+				   aa->pv=aa->pv+ac->normal.focusheal;
+				}
+				break;
+			case 2:
+				db->pv=db->pv-ac->normal.focusdamage;
+				if(ac->normal.focusheal!=0){
+				   ab->poison=0;
+				   ab->pv=ab->pv+ac->normal.focusheal;
+				}
+				break;
+			case 3:
+				dc->pv=dc->pv-ac->normal.focusdamage;
+				if(ac->normal.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+ac->normal.focusheal;
+				}
+				break;
+			}
+			break;
+		case 2:
+			if(ac->special.damage!=0) {
+				da->pv=da->pv-ac->special.damage;
+				db->pv=db->pv-ac->special.damage;
+				dc->pv=dc->pv-ac->special.damage;
+			}
+			if(ac->special.heal!=0) {
+				aa->pv=aa->pv+ac->special.heal;
+				ab->pv=ab->pv+ac->special.heal;
+				ac->pv=ac->pv+ac->special.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			if(ac->special.poison==1) {
+			    da->poison=1;
+			}
+			switch(choixD) {
+			case 1:
+				da->pv=da->pv-ac->special.focusdamage;
+				if(ac->special.focusheal!=0){
+				   aa->poison=0;
+				   aa->pv=aa->pv+ac->special.focusheal;
+				}
+				break;
+			case 2:
+				db->pv=db->pv-ac->special.focusdamage;
+				if(ac->special.focusheal!=0){
+				   ab->poison=0;
+			       ab->pv=ab->pv+ac->special.focusheal;
+				}
+				break;
+			case 3:
+				dc->pv=dc->pv-ac->special.focusdamage;
+				if(ac->special.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+ac->special.focusheal;
+				}
+				break;
+			}
+			break;
+		case 3:
+			if(ac->unique.damage!=0) {
+				da->pv=da->pv-ac->unique.damage;
+				db->pv=db->pv-ac->unique.damage;
+				dc->pv=dc->pv-ac->unique.damage;
+			}
+			if(ac->unique.heal!=0) {
+				aa->pv=aa->pv+ac->unique.heal;
+				ab->pv=ab->pv+ac->unique.heal;
+				ac->pv=ac->pv+ac->unique.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			if(ac->unique.poison==1) {
+			    da->poison=1;
+			}
+			switch(choixD) {
+			case 1:
+				da->pv=da->pv-ac->unique.focusdamage;
+				if(ac->unique.focusheal!=0){
+				   aa->poison=0;
+				   aa->pv=aa->pv+ac->unique.focusheal;
+				}
+				break;
+			case 2:
+				db->pv=db->pv-ac->unique.focusdamage;
+				if(ac->unique.focusheal!=0){
+				   ab->poison=0;
+				   ab->pv=ab->pv+ac->unique.focusheal;
+				}
+				break;
+			case 3:
+				dc->pv=dc->pv-ac->unique.focusdamage;
+				if(ac->unique.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+ac->unique.focusheal;
+				}
+				break;
+			}
+			break;
+		}
+		break;
+	}
 }
 
 
 
 
 
-void Checkup(){}
+void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc) {
+	if(ja->poison==1) {
+		ja->pv=ja->pv-10;
+	}
+	if(jb->poison==1) {
+		jb->pv=jb->pv-10;
+	}
+	if(jc->poison==1) {
+		jc->pv=jc->pv-10;
+	}
+	if(ra->poison==1) {
+		ra->pv=ra->pv-10;
+	}
+	if(rb->poison==1) {
+		rb->pv=rb->pv-10;
+	}
+	if(rc->poison==1) {
+		rc->pv=rc->pv-10;
+	}
+	if(ja->dead==1) {
+		ja->pv=0;
+	}
+	if(jb->dead==1) {
+		ja->pv=0;
+	}
+	if(jc->dead==1) {
+		ja->pv=0;
+	}
+	if(ra->dead==1) {
+		ja->pv=0;
+	}
+	if(rb->dead==1) {
+		ja->pv=0;
+	}
+	if(rc->dead==1) {
+		ja->pv=0;
+	}
+	if(ja->pv<=0) {
+		ja->dead=1;
+	}
+	if(jb->pv<=0) {
+		ja->dead=1;
+	}
+	if(jc->pv<=0) {
+		ja->dead=1;
+	}
+	if(ra->pv<=0) {
+		ja->dead=1;
+	}
+	if(rb->pv<=0) {
+		ja->dead=1;
+	}
+	if(rc->pv<=0) {
+		ja->dead=1;
+	}
+	if(ja->dead==1 && jb->dead==1 && jc->dead==1 && ra->dead==1 && rb->dead==1 && rc->dead==1) {
+		printf("EgalitC)\n");
+		exit(1);
+	}
+	if(ja->dead==1 && jb->dead==1 && jc->dead==1) {
+		printf("Le joueur A a perdu\n");
+		exit(1);
+	}
+	if(ra->dead==1 && rb->dead==1 && rc->dead==1) {
+		printf("Le joueur B a perdu\n");
+		exit(1);
+	}
+	ja->stamina+=1;
+	jb->stamina+=1;
+	jc->stamina+=1;
+	ra->stamina+=1;
+	rb->stamina+=1;
+	rc->stamina+=1;
+}
 
+int main() {
+	Bot ja=Characterbuilder(1001);
+	Bot jb=Characterbuilder(1001);
+	Bot jc=Characterbuilder(1001);
+	Bot ba=Characterbuilder(1000);
+	Bot bb=Characterbuilder(1000);
+	Bot bc=Characterbuilder(1000);
 
+    printf("===========================================================\n");
+	for(int i=0; i<strlen(ja.name); i++) { // print name
+		printf("%c", *(ja.name+i));
+	}
+	printf("\n%d\n",ja.pv);
 
+	for(int i=0; i<strlen(ja.normal.name); i++) {
+		printf("%c", *(ja.normal.name+i));
+	}
+	printf("\n%d\n",ja.special.focusdamage);
+	printf("\n%d\n",ba.pv);
+	printf("===========================================================\n");
+	Turn(0, &ja, &jb, &jc, &ba, &bb, &bc);
+	printf("\n%d\n",ba.pv);
+	Checkup(&ja, &jb, &jc, &ba, &bb, &bc);
+	printf("\n%d\n",ba.pv);
 
-
-
-
-int main(){
-    Bot ja=Characterbuilder(1000);
-    Bot jb=Characterbuilder(1000);
-    Bot jc=Characterbuilder(1000);
-    Bot ba=Characterbuilder(1000);
-    Bot bb=Characterbuilder(1000);
-    Bot bc=Characterbuilder(1000);
-    
-    for(int i=0; i<strlen(ja.name); i++){
-        printf("%c", *(ja.name+i));
-    }
-    printf("\n%d\n",ja.pv);
-    
-    for(int i=0; i<strlen(ja.normal.name); i++){
-        printf("%c", *(ja.normal.name+i));
-    }
-    printf("\n%d\n",ja.special.focusdamage);
-    printf("\n%d\n",ba.pv);
-    Turn(0, &ja, &jb, &jc, &ba, &bb, &bc);
-    printf("\n%d\n",ba.pv);
-    
- return 0;   
+	return 0;
 }
