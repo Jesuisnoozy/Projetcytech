@@ -1,0 +1,41 @@
+int main(){
+    char tab[51][95];   
+    for(int i = 0; i < 51; i++) {
+      for(int j = 0; j < 90; j++) {
+            tab[i][j] = ' ';
+            if (i == 0 || i == 49) {
+                tab[i][j] = '_';
+            }
+            if (j == 0 || j == 89) {
+                tab[i][j] = '|';
+            }
+            if ((i == 0 || i == 50 ) && (j == 0 || j == 89)){
+               tab[i][j] = ' ' ;
+            }
+            if ((i > 14 && i < 24) && (j > 25 && j < 70)){
+                tab[i][j]='X';
+            }
+            if ((i > 15 && i < 23) && (j > 26 && j < 69)){
+                tab[i][j]=' ';
+            }
+            if ((i > 26 && i < 36) && (j > 25 && j < 70)){
+                tab[i][j]='X';
+            }
+            if ((i > 27 && i < 35) && (j > 26 && j < 69)){
+                tab[i][j]=' ';    
+            }
+            strcpy(tab[19],"|                         X                   Co-op                  X                   |");
+            strcpy(tab[31],"|                         X                 Duel (1v1)               X                   |");
+            tab[19][89]='|';
+            tab[31][90]='|';
+          
+        }
+       }
+    for(int i = 0; i < 51; i++) {
+        for(int j = 0; j < 90; j++) {
+            printf("%c", tab[i][j]);
+        }
+        printf("\n");  
+        }
+    return 0;
+}
