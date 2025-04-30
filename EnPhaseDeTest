@@ -20,7 +20,7 @@ typedef struct {
 Attack Attackbuilder(int num) {
 	Attack att;
 	switch(num) { // attaque normale (0-99) ; attaque spC)ciale (100-199) ; attaque normale (200-299)
-    case 0:
+        case 0:
 		att.damage=0;
 		att.focusdamage=50;
 		att.heal=0;
@@ -90,19 +90,19 @@ Attack Attackbuilder(int num) {
 		}
 		strcpy(att.name, "Coup triple");
 		break;
-    case 201:
-          att.damage=0;
-          att.focusdamage=100;
-          att.heal=0;
-          att.focusheal=0;
-          att.poison=0;
-          att.stun=0;
-          att.confused=0;
-          att.name=malloc(sizeof(char)*19);
-          if(att.name==NULL){ exit(1); }
-          strcpy(att.name, "Coup triple poison");
-          break;
-	default:
+        case 201:
+                att.damage=0;
+                att.focusdamage=100;
+                att.heal=0;
+                att.focusheal=0;
+                att.poison=0;
+                att.stun=0;
+                att.confused=0;
+                att.name=malloc(sizeof(char)*19);
+                if(att.name==NULL){ exit(1); }
+                strcpy(att.name, "Coup triple poison");
+                break;
+	 default:
 		printf("ERREUR: Mauvais numC)ro saisie pour le switchcase Attackbuilder\n");
 		exit(1);
 	}
