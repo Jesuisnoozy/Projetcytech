@@ -1,5 +1,5 @@
 int main(){
-    char tab[51][95];   
+    char tab[51][90];   
     for(int i = 0; i < 51; i++) {
       for(int j = 0; j < 90; j++) {
             tab[i][j] = ' ';
