@@ -154,12 +154,36 @@ Bot Characterbuilder(int num) {
 	return a;
 }
 
-int Coinflip() {
-	int coin=rand()%2;
-	return coin;
-}
 
-int CheckPerso(int choix, Bot *ja, Bot*jb, Bot *jc){
+
+int CheckPerso1(int choix, Bot *ja, Bot*jb, Bot *jc){
+    switch(choix) {
+    case 1:
+        if(ja->dead==1 || ja->stun==1){
+            return 1;
+        }else{ 
+            return 0;
+            
+        }
+    case 2:
+        if(jb->dead==1 || jb->stun==1){
+            return 1;
+        }else{ 
+            return 0;
+            
+        }
+    case 3:
+        if(jc->dead==1 || jc->stun==1){
+            return 1;
+        }else{ 
+            return 0;
+            
+        }
+    default:
+        return 1;
+    }
+}
+int CheckPerso2(int choix, Bot *ja, Bot*jb, Bot *jc){
     switch(choix) {
     case 1:
         if(ja->dead==1){
@@ -219,7 +243,7 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 			printf("Choisir son personnage (1, 2 ou 3)\n");
 			scanf("%d", &choixP);
 		}
-		while(CheckPerso(choixP, aa, ab, ac));
+		while(CheckPerso1(choixP, aa, ab, ac));
 		do {
 			printf("Choisir son attaque (1, 2 ou 3)\n");
 			scanf("%d", &choixA);
@@ -229,11 +253,15 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 			printf("Choisir le personnage affecte (1, 2 ou 3)\n");
 			scanf("%d", &choixD);
 		}
-		while(CheckPerso(choixD, da, db, dc));
+		while(CheckPerso2(choixD, da, db, dc));
 	} else { // Faut faire appelle C  l'IA qui va choisir l'attaque si 'who' est diffC)rent de 0
 	}
 	switch(choixP) {
 	case 1:
+	if (aa->confused==1){ 
+	    if(rand()%2){ break; 
+	    }
+	}
 		switch(choixA) {
 		case 1:
 			if(aa->normal.damage!=0) {
@@ -361,6 +389,10 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 		}
 		break;
 	case 2:
+	if (ab->confused==1){ 
+	    if(rand()%2){ break; 
+	    }
+	}
 		switch(choixA) {
 		case 1:
 			if(ab->normal.damage!=0) {
@@ -488,6 +520,10 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 		}
 		break;
 	case 3:
+	if (aa->confused==1){ 
+	    if(rand()%2){ break; 
+	    }
+	}
 		switch(choixA) {
 		case 1:
 			if(ac->normal.damage!=0) {
