@@ -1,6 +1,6 @@
 Attack Attackbuilder(int num) {
 	Attack att;
-	switch(num) { // attaque normale (0-99) ; attaque spC)ciale (100-199) ; attaque normale (200-299)
+	switch(num) { // attaque normale (0-99) ; attaque speciale (100-199) ; attaque unique (200-299)
         case 0:
 		att.damage=0;
 		att.focusdamage=50;
@@ -43,6 +43,23 @@ Attack Attackbuilder(int num) {
 		}
 		strcpy(att.name, "Soin simple");
 		break;
+        case 3:
+		att.damage=0;
+		att.focusdamage=30;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=1;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*16);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Boulette de feu");
+		break;
+
+
+		
 	case 100:
 		att.damage=0;
 		att.focusdamage=75;
@@ -85,6 +102,24 @@ Attack Attackbuilder(int num) {
 		}
 		strcpy(att.name, "Soin double");
 		break;
+        case 103:
+		att.damage=0;
+		att.focusdamage=75;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=1;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*16);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Boule de feu");
+		break;
+
+
+
+		
 	case 200:
 		att.damage=0;
 		att.focusdamage=150;
