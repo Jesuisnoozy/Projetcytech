@@ -12,7 +12,8 @@ typedef struct {
 
 typedef struct {
 	char *name;
-	int defence, agility, pvmax, stamina, poison, stun, confused, pv, dead, utiliunique;
+	int pvmax, stamina, poison, stun, confused, pv, dead, utiliunique;
+	float defence, agility;
 	Attack normal, special, unique;
 } Bot;
 
@@ -46,7 +47,21 @@ Attack Attackbuilder(int num) {
 		if(att.name==NULL) {
 			exit(1);
 		}
-		strcpy(att.name, "Coup EmpoisonnC)");
+		strcpy(att.name, "Coup Empoisonne");
+		break;
+	case 2:
+		att.damage=0;
+		att.focusdamage=0;
+		att.heal=0;
+		att.focusheal=30;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*12);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Soin simple");
 		break;
 	case 100:
 		att.damage=0;
@@ -76,9 +91,23 @@ Attack Attackbuilder(int num) {
 		}
 		strcpy(att.name, "Coup double poison");
 		break;
+	case 102:
+		att.damage=0;
+		att.focusdamage=0;
+		att.heal=25;
+		att.focusheal=50;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*12);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Soin double");
+		break;
 	case 200:
 		att.damage=0;
-		att.focusdamage=100;
+		att.focusdamage=150;
 		att.heal=0;
 		att.focusheal=0;
 		att.poison=0;
@@ -90,18 +119,34 @@ Attack Attackbuilder(int num) {
 		}
 		strcpy(att.name, "Coup triple");
 		break;
-        case 201:
-                att.damage=0;
-                att.focusdamage=100;
-                att.heal=0;
-                att.focusheal=0;
-                att.poison=0;
-                att.stun=0;
-                att.confused=0;
-                att.name=malloc(sizeof(char)*19);
-                if(att.name==NULL){ exit(1); }
-                strcpy(att.name, "Coup triple poison");
-                break;
+    case 201:
+        att.damage=0;
+        att.focusdamage=100;
+        att.heal=0;
+        att.focusheal=0;
+        att.poison=0;
+        att.stun=0;
+        att.confused=0;
+        att.name=malloc(sizeof(char)*19);
+        if(att.name==NULL){ 
+            exit(1);
+        }
+        strcpy(att.name, "Coup triple poison");
+        break;
+    case 202:
+		att.damage=0;
+		att.focusdamage=0;
+		att.heal=30;
+		att.focusheal=75;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*12);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Soin triple");
+		break;
 	 default:
 		printf("ERREUR: Mauvais numC)ro saisie pour le switchcase Attackbuilder\n");
 		exit(1);
@@ -109,10 +154,10 @@ Attack Attackbuilder(int num) {
 	return att;
 }
 
-Bot Builder(int defen, int agil, int health, int norm, int spec, int uniq) {
+Bot Builder(float defen, float agil, int health, int norm, int spec, int uniq) {
 	Bot a;
-	a.defence=defen;
-	a.agility=agil;
+	a.defence=defen/100;
+	a.agility=agil/100;
 	a.pvmax=health;
 	a.normal=Attackbuilder(norm);
 	a.special=Attackbuilder(spec);
@@ -131,6 +176,15 @@ Bot Characterbuilder(int num) {
 	Bot a;
 	switch(num) {
 	// defence, agilite, points de vie, att normale, att speciale, att unique)
+	case 1:
+		a=Builder(25, 5, 200, 0, 100, 200);
+		a.name=malloc(sizeof(char)*4);
+		if(a.name==NULL) {
+			exit(1);
+		}
+		strcpy(a.name, "Bob");
+		break;
+	
 	case 1000:
 		a=Builder(5, 50, 150, 0, 100, 200);
 		a.name=malloc(sizeof(char)*5);
@@ -141,11 +195,19 @@ Bot Characterbuilder(int num) {
 		break;
 	case 1001:
 		a=Builder(5, 50, 150, 1, 101, 201);
-		a.name=malloc(sizeof(char)*5);
+		a.name=malloc(sizeof(char)*11);
 		if(a.name==NULL) {
 			exit(1);
 		}
 		strcpy(a.name, "TestPoison");
+		break;
+	case 1002:
+		a=Builder(5, 50, 150, 2, 102, 202);
+		a.name=malloc(sizeof(char)*14);
+		if(a.name==NULL) {
+			exit(1);
+		}
+		strcpy(a.name, "TestMaxHealth");
 		break;
 	default:
 		printf("ERREUR: Mauvais numC)ro saisie pour le switchcase Characterbuilder\n");
@@ -265,9 +327,9 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 		switch(choixA) {
 		case 1:
 			if(aa->normal.damage!=0) {
-				da->pv=da->pv-aa->normal.damage;
-				db->pv=db->pv-aa->normal.damage;
-				dc->pv=dc->pv-aa->normal.damage;
+				da->pv=da->pv-(aa->normal.damage*da->defence);
+				db->pv=db->pv-(aa->normal.damage*db->defence);
+				dc->pv=dc->pv-(aa->normal.damage*dc->defence);
 			}
 			if(aa->normal.heal!=0) {
 				aa->pv=aa->pv+aa->normal.heal;
@@ -279,42 +341,42 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 			}
 			switch(choixD) {
 			case 1:
-				da->pv=da->pv-aa->normal.focusdamage;
+				da->pv=da->pv-(aa->normal.focusdamage*da->defence);
 				if(aa->normal.focusheal!=0){
 				   aa->poison=0; 
 				   aa->pv=aa->pv+aa->normal.focusheal;
 				}
 				if(aa->normal.poison==1) {
-			        da->poison=1;
+			    da->poison=1;
 				}
 				break;
 			case 2:
-				db->pv=db->pv-aa->normal.focusdamage;
+				db->pv=db->pv-(aa->normal.focusdamage*db->defence);
 				if(aa->normal.focusheal!=0){
 				   ab->poison=0;
 				   ab->pv=ab->pv+aa->normal.focusheal;
 				}
 				if(aa->normal.poison==1) {
-			        db->poison=1;
+			    db->poison=1;
 				}
 				break;
 			case 3:
-				dc->pv=dc->pv-aa->normal.focusdamage;
+				dc->pv=dc->pv-(aa->normal.focusdamage*dc->defence);
 				if(aa->normal.focusheal!=0){
 				   ac->poison=0;
 				   ac->pv=ac->pv+aa->normal.focusheal;
 				}
 				if(aa->normal.poison==1) {
-			        dc->poison=1;
+			    dc->poison=1;
 				}
 				break;
 			}
 			break;
 		case 2:
 			if(aa->special.damage!=0) {
-				da->pv=da->pv-aa->special.damage;
-				db->pv=db->pv-aa->special.damage;
-				dc->pv=dc->pv-aa->special.damage;
+				da->pv=da->pv-(aa->special.damage*da->defence);
+				db->pv=db->pv-(aa->special.damage*db->defence);
+				dc->pv=dc->pv-(aa->special.damage*dc->defence);
 			}
 			if(aa->special.heal!=0) {
 				aa->pv=aa->pv+aa->special.heal;
@@ -326,42 +388,42 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 			}
 			switch(choixD) {
 			case 1:
-				da->pv=da->pv-aa->special.focusdamage;
+				da->pv=da->pv-(aa->special.focusdamage*da->defence);
 				if(aa->special.focusheal!=0){
 				   aa->poison=0;
 				   aa->pv=aa->pv+aa->special.focusheal;
 				}
 				if(aa->special.poison==1) {
-			        da->poison=1;
-			        }
+			    da->poison=1;
+			    }
 				break;
 			case 2:
-				db->pv=db->pv-aa->special.focusdamage;
+				db->pv=db->pv-(aa->special.focusdamage*db->defence);
 				if(aa->special.focusheal!=0){
 				   ab->poison=0;
 				   ab->pv=ab->pv+aa->special.focusheal;
 				}
 				if(aa->special.poison==1) {
-			        db->poison=1;
-			        }
+			    db->poison=1;
+			    }
 				break;
 			case 3:
-				dc->pv=dc->pv-aa->special.focusdamage;
+				dc->pv=dc->pv-(aa->special.focusdamage*dc->defence);
 				if(aa->special.focusheal!=0){
 				   ac->poison=0;
 				   ac->pv=ac->pv+aa->special.focusheal;
 				}
 				if(aa->special.poison==1) {
-			        dc->poison=1;
-			        }
+			    dc->poison=1;
+			    }
 				break;
 			}
 			break;
 		case 3:
 			if(aa->unique.damage!=0) {
-				da->pv=da->pv-aa->unique.damage;
-				db->pv=db->pv-aa->unique.damage;
-				dc->pv=dc->pv-aa->unique.damage;
+				da->pv=da->pv-(aa->unique.damage*da->defence);
+				db->pv=db->pv-(aa->unique.damage*db->defence);
+				dc->pv=dc->pv-(aa->unique.damage*dc->defence);
 			}
 			if(aa->unique.heal!=0) {
 				aa->pv=aa->pv+aa->unique.heal;
@@ -373,34 +435,34 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 			}
 			switch(choixD) {
 			case 1:
-				da->pv=da->pv-aa->unique.focusdamage;
+				da->pv=da->pv-(aa->unique.focusdamage*da->defence);
 				if(aa->unique.focusheal!=0){
 				   aa->poison=0;
 				   aa->pv=aa->pv+aa->unique.focusheal;
 				}
 				if(aa->unique.poison==1) {
-			        da->poison=1;
-			        }
+			    da->poison=1;
+			    }
 				break;
 			case 2:
-				db->pv=db->pv-aa->unique.focusdamage;
+				db->pv=db->pv-(aa->unique.focusdamage*db->defence);
 				if(aa->unique.focusheal!=0){
 				   ab->poison=0;
 				   ab->pv=ab->pv+aa->unique.focusheal;
 				}
 				if(aa->unique.poison==1) {
-			        db->poison=1;
-			        }
+			    db->poison=1;
+			    }
 				break;
 			case 3:
-				dc->pv=dc->pv-aa->unique.focusdamage;
+				dc->pv=dc->pv-(aa->unique.focusdamage*dc->defence);
 				if(aa->unique.focusheal!=0){
 				   ac->poison=0;
 				   ac->pv=ac->pv+aa->unique.focusheal;
 				}
 				if(aa->unique.poison==1) {
-			        dc->poison=1;
-			        }
+			    dc->poison=1;
+			    }
 				break;
 			}
 			break;
@@ -414,9 +476,9 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 		switch(choixA) {
 		case 1:
 			if(ab->normal.damage!=0) {
-				da->pv=da->pv-ab->normal.damage;
-				db->pv=db->pv-ab->normal.damage;
-				dc->pv=dc->pv-ab->normal.damage;
+				da->pv=da->pv-(ab->normal.damage*da->defence);
+				db->pv=db->pv-(ab->normal.damage*db->defence);
+				dc->pv=dc->pv-(ab->normal.damage*dc->defence);
 			}
 			if(ab->normal.heal!=0) {
 				aa->pv=aa->pv+ab->normal.heal;
@@ -428,42 +490,42 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 			}
 			switch(choixD) {
 			case 1:
-				da->pv=da->pv-ab->normal.focusdamage;
+				da->pv=da->pv-(ab->normal.focusdamage*da->defence);
 				if(ab->normal.focusheal!=0){
 				   aa->poison=0;
 				   aa->pv=aa->pv+ab->normal.focusheal;
 				}
 				if(ab->normal.poison==1) {
-			        da->poison=1;
-			        }
+			    da->poison=1;
+			    }
 				break;
 			case 2:
-				db->pv=db->pv-ab->normal.focusdamage;
+				db->pv=db->pv-(ab->normal.focusdamage*db->defence);
 				if(ab->normal.focusheal!=0){
 				   ab->poison=0;
 				   ab->pv=ab->pv+ab->normal.focusheal;
 				}
 				if(ab->normal.poison==1) {
-			        db->poison=1;
-			        }
+			    db->poison=1;
+			    }
 				break;
 			case 3:
-				dc->pv=dc->pv-ab->normal.focusdamage;
+				dc->pv=dc->pv-(ab->normal.focusdamage*dc->defence);
 				if(ab->normal.focusheal!=0){
 				   ac->poison=0;
 				   ac->pv=ac->pv+ab->normal.focusheal;
 				}
 				if(ab->normal.poison==1) {
-			        dc->poison=1;
-			        }
+			    dc->poison=1;
+			    }
 				break;
 			}
 			break;
 		case 2:
 			if(ab->special.damage!=0) {
-				da->pv=da->pv-ab->special.damage;
-				db->pv=db->pv-ab->special.damage;
-				dc->pv=dc->pv-ab->special.damage;
+				da->pv=da->pv-(ab->special.damage*da->defence);
+				db->pv=db->pv-(ab->special.damage*db->defence);
+				dc->pv=dc->pv-(ab->special.damage*dc->defence);
 			}
 			if(ab->special.heal!=0) {
 				aa->pv=aa->pv+ab->special.heal;
@@ -475,42 +537,42 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 			}
 			switch(choixD) {
 			case 1:
-				da->pv=da->pv-ab->special.focusdamage;
+				da->pv=da->pv-(ab->special.focusdamage*da->defence);
 				if(ab->special.focusheal!=0){
 				   aa->poison=0;
 				   aa->pv=aa->pv+ab->special.focusheal;
 				}
 				if(ab->special.poison==1) {
-			        da->poison=1;
-			        }
+			    da->poison=1;
+			    }
 				break;
 			case 2:
-				db->pv=db->pv-ab->special.focusdamage;
+				db->pv=db->pv-(ab->special.focusdamage*db->defence);
 				if(ab->special.focusheal!=0){
 				   ab->poison=0;
 				   ab->pv=ab->pv+ab->special.focusheal;
 				}
 				if(ab->special.poison==1) {
-			        db->poison=1;
-			        }
+			    db->poison=1;
+			    }
 				break;
 			case 3:
-				dc->pv=dc->pv-ab->special.focusdamage;
+				dc->pv=dc->pv-(ab->special.focusdamage*dc->defence);
 				if(ab->special.focusheal!=0){
 				   ac->poison=0;
 				   ac->pv=ac->pv+ab->special.focusheal;
 				}
 				if(ab->special.poison==1) {
-			        dc->poison=1;
-			        }
+			    dc->poison=1;
+			    }
 				break;
 			}
 			break;
 		case 3:
 			if(ab->unique.damage!=0) {
-				da->pv=da->pv-ab->unique.damage;
-				db->pv=db->pv-ab->unique.damage;
-				dc->pv=dc->pv-ab->unique.damage;
+				da->pv=da->pv-(ab->unique.damage*da->defence);
+				db->pv=db->pv-(ab->unique.damage*db->defence);
+				dc->pv=dc->pv-(ab->unique.damage*dc->defence);
 			}
 			if(ab->unique.heal!=0) {
 				aa->pv=aa->pv+ab->unique.heal;
@@ -522,34 +584,34 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 			}
 			switch(choixD) {
 			case 1:
-				da->pv=da->pv-ab->unique.focusdamage;
+				da->pv=da->pv-(ab->unique.focusdamage*da->defence);
 				if(ab->unique.focusheal!=0){
 				   aa->poison=0;
 				   aa->pv=aa->pv+ab->unique.focusheal;
 				}
 				if(ab->unique.poison==1) {
-			        da->poison=1;
-			        }
+			    da->poison=1;
+			    }
 				break;
 			case 2:
-				db->pv=db->pv-ab->unique.focusdamage;
+				db->pv=db->pv-(ab->unique.focusdamage*db->defence);
 				if(ab->unique.focusheal!=0){
 				   ab->poison=0;
 				   ab->pv=ab->pv+ab->unique.focusheal;
 				}
 				if(ab->unique.poison==1) {
-			        db->poison=1;
-			        }
+			    db->poison=1;
+			    }
 				break;
 			case 3:
-				dc->pv=dc->pv-ab->unique.focusdamage;
+				dc->pv=dc->pv-(ab->unique.focusdamage*dc->defence);
 				if(ab->unique.focusheal!=0){
 				   ac->poison=0;
 				   ac->pv=ac->pv+ab->unique.focusheal;
 				}
 				if(ab->unique.poison==1) {
-			        dc->poison=1;
-			        }
+			    dc->poison=1;
+			    }
 				break;
 			}
 			break;
@@ -563,9 +625,9 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 		switch(choixA) {
 		case 1:
 			if(ac->normal.damage!=0) {
-				da->pv=da->pv-ac->normal.damage;
-				db->pv=db->pv-ac->normal.damage;
-				dc->pv=dc->pv-ac->normal.damage;
+				da->pv=da->pv-(ac->normal.damage*da->defence);
+				db->pv=db->pv-(ac->normal.damage*db->defence);
+				dc->pv=dc->pv-(ac->normal.damage*dc->defence);
 			}
 			if(ac->normal.heal!=0) {
 				aa->pv=aa->pv+ac->normal.heal;
@@ -577,42 +639,42 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 			}
 			switch(choixD) {
 			case 1:
-				da->pv=da->pv-ac->normal.focusdamage;
+				da->pv=da->pv-(ac->normal.focusdamage*da->defence);
 				if(ac->normal.focusheal!=0){
 				   aa->poison=0;
 				   aa->pv=aa->pv+ac->normal.focusheal;
 				}
 				if(ac->normal.poison==1) {
-			        da->poison=1;
-			        }
+			    da->poison=1;
+			    }
 				break;
 			case 2:
-				db->pv=db->pv-ac->normal.focusdamage;
+				db->pv=db->pv-(ac->normal.focusdamage*db->defence);
 				if(ac->normal.focusheal!=0){
 				   ab->poison=0;
 				   ab->pv=ab->pv+ac->normal.focusheal;
 				}
 				if(ac->normal.poison==1) {
-			        db->poison=1;
-		      	        }
+			    db->poison=1;
+		      	}
 				break;
 			case 3:
-				dc->pv=dc->pv-ac->normal.focusdamage;
+				dc->pv=dc->pv-(ac->normal.focusdamage*dc->defence);
 				if(ac->normal.focusheal!=0){
 				   ac->poison=0;
 				   ac->pv=ac->pv+ac->normal.focusheal;
 				}
 				if(ac->normal.poison==1) {
-			        dc->poison=1;
-			        }
+			    dc->poison=1;
+			    }
 				break;
 			}
 			break;
 		case 2:
 			if(ac->special.damage!=0) {
-				da->pv=da->pv-ac->special.damage;
-				db->pv=db->pv-ac->special.damage;
-				dc->pv=dc->pv-ac->special.damage;
+				da->pv=da->pv-(ac->special.damage*da->defence);
+				db->pv=db->pv-(ac->special.damage*db->defence);
+				dc->pv=dc->pv-(ac->special.damage*dc->defence);
 			}
 			if(ac->special.heal!=0) {
 				aa->pv=aa->pv+ac->special.heal;
@@ -624,42 +686,42 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 			}
 			switch(choixD) {
 			case 1:
-				da->pv=da->pv-ac->special.focusdamage;
+				da->pv=da->pv-(ac->special.focusdamage*da->defence);
 				if(ac->special.focusheal!=0){
 				   aa->poison=0;
 				   aa->pv=aa->pv+ac->special.focusheal;
 				}
 				if(ac->special.poison==1) {
-			        da->poison=1;
-			        }
+			    da->poison=1;
+			    }
 				break;
 			case 2:
-				db->pv=db->pv-ac->special.focusdamage;
+				db->pv=db->pv-(ac->special.focusdamage*db->defence);
 				if(ac->special.focusheal!=0){
 				   ab->poison=0;
 			       ab->pv=ab->pv+ac->special.focusheal;
 				}
 				if(ac->special.poison==1) {
-			        db->poison=1;
-			        }
+			    db->poison=1;
+			    }
 				break;
 			case 3:
-				dc->pv=dc->pv-ac->special.focusdamage;
+				dc->pv=dc->pv-(ac->special.focusdamage*dc->defence);
 				if(ac->special.focusheal!=0){
 				   ac->poison=0;
 				   ac->pv=ac->pv+ac->special.focusheal;
 				}
 				if(ac->special.poison==1) {
-			        dc->poison=1;
-			        }
+			    dc->poison=1;
+			    }
 				break;
 			}
 			break;
 		case 3:
 			if(ac->unique.damage!=0) {
-				da->pv=da->pv-ac->unique.damage;
-				db->pv=db->pv-ac->unique.damage;
-				dc->pv=dc->pv-ac->unique.damage;
+				da->pv=da->pv-(ac->unique.damage*da->defence);
+				db->pv=db->pv-(ac->unique.damage*db->defence);
+				dc->pv=dc->pv-(ac->unique.damage*dc->defence);
 			}
 			if(ac->unique.heal!=0) {
 				aa->pv=aa->pv+ac->unique.heal;
@@ -671,34 +733,34 @@ void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 			}
 			switch(choixD) {
 			case 1:
-				da->pv=da->pv-ac->unique.focusdamage;
+				da->pv=da->pv-(ac->unique.focusdamage*da->defence);
 				if(ac->unique.focusheal!=0){
 				   aa->poison=0;
 				   aa->pv=aa->pv+ac->unique.focusheal;
 				}
 				if(ac->unique.poison==1) {
-			        da->poison=1;
-			        }
+			    da->poison=1;
+			    }
 				break;
 			case 2:
-				db->pv=db->pv-ac->unique.focusdamage;
+				db->pv=db->pv-(ac->unique.focusdamage*db->defence);
 				if(ac->unique.focusheal!=0){
 				   ab->poison=0;
 				   ab->pv=ab->pv+ac->unique.focusheal;
 				}
 				if(ac->unique.poison==1) {
-			        db->poison=1;
-			        }
+			    db->poison=1;
+			    }
 				break;
 			case 3:
-				dc->pv=dc->pv-ac->unique.focusdamage;
+				dc->pv=dc->pv-(ac->unique.focusdamage*dc->defence);
 				if(ac->unique.focusheal!=0){
 				   ac->poison=0;
 				   ac->pv=ac->pv+ac->unique.focusheal;
 				}
 				if(ac->unique.poison==1) {
-			        dc->poison=1;
-			        }
+			    dc->poison=1;
+			    }
 				break;
 			}
 			break;
@@ -806,7 +868,7 @@ void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc) {
 
 int main() {
 	Bot ja=Characterbuilder(1001);
-	Bot jb=Characterbuilder(1001);
+	Bot jb=Characterbuilder(1002);
 	Bot jc=Characterbuilder(1001);
 	Bot ba=Characterbuilder(1000);
 	Bot bb=Characterbuilder(1000);
@@ -816,18 +878,19 @@ int main() {
 	for(int i=0; i<strlen(ja.name); i++) { // print name
 		printf("%c", *(ja.name+i));
 	}
-	printf("\n%d\n",ja.pv);
-
 	for(int i=0; i<strlen(ja.normal.name); i++) {
 		printf("%c", *(ja.normal.name+i));
 	}
 	printf("\n%d\n",ja.special.focusdamage);
 	printf("\n%d\n",ba.pv);
+	printf("\nJA HEALTH BEFORE: %d\n",ja.pv);
 	printf("===========================================================\n");
 	Turn(0, &ja, &jb, &jc, &ba, &bb, &bc);
 	printf("\n%d\n",ba.pv);
+	printf("\nJA HEALTH AFTER Turn: %d\n",ja.pv);
 	Checkup(&ja, &jb, &jc, &ba, &bb, &bc);
 	printf("\n%d\n",ba.pv);
+	printf("\nJA HEALTH AFTER Checkup: %d\n",ja.pv);
 
 	return 0;
 }
