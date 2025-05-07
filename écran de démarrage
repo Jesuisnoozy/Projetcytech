@@ -22,7 +22,8 @@ void afficherMenuPrincipal() {
     printf("============================================= MENU PRINCIPAL =========================================\n");
     printf("1. Continuer la partie\n");
     printf("2. Nouvelle partie\n");
-    printf("3. Quitter\n");
+    printf("3. Multi-joueur\n");
+    printf("4. Quitter\n");
 }
 
 int main() {
@@ -42,7 +43,10 @@ int main() {
         sauvegarderNiveau(niveau);
         printf("\n  Nouvelle partie lancée ! Niveau : %d\n", niveau);
         sleep(1);
-    } else {
+    } else if (choix == 3) {
+        printf("\n Mode Multi-joueur\n");
+
+    } else if( choix == 4) {
         printf("\n  À bientôt ! \n");
         sleep(1);
 }
