@@ -20,7 +20,7 @@ typedef struct {
 
 Attack Attackbuilder(int num) {
 	Attack att;
-	switch(num) { // attaque normale (0-99) ; attaque spC)ciale (100-199) ; attaque normale (200-299)
+	switch(num) { // attaque normal (0-99) ; attaque special (100-199) ; attaque unique (200-299)
         case 0:
 		att.damage=0;
 		att.focusdamage=50;
@@ -224,7 +224,31 @@ Bot Characterbuilder(int num) {
 	return a;
 }
 
-
+void Computer(int *dif, int *choixP, int *choixA, int *choixD, Bot *aa, Bot *ab, Bot *ac, Bot *ra, Bot *rb, Bot *rc){
+    int x;
+    switch(*dif){
+        case 1:
+        *choixP=(rand()%3)+1;
+        *choixA=(rand()%3)+1;
+        *choixD=(rand()%3)+1;
+        break;
+        case 2:
+        *choixP=(rand()%3)+1;
+        *choixA=(rand()%3)+1;
+        *choixD=(rand()%3)+1;
+        break;
+        case 3:
+        *choixP=(rand()%3)+1;
+        *choixA=(rand()%3)+1;
+        *choixD=(rand()%3)+1;
+        break;
+        default:
+        printf("ERREUR: Mauvais numero saisie pour le switchcase Computer\n");
+		exit(1);
+    }
+    
+    
+}
 
 int CheckPerso1(int choix, Bot *ja, Bot*jb, Bot *jc){
     switch(choix) {
@@ -337,7 +361,7 @@ int Dodge(int choixD, Bot *ra, Bot *rb, Bot *rc){ // return 0 => dodged
     }
 }
 
-void Turn(int who, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
+void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
 	int choixP, choixA, choixD; // choixP= selection du personnage, choixA= choix de l'attaque, choixD= choix du personnage affectC)
 	if(who==0) {
 		do {
@@ -966,6 +990,12 @@ int main() {
 	Bot ba=Characterbuilder(1003);
 	Bot bb=Characterbuilder(1000);
 	Bot bc=Characterbuilder(1000);
+	int dif=0;
+	do {
+			printf("Choisir sa difficulté (1, 2 ou 3)\n");
+			scanf("%d", &dif);
+		}
+		while(dif!=1 && dif!=2 && dif!=3);
 
     printf("===========================================================\n");
 	for(int i=0; i<strlen(ja.name); i++) { // print name
@@ -978,7 +1008,7 @@ int main() {
 	printf("\n%d\n",ba.pv);
 	printf("\nJA HEALTH BEFORE: %d\n",ja.pv);
 	printf("===========================================================\n");
-	Turn(0, &ja, &jb, &jc, &ba, &bb, &bc);
+	Turn(0, &dif, &ja, &jb, &jc, &ba, &bb, &bc);
 	printf("\n%d\n",ba.pv);
 	printf("\nJA HEALTH AFTER Turn: %d\n",ja.pv);
 	Checkup(&ja, &jb, &jc, &ba, &bb, &bc);
