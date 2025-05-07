@@ -43,21 +43,81 @@ Attack Attackbuilder(int num) {
 		}
 		strcpy(att.name, "Soin simple");
 		break;
+		
         case 3:
 		att.damage=0;
-		att.focusdamage=30;
+		att.focusdamage=35;
 		att.heal=0;
 		att.focusheal=0;
 		att.poison=0;
 		att.stun=1;
 		att.confused=0;
+		att.name=malloc(sizeof(char)*19);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Frappe du Destrier");
+		break;
+
+	case 4:
+		att.damage=0;
+		att.focusdamage=40;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
 		att.name=malloc(sizeof(char)*16);
 		if(att.name==NULL) {
 			exit(1);
 		}
-		strcpy(att.name, "Boulette de feu");
+		strcpy(att.name, "Orbe Arcanique");
+		break;
+		
+	case 5:
+		att.damage=0;
+		att.focusdamage=35;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*19);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Couteau de l’Ombre");
 		break;
 
+	case 6:
+		att.damage=0;
+		att.focusdamage=25;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*17);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Flèche Spectrale");
+		break;
+
+	case 7:
+		att.damage=0;
+		att.focusdamage=25;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*17);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Flèche Spectrale");
+		break;
 
 		
 	case 100:
@@ -102,10 +162,26 @@ Attack Attackbuilder(int num) {
 		}
 		strcpy(att.name, "Soin double");
 		break;
-        case 103:
-		att.damage=0;
-		att.focusdamage=75;
+        
+       case 103:
+		att.damage=30;
+		att.focusdamage=40;
 		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=1;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*14);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Mur de Lances");
+		break;
+
+	case 104:
+		att.damage=0;
+		att.focusdamage=0;
+		att.heal=45;
 		att.focusheal=0;
 		att.poison=0;
 		att.stun=1;
@@ -114,11 +190,38 @@ Attack Attackbuilder(int num) {
 		if(att.name==NULL) {
 			exit(1);
 		}
-		strcpy(att.name, "Boule de feu");
+		strcpy(att.name, "Sceau du Savoir");
 		break;
 
+	case 105:
+		att.damage=0;
+		att.focusdamage=30;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=1;
+		att.stun=1;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*15);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Voile Nocturne");
+		break;
 
-
+	case 106:
+		att.damage=0;
+		att.focusdamage=20;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=1;
+		att.stun=1;
+		att.confused=1;
+		att.name=malloc(sizeof(char)*15);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Piège Sylvestre");
+		break;
 		
 	case 200:
 		att.damage=0;
@@ -162,6 +265,70 @@ Attack Attackbuilder(int num) {
 		}
 		strcpy(att.name, "Soin triple");
 		break;
+
+     case 203:
+		att.damage=0;
+		att.focusdamage=110;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=1;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*17);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Jugement d’Acier");
+		break;
+
+	case 204:
+		att.damage=0;
+		att.focusdamage=80;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=1;
+		att.stun=0;
+		att.confused=1;
+		att.name=malloc(sizeof(char)*17);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Tempête des Éons");
+		break;
+
+	case 205:
+		att.damage=0;
+		att.focusdamage=100;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=1;
+		att.confused=1;
+		att.name=malloc(sizeof(char)*16);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Danse des Lames");
+		break;
+
+
+	case 206:
+		att.damage=90;
+		att.focusdamage=0;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*15);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Œil du Faucon");
+		break;
+
+
+	
 	 default:
 		printf("ERREUR: Mauvais numero saisie pour le switchcase Attackbuilder\n");
 		exit(1);
