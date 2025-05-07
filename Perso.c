@@ -4,7 +4,7 @@ ot Characterbuilder(int num) {
 	// defence, agilite, points de vie, att normale, att speciale, att unique)
 	case 1:
 		a=Builder(25, 5, 200, 0, 100, 200);
-		a.name=malloc(sizeof(char)*4);
+		a.name=malloc(sizeof(char)*9);
 		if(a.name==NULL) {
 			exit(1);
 		}
@@ -12,7 +12,7 @@ ot Characterbuilder(int num) {
 		break;// très bonne défense
 	case 2:
 		a=Builder(75, 25, 120, 0, 100, 200);
-		a.name=malloc(sizeof(char)*5);
+		a.name=malloc(sizeof(char)*7);
 		if(a.name==NULL) {
 			exit(1);
 		}
@@ -21,7 +21,7 @@ ot Characterbuilder(int num) {
 
 	case 3:
 		a=Builder(45, 50, 225, 0, 100, 200);
-		a.name=malloc(sizeof(char)*5);
+		a.name=malloc(sizeof(char)*9);
 		if(a.name==NULL) {
 			exit(1);
 		}
@@ -30,7 +30,7 @@ ot Characterbuilder(int num) {
 		
         case 4:
 		a=Builder(2, 50, 240, 0, 100, 200);
-		a.name=malloc(sizeof(char)*5);
+		a.name=malloc(sizeof(char)*7);
 		if(a.name==NULL) {
 			exit(1);
 		}
@@ -38,16 +38,16 @@ ot Characterbuilder(int num) {
 		break;// Tout++ car trop d'aura enfaite
 	case 5:
 		a=Builder(80, 35, 180, 0, 100, 200);
-		a.name=malloc(sizeof(char)*5);
+		a.name=malloc(sizeof(char)*13);
 		if(a.name==NULL) {
 			exit(1);
 		}
-		strcpy(a.name, "Nécromancien ");
+		strcpy(a.name, "Nécromancien");
 		break;// PV/agilité+
 
 	case 6:
 		a=Builder(30, 40, 200, 0, 100, 200);
-		a.name=malloc(sizeof(char)*5);
+		a.name=malloc(sizeof(char)*6);
 		if(a.name==NULL) {
 			exit(1);
 		}
@@ -56,7 +56,7 @@ ot Characterbuilder(int num) {
 
 	case 7:
 		a=Builder(0, 50, 100, 0, 100, 200);
-		a.name=malloc(sizeof(char)*5);
+		a.name=malloc(sizeof(char)*14);
 		if(a.name==NULL) {
 			exit(1);
 		}
@@ -67,7 +67,7 @@ ot Characterbuilder(int num) {
 
 	case 8:
 		a=Builder(90, 10, 190, 0, 100, 200);
-		a.name=malloc(sizeof(char)*5);
+		a.name=malloc(sizeof(char)*7);
 		if(a.name==NULL) {
 			exit(1);
 		}
@@ -76,16 +76,16 @@ ot Characterbuilder(int num) {
 		
 	case 9:
 		a=Builder(5, 30, 135, 0, 100, 200);
-		a.name=malloc(sizeof(char)*5);
+		a.name=malloc(sizeof(char)*11);
 		if(a.name==NULL) {
 			exit(1);
 		}
-		strcpy(a.name, "Invocateur ");
+		strcpy(a.name, "Invocateur");
 		break;
 
 	case 10:
 		a=Builder(5, 45, 225, 0, 100, 200);
-		a.name=malloc(sizeof(char)*5);
+		a.name=malloc(sizeof(char)*9);
 		if(a.name==NULL) {
 			exit(1);
 		}
@@ -94,7 +94,7 @@ ot Characterbuilder(int num) {
 
 	case 11:
 		a=Builder(66, 37, 111, 0, 100, 200);
-		a.name=malloc(sizeof(char)*5);
+		a.name=malloc(sizeof(char)*11);
 		if(a.name==NULL) {
 			exit(1);
 		}
@@ -103,7 +103,7 @@ ot Characterbuilder(int num) {
 
 	case 12:
 		a=Builder(100, 39, 168, 0, 100, 200);
-		a.name=malloc(sizeof(char)*5);
+		a.name=malloc(sizeof(char)*14);
 		if(a.name==NULL) {
 			exit(1);
 		}
@@ -112,7 +112,7 @@ ot Characterbuilder(int num) {
 
 	case 13:
 		a=Builder(15, 30, 175, 0, 100, 200);
-		a.name=malloc(sizeof(char)*5);
+		a.name=malloc(sizeof(char)*9);
 		if(a.name==NULL) {
 			exit(1);
 		}
@@ -130,7 +130,7 @@ ot Characterbuilder(int num) {
 
 	case 15:
 		a=Builder(55, 34, 250, 0, 100, 200);
-		a.name=malloc(sizeof(char)*5);
+		a.name=malloc(sizeof(char)*13);
 		if(a.name==NULL) {
 			exit(1);
 		}
@@ -139,22 +139,14 @@ ot Characterbuilder(int num) {
 
 	case 16:
 		a=Builder(5, 0, 187, 0, 100, 200);
-		a.name=malloc(sizeof(char)*5);
+		a.name=malloc(sizeof(char)*11);
 		if(a.name==NULL) {
 			exit(1);
 		}
 		strcpy(a.name, "Sentinelle");
 		break;
 
-		
-	case 1002:
-		a=Builder(5, 50, 150, 2, 102, 202);
-		a.name=malloc(sizeof(char)*14);
-		if(a.name==NULL) {
-			exit(1);
-		}
-		strcpy(a.name, "TestMaxHealth");
-		break;
+	
 	default:
 		printf("ERREUR: Mauvais numC)ro saisie pour le switchcase Characterbuilder\n");
 		exit(1);
