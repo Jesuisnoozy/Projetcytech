@@ -106,19 +106,65 @@ Attack Attackbuilder(int num) {
 
 	case 7:
 		att.damage=0;
-		att.focusdamage=25;
+		att.focusdamage=30;
 		att.heal=0;
 		att.focusheal=0;
 		att.poison=0;
 		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*17);
+		att.name=malloc(sizeof(char)*14);
 		if(att.name==NULL) {
 			exit(1);
 		}
-		strcpy(att.name, "Flèche Spectrale");
+		strcpy(att.name, "Flamme Vorace");
 		break;
 
+
+	case 8:
+		att.damage=0;
+		att.focusdamage=40;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=1;
+		att.name=malloc(sizeof(char)*12);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Rayon Sacré");
+		break;
+
+
+	case 9:
+		att.damage=0;
+		att.focusdamage=0;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=1;
+		att.confused=1;
+		att.name=malloc(sizeof(char)*12);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Reflet Trompeur");
+		break;
+
+	case 10:
+		att.damage=0;
+		att.focusdamage=10;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=1;
+		att.stun=0;
+		att.confused=1;
+		att.name=malloc(sizeof(char)*12);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Dague d’Ambre");
+		break;
 		
 	case 100:
 		att.damage=0;
@@ -223,6 +269,69 @@ Attack Attackbuilder(int num) {
 		strcpy(att.name, "Piège Sylvestre");
 		break;
 		
+	case 107:
+		att.damage=0;
+		att.focusdamage=55;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=1;
+		att.stun=1;
+		att.confused=1;
+		att.name=malloc(sizeof(char)*15);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Souffle Cendré");
+		break;
+
+
+	case 108:
+		att.damage=0;
+		att.focusdamage=0;
+		att.heal=10;
+		att.focusheal=60;
+		att.poison=1;
+		att.stun=1;
+		att.confused=1;
+		att.name=malloc(sizeof(char)*22);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Bénédiction de l’Aube");
+		break;
+
+
+	case 109:
+		att.damage=0;
+		att.focusdamage=20;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=1;
+		att.confused=1;
+		att.name=malloc(sizeof(char)*17);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Brume Hypnotique");
+		break;
+
+	case 110:
+		att.damage=15;
+		att.focusdamage=60;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=1;
+		att.name=malloc(sizeof(char)*16);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Main des Morts");
+		break;
+
+		
 	case 200:
 		att.damage=0;
 		att.focusdamage=150;
@@ -237,6 +346,8 @@ Attack Attackbuilder(int num) {
 		}
 		strcpy(att.name, "Coup triple");
 		break;
+
+		
     case 201:
         att.damage=0;
         att.focusdamage=100;
@@ -251,6 +362,8 @@ Attack Attackbuilder(int num) {
         }
         strcpy(att.name, "Coup triple poison");
         break;
+
+		
     case 202:
 		att.damage=0;
 		att.focusdamage=0;
@@ -266,6 +379,7 @@ Attack Attackbuilder(int num) {
 		strcpy(att.name, "Soin triple");
 		break;
 
+		
      case 203:
 		att.damage=0;
 		att.focusdamage=110;
@@ -280,6 +394,7 @@ Attack Attackbuilder(int num) {
 		}
 		strcpy(att.name, "Jugement d’Acier");
 		break;
+		
 
 	case 204:
 		att.damage=0;
@@ -295,6 +410,7 @@ Attack Attackbuilder(int num) {
 		}
 		strcpy(att.name, "Tempête des Éons");
 		break;
+		
 
 	case 205:
 		att.damage=0;
@@ -325,6 +441,68 @@ Attack Attackbuilder(int num) {
 			exit(1);
 		}
 		strcpy(att.name, "Œil du Faucon");
+		break;
+
+	case 207:
+		att.damage=10;
+		att.focusdamage=105;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*15);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Comète Ardente");
+		break;
+
+
+	case 208:
+		att.damage=0;
+		att.focusdamage=120;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=1;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*15);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Jugement Divin");
+		break;
+
+	case 209:
+		att.damage=0;
+		att.focusdamage=110;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=1;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*15);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Cauchemar Réel");
+		break;
+
+
+	case 210:
+		att.damage=0;
+		att.focusdamage=100;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=1;
+		att.stun=1;
+		att.confused=1;
+		att.name=malloc(sizeof(char)*16);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Marque du Néant");
 		break;
 
 
