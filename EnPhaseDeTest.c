@@ -1176,7 +1176,6 @@ void Turn(int who, int mo, int *dif, int *choixP, int *choixA, int *choixD, Bot 
 		while(CheckPerso2(*choixD, da, db, dc));
 	} else { 
 	    printf("==============");
-	    Affichage(21, 120, 1, 1, mo, aa, ab, ac, da, db, dc);
 	    Computer(dif, choixP, choixA, choixD, aa, ab, ac, da, db, dc);
 	    // l'IA qui va choisir l'attaque si 'who' est different de 0
 	    printf("==============");
