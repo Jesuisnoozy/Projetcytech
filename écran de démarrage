@@ -39,7 +39,9 @@ void afficherTexteCentre(const char* texte) {
 void afficherEcranDemarrage() {
     system("clear");
     afficherCadre();
-    for (int i = 0; i < 5; i++) afficherLigneVide();
+    for (int i = 0; i < 5; i++){
+       afficherLigneVide();
+    }
 
     afficherTexteCentre("BATTLE ARENA");
     afficherLigneVide();
@@ -47,10 +49,45 @@ void afficherEcranDemarrage() {
     afficherLigneVide();
     afficherTexteCentre("Appuie sur Entrée pour continuer...");
     
-    for (int i = 0; i < 5; i++) afficherLigneVide();
+    for (int i = 0; i < 5; i++){
+    afficherLigneVide();
+    }
     afficherCadre();
 
     getchar(); // attendre Entrée
+
+system("clear");
+    imprimeMap();
+    printf("\nAppuie sur Entrée pour continuer...\n");
+    getchar();
+}
+
+
+
+void imprimeMap() {
+    system("clear");  // ou system("cls"); sur Windows
+
+    afficherCadre();
+    afficherTexteCentre("SECTOR MAP");
+    afficherCadre();
+
+    printf("\n\n");
+
+    afficherTexteCentre("0");
+    afficherTexteCentre("/     \\");
+    afficherTexteCentre("1       2");
+    afficherTexteCentre("/ \\     / \\");
+    afficherTexteCentre("3   4   5   6");
+    afficherTexteCentre("\\ / \\ / \\ /");
+    afficherTexteCentre("8   9   10");
+    afficherTexteCentre("\\ / \\ /");
+    afficherTexteCentre("11  12");
+    afficherTexteCentre("\\  /");
+    afficherTexteCentre("13");
+
+
+    printf("\n\n");
+    afficherCadre();
 }
 
 void afficherMenuPrincipalRecursif(int niveau) {
@@ -68,7 +105,7 @@ void afficherMenuPrincipalRecursif(int niveau) {
     printf("Choix : ");
     int choix;
     scanf("%d", &choix);
-    getchar(); // pour consommer le '\n'
+    getchar(); 
 
     switch (choix) {
         case 1:
