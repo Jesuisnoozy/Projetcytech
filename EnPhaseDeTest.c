@@ -155,8 +155,8 @@ Attack Attackbuilder(int num) {
 }
 
 Bot Builder(float defen, int agil, int health, int norm, int spec, int uniq) {
-	Bot a;
-	a.defence=defen/100;
+	Bot a; 
+	a.defence=1-(defen/100);
 	a.agility=agil;
 	a.pvmax=health;
 	a.normal=Attackbuilder(norm);
@@ -177,7 +177,7 @@ Bot Characterbuilder(int num) {
 	switch(num) {
 	// defence, agility, points de vie, att normal, att special, att unique)
 	case 1:
-		a=Builder(25, 5, 200, 0, 100, 200);
+		a=Builder(25.0, 5, 200, 0, 100, 200);
 		a.name=malloc(sizeof(char)*4);
 		if(a.name==NULL) {
 			exit(1);
@@ -186,7 +186,7 @@ Bot Characterbuilder(int num) {
 		break;
 	
 	case 1000:
-		a=Builder(5, 0, 150, 0, 100, 200);
+		a=Builder(5.0, 0, 150, 0, 100, 200);
 		a.name=malloc(sizeof(char)*5);
 		if(a.name==NULL) {
 			exit(1);
@@ -194,7 +194,7 @@ Bot Characterbuilder(int num) {
 		strcpy(a.name, "Test");
 		break;
 	case 1001:
-		a=Builder(5, 20, 150, 1, 101, 201);
+		a=Builder(5.0, 20, 150, 1, 101, 201);
 		a.name=malloc(sizeof(char)*11);
 		if(a.name==NULL) {
 			exit(1);
@@ -202,7 +202,7 @@ Bot Characterbuilder(int num) {
 		strcpy(a.name, "TestPoison");
 		break;
 	case 1002:
-		a=Builder(5, 20, 150, 2, 102, 202);
+		a=Builder(5.0, 20, 150, 2, 102, 202);
 		a.name=malloc(sizeof(char)*14);
 		if(a.name==NULL) {
 			exit(1);
@@ -210,7 +210,7 @@ Bot Characterbuilder(int num) {
 		strcpy(a.name, "TestMaxHealth");
 		break;
 	case 1003:
-		a=Builder(5, 80, 150, 0, 100, 200);
+		a=Builder(5.0, 80, 150, 0, 100, 200);
 		a.name=malloc(sizeof(char)*10);
 		if(a.name==NULL) {
 			exit(1);
@@ -359,7 +359,8 @@ int Dodge(int choixD, Bot *ra, Bot *rb, Bot *rc){ // return 0 => dodged
 }
 
 void Computer(int *dif, int *choixP, int *choixA, int *choixD, Bot *ra, Bot *rb, Bot *rc, Bot *ja, Bot *jb, Bot *jc){
-    int wtf, wtp;  // \(^-^)/
+    int chance=rand()%101;
+    int proba, wtf, wtp;  // \(^-^)/
     int aa=4;
     int ab=4;
     int ac=4;
@@ -369,25 +370,35 @@ void Computer(int *dif, int *choixP, int *choixA, int *choixD, Bot *ra, Bot *rb,
     int v=-MinMax(&z, -(ja->pv), -(jb->pv), -(jc->pv)); // Min pv joueur visé
     switch(*dif){
         case 1:
-        do {
-            *choixP=(rand()%3)+1;
-		}
-		while(CheckPerso1(*choixP, ra, rb, rc));
-		do {
-			*choixA=(rand()%3)+1;
-		}
-		while(CheckStamina(*choixA, ra, rb, rc));
-		do {
-			*choixD=(rand()%3)+1;
-		}
-		while(CheckPerso2(*choixD, ja, jb, jc));
+        proba=100-60;
         break;
         case 2:
-        *choixP=(rand()%3)+1;
-        *choixA=(rand()%3)+1;
-        *choixD=(rand()%3)+1;
+        proba=100-40;
         break;
         case 3:
+        proba=100-20;
+        break;
+        default:
+        printf("ERREUR: Variable (pointeur) *dif pour le switchcase Computer\n");
+        exit(1);
+    }    
+    if(chance>=proba || (ra->stamina==rb->stamina && ra->stamina==rc->stamina)){
+    do {
+    *choixP=(rand()%3)+1;
+		}
+		while(CheckPerso1(*choixP, ra, rb, rc));
+		
+		do {
+	    *choixA=(rand()%3)+1;
+		}
+		while(CheckStamina(*choixA, ra, rb, rc));
+		
+		do {
+		*choixD=(rand()%3)+1;
+		}
+		    while(CheckPerso2(*choixD, ja, jb, jc));
+		    
+    }else{    
         if(z==1){
             if(ja->pv<ra->normal.damage && ra->stamina>2){
                 aa=1;
@@ -596,10 +607,6 @@ void Computer(int *dif, int *choixP, int *choixA, int *choixD, Bot *ra, Bot *rb,
                 }
             }
         }
-        break;
-        default:
-        printf("ERREUR: Mauvais numero saisie pour le switchcase Computer\n");
-		exit(1);
     }
 }
 
