@@ -270,7 +270,7 @@ Bot Characterbuilder(int num) {
 		strcpy(a.name, "Test");
 		break;
 	case 1001:
-		a=Builder(5.0, 20, 150, 1, 101, 201);
+		a=Builder(5.0, 5, 150, 1, 101, 201);
 		a.name=malloc(sizeof(char)*11);
 		if(a.name==NULL) {
 			exit(1);
@@ -379,10 +379,8 @@ int CheckPerso2(int choix, Bot *ja, Bot*jb, Bot *jc){
 int CheckStamina(int choix, Bot *ja, Bot*jb, Bot *jc) {
     switch(choix) {
     case 1: 
-        if(ja->stamina<2){
+        if(ja->stamina<1){
             return 1;
-        }else if((ja->dead==1 && jb->dead==1) || (ja->dead==1 && jc->dead==1) || (jb->dead==1 && jb->dead==1) || (ja->dead==1 && jb->dead==1 && jc->dead==1)){
-            return 1; // bug fixed (._.)
         }else{
             return 0;
         }
@@ -404,7 +402,7 @@ int CheckStamina(int choix, Bot *ja, Bot*jb, Bot *jc) {
 }
 
 int Dodge(int choixD, Bot *ra, Bot *rb, Bot *rc){ // return 0 => dodged
-    float x;
+    int x;
     x=rand()%101;
     switch(choixD){
     case 1:
@@ -440,10 +438,10 @@ void Computer(int *dif, int *choixP, int *choixA, int *choixD, Bot *ra, Bot *rb,
     int aa=4;
     int ab=4;
     int ac=4;
-    int x; // attaquant séléctionné
+    int x; // attaquant selectionne
     int y=MinMax(&x, ra->stamina, rb->stamina, rc->stamina); // Max stamina
-    int z; // joueur visé
-    int v=-MinMax(&z, -(ja->pv), -(jb->pv), -(jc->pv)); // Min pv joueur visé
+    int z; // joueur vise
+    int v=-MinMax(&z, -(ja->pv), -(jb->pv), -(jc->pv)); // Min pv joueur vise
     switch(*dif){
         case 1:
         proba=100-60;
@@ -685,672 +683,120 @@ void Computer(int *dif, int *choixP, int *choixA, int *choixD, Bot *ra, Bot *rb,
         }
     }
 }
-
-void Turn(int who, int *dif, int *choixP, int *choixA, int *choixD, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
-    // choixP= selection du personnage, choixA= choix de l'attaque, choixD= choix du personnage affectC)
-	if(who==0) {
-		do {
-			printf("Choisir son personnage (1, 2 ou 3)\n");
-			scanf("%d", choixP);
-		}
-		while(CheckPerso1(*choixP, aa, ab, ac));
-		do {
-			printf("Choisir son attaque (1, 2 ou 3)\n");
-			scanf("%d", choixA);
-		}
-		while(CheckStamina(*choixA, aa, ab, ac));
-		do {
-			printf("Choisir le personnage affecte (1, 2 ou 3)\n");
-			scanf("%d", choixD);
-		}
-		while(CheckPerso2(*choixD, da, db, dc));
-	} else { 
-	    Computer(dif, choixP, choixA, choixD, aa, ab, ac, da, db, dc);
-	    // l'IA qui va choisir l'attaque si 'who' est different de 0
-	    printf("P:%d A:%d D:%d\n", *choixP, *choixA, *choixD);
-	}
-	switch(*choixP) {
-	case 1:
-	if (aa->confused==1){ 
-	    if(rand()%2){ break; 
-	    }
-	}
-		switch(*choixA) {
-		case 1:
-		aa->stamina-=2;
-			if(aa->normal.damage!=0) {
-				da->pv=da->pv-(aa->normal.damage*da->defence);
-				db->pv=db->pv-(aa->normal.damage*db->defence);
-				dc->pv=dc->pv-(aa->normal.damage*dc->defence);
-			}
-			if(aa->normal.heal!=0) {
-				aa->pv=aa->pv+aa->normal.heal;
-				ab->pv=ab->pv+aa->normal.heal;
-				ac->pv=ac->pv+aa->normal.heal;
-				aa->poison=0;
-				ab->poison=0;
-				ac->poison=0;
-			}
-			switch(*choixD) {
-			case 1:
-			    if(Dodge(*choixD, da, db, dc)){
-				da->pv=da->pv-(aa->normal.focusdamage*da->defence);
-			    if(aa->normal.poison==1) {
-			    da->poison=1;
-				}    
-			    }
-				if(aa->normal.focusheal!=0){
-				   aa->poison=0; 
-				   aa->pv=aa->pv+aa->normal.focusheal;
-				}
-				break;
-			case 2:
-			    if(Dodge(*choixD, da, db, dc)){
-				db->pv=db->pv-(aa->normal.focusdamage*db->defence);
-			    if(aa->normal.poison==1) {
-			    db->poison=1;
-				}    
-			    }
-				if(aa->normal.focusheal!=0){
-				   ab->poison=0;
-				   ab->pv=ab->pv+aa->normal.focusheal;
-				}
-				break;
-			case 3:
-			    if(Dodge(*choixD, da, db, dc)){
-				dc->pv=dc->pv-(aa->normal.focusdamage*dc->defence);
-			    if(aa->normal.poison==1) {
-			    dc->poison=1;
-				}    
-			    }
-				if(aa->normal.focusheal!=0){
-				   ac->poison=0;
-				   ac->pv=ac->pv+aa->normal.focusheal;
-				}
-				break;
-			}
-			break;
-		case 2:
-		aa->stamina-=8;
-			if(aa->special.damage!=0) {
-				da->pv=da->pv-(aa->special.damage*da->defence);
-				db->pv=db->pv-(aa->special.damage*db->defence);
-				dc->pv=dc->pv-(aa->special.damage*dc->defence);
-			}
-			if(aa->special.heal!=0) {
-				aa->pv=aa->pv+aa->special.heal;
-				ab->pv=ab->pv+aa->special.heal;
-				ac->pv=ac->pv+aa->special.heal;
-				aa->poison=0;
-				ab->poison=0;
-				ac->poison=0;
-			}
-			switch(*choixD) {
-			case 1:
-			    if(Dodge(*choixD, da, db, dc)){
-				da->pv=da->pv-(aa->special.focusdamage*da->defence);
-			    if(aa->special.poison==1) {
-			    da->poison=1;
-			    }    
-			    }
-				if(aa->special.focusheal!=0){
-				   aa->poison=0;
-				   aa->pv=aa->pv+aa->special.focusheal;
-				}
-				break;
-			case 2:
-			    if(Dodge(*choixD, da, db, dc)){
-				db->pv=db->pv-(aa->special.focusdamage*db->defence);
-			    if(aa->special.poison==1) {
-			    db->poison=1;
-			    }    
-			    }
-				if(aa->special.focusheal!=0){
-				   ab->poison=0;
-				   ab->pv=ab->pv+aa->special.focusheal;
-				}
-				break;
-			case 3:
-			    if(Dodge(*choixD, da, db, dc)){
-				dc->pv=dc->pv-(aa->special.focusdamage*dc->defence);
-			    if(aa->special.poison==1) {
-			    dc->poison=1;
-			    }    
-			    }
-				if(aa->special.focusheal!=0){
-				   ac->poison=0;
-				   ac->pv=ac->pv+aa->special.focusheal;
-				}
-				break;
-			}
-			break;
-		case 3:
-		aa->utiliunique=1;
-			if(aa->unique.damage!=0) {
-				da->pv=da->pv-(aa->unique.damage*da->defence);
-				db->pv=db->pv-(aa->unique.damage*db->defence);
-				dc->pv=dc->pv-(aa->unique.damage*dc->defence);
-			}
-			if(aa->unique.heal!=0) {
-				aa->pv=aa->pv+aa->unique.heal;
-				ab->pv=ab->pv+aa->unique.heal;
-				ac->pv=ac->pv+aa->unique.heal;
-				aa->poison=0;
-				ab->poison=0;
-				ac->poison=0;
-			}
-			switch(*choixD) {
-			case 1:
-			    if(Dodge(*choixD, da, db, dc)){
-				da->pv=da->pv-(aa->unique.focusdamage*da->defence);
-			    if(aa->unique.poison==1) {
-			    da->poison=1;
-			    }    
-			    }
-				if(aa->unique.focusheal!=0){
-				   aa->poison=0;
-				   aa->pv=aa->pv+aa->unique.focusheal;
-				}
-				break;
-			case 2:
-			    if(Dodge(*choixD, da, db, dc)){
-				db->pv=db->pv-(aa->unique.focusdamage*db->defence);
-			    if(aa->unique.poison==1) {
-			    db->poison=1;
-			    }    
-			    }
-				if(aa->unique.focusheal!=0){
-				   ab->poison=0;
-				   ab->pv=ab->pv+aa->unique.focusheal;
-				}
-				break;
-			case 3:
-			    if(Dodge(*choixD, da, db, dc)){
-				dc->pv=dc->pv-(aa->unique.focusdamage*dc->defence);
-			    if(aa->unique.poison==1) {
-			    dc->poison=1;
-			    }    
-			    }
-				if(aa->unique.focusheal!=0){
-				   ac->poison=0;
-				   ac->pv=ac->pv+aa->unique.focusheal;
-				}
-				break;
-			}
-			break;
-		}
-		break;
-	case 2:
-	if (ab->confused==1){ 
-	    if(rand()%2){ break; 
-	    }
-	}
-		switch(*choixA) {
-		case 1:
-		ab->stamina-=2;
-			if(ab->normal.damage!=0) {
-				da->pv=da->pv-(ab->normal.damage*da->defence);
-				db->pv=db->pv-(ab->normal.damage*db->defence);
-				dc->pv=dc->pv-(ab->normal.damage*dc->defence);
-			}
-			if(ab->normal.heal!=0) {
-				aa->pv=aa->pv+ab->normal.heal;
-				ab->pv=ab->pv+ab->normal.heal;
-				ac->pv=ac->pv+ab->normal.heal;
-				aa->poison=0;
-				ab->poison=0;
-				ac->poison=0;
-			}
-			switch(*choixD) {
-			case 1:
-			    if(Dodge(*choixD, da, db, dc)){
-				da->pv=da->pv-(ab->normal.focusdamage*da->defence);
-			    if(ab->normal.poison==1) {
-			    da->poison=1;
-			    }    
-			    }
-				if(ab->normal.focusheal!=0){
-				   aa->poison=0;
-				   aa->pv=aa->pv+ab->normal.focusheal;
-				}
-				break;
-			case 2:
-			    if(Dodge(*choixD, da, db, dc)){
-				db->pv=db->pv-(ab->normal.focusdamage*db->defence);
-			    if(ab->normal.poison==1) {
-			    db->poison=1;
-			    }    
-			    }
-				if(ab->normal.focusheal!=0){
-				   ab->poison=0;
-				   ab->pv=ab->pv+ab->normal.focusheal;
-				}
-				break;
-			case 3:
-			    if(Dodge(*choixD, da, db, dc)){
-				dc->pv=dc->pv-(ab->normal.focusdamage*dc->defence);
-			    if(ab->normal.poison==1) {
-			    dc->poison=1;
-			    }    
-			    }
-				if(ab->normal.focusheal!=0){
-				   ac->poison=0;
-				   ac->pv=ac->pv+ab->normal.focusheal;
-				}
-				break;
-			}
-			break;
-		case 2:
-		ab->stamina-=8;
-			if(ab->special.damage!=0) {
-				da->pv=da->pv-(ab->special.damage*da->defence);
-				db->pv=db->pv-(ab->special.damage*db->defence);
-				dc->pv=dc->pv-(ab->special.damage*dc->defence);
-			}
-			if(ab->special.heal!=0) {
-				aa->pv=aa->pv+ab->special.heal;
-				ab->pv=ab->pv+ab->special.heal;
-				ac->pv=ac->pv+ab->special.heal;
-				aa->poison=0;
-				ab->poison=0;
-				ac->poison=0;
-			}
-			switch(*choixD) {
-			case 1:
-			    if(Dodge(*choixD, da, db, dc)){
-				da->pv=da->pv-(ab->special.focusdamage*da->defence);
-			    if(ab->special.poison==1) {
-			    da->poison=1;
-			    }    
-			    }
-				if(ab->special.focusheal!=0){
-				   aa->poison=0;
-				   aa->pv=aa->pv+ab->special.focusheal;
-				}
-				break;
-			case 2:
-			    if(Dodge(*choixD, da, db, dc)){
-				db->pv=db->pv-(ab->special.focusdamage*db->defence);
-			    if(ab->special.poison==1) {
-			    db->poison=1;
-			    }    
-			    }
-				if(ab->special.focusheal!=0){
-				   ab->poison=0;
-				   ab->pv=ab->pv+ab->special.focusheal;
-				}
-				break;
-			case 3:
-			    if(Dodge(*choixD, da, db, dc)){
-				dc->pv=dc->pv-(ab->special.focusdamage*dc->defence);
-			    if(ab->special.poison==1) {
-			    dc->poison=1;
-			    }    
-			    }
-				if(ab->special.focusheal!=0){
-				   ac->poison=0;
-				   ac->pv=ac->pv+ab->special.focusheal;
-				}
-				break;
-			}
-			break;
-		case 3:
-		ab->utiliunique=1;
-			if(ab->unique.damage!=0) {
-				da->pv=da->pv-(ab->unique.damage*da->defence);
-				db->pv=db->pv-(ab->unique.damage*db->defence);
-				dc->pv=dc->pv-(ab->unique.damage*dc->defence);
-			}
-			if(ab->unique.heal!=0) {
-				aa->pv=aa->pv+ab->unique.heal;
-				ab->pv=ab->pv+ab->unique.heal;
-				ac->pv=ac->pv+ab->unique.heal;
-				aa->poison=0;
-				ab->poison=0;
-				ac->poison=0;
-			}
-			switch(*choixD) {
-			case 1:
-			    if(Dodge(*choixD, da, db, dc)){
-				da->pv=da->pv-(ab->unique.focusdamage*da->defence);
-			    if(ab->unique.poison==1) {
-			    da->poison=1;
-			    }    
-			    }
-				if(ab->unique.focusheal!=0){
-				   aa->poison=0;
-				   aa->pv=aa->pv+ab->unique.focusheal;
-				}
-				break;
-			case 2:
-			    if(Dodge(*choixD, da, db, dc)){
-				db->pv=db->pv-(ab->unique.focusdamage*db->defence);
-			    if(ab->unique.poison==1) {
-			    db->poison=1;
-			    }    
-			    }
-				if(ab->unique.focusheal!=0){
-				   ab->poison=0;
-				   ab->pv=ab->pv+ab->unique.focusheal;
-				}
-				break;
-			case 3:
-			    if(Dodge(*choixD, da, db, dc)){
-				dc->pv=dc->pv-(ab->unique.focusdamage*dc->defence);
-			    if(ab->unique.poison==1) {
-			    dc->poison=1;
-			    }    
-			    }
-				if(ab->unique.focusheal!=0){
-				   ac->poison=0;
-				   ac->pv=ac->pv+ab->unique.focusheal;
-				}
-				break;
-			}
-			break;
-		}
-		break;
-	case 3:
-	if (aa->confused==1){ 
-	    if(rand()%2){ break; 
-	    }
-	}
-		switch(*choixA) {
-		case 1:
-		ac->stamina-=2;
-			if(ac->normal.damage!=0) {
-				da->pv=da->pv-(ac->normal.damage*da->defence);
-				db->pv=db->pv-(ac->normal.damage*db->defence);
-				dc->pv=dc->pv-(ac->normal.damage*dc->defence);
-			}
-			if(ac->normal.heal!=0) {
-				aa->pv=aa->pv+ac->normal.heal;
-				ab->pv=ab->pv+ac->normal.heal;
-				ac->pv=ac->pv+ac->normal.heal;
-				aa->poison=0;
-				ab->poison=0;
-				ac->poison=0;
-			}
-			switch(*choixD) {
-			case 1:
-			    if(Dodge(*choixD, da, db, dc)){
-				da->pv=da->pv-(ac->normal.focusdamage*da->defence);
-			    if(ac->normal.poison==1) {
-			    da->poison=1;
-			    }    
-			    }
-				if(ac->normal.focusheal!=0){
-				   aa->poison=0;
-				   aa->pv=aa->pv+ac->normal.focusheal;
-				}
-				break;
-			case 2:
-			    if(Dodge(*choixD, da, db, dc)){
-				db->pv=db->pv-(ac->normal.focusdamage*db->defence);
-			    if(ac->normal.poison==1) {
-			    db->poison=1;
-		      	}    
-			    }
-				if(ac->normal.focusheal!=0){
-				   ab->poison=0;
-				   ab->pv=ab->pv+ac->normal.focusheal;
-				}
-				break;
-			case 3:
-			    if(Dodge(*choixD, da, db, dc)){
-				dc->pv=dc->pv-(ac->normal.focusdamage*dc->defence);
-			    if(ac->normal.poison==1) {
-			    dc->poison=1;
-			    }    
-			    }
-				if(ac->normal.focusheal!=0){
-				   ac->poison=0;
-				   ac->pv=ac->pv+ac->normal.focusheal;
-				}
-				break;
-			}
-			break;
-		case 2:
-		ac->stamina-=8;
-			if(ac->special.damage!=0) {
-				da->pv=da->pv-(ac->special.damage*da->defence);
-				db->pv=db->pv-(ac->special.damage*db->defence);
-				dc->pv=dc->pv-(ac->special.damage*dc->defence);
-			}
-			if(ac->special.heal!=0) {
-				aa->pv=aa->pv+ac->special.heal;
-				ab->pv=ab->pv+ac->special.heal;
-				ac->pv=ac->pv+ac->special.heal;
-				aa->poison=0;
-				ab->poison=0;
-				ac->poison=0;
-			}
-			switch(*choixD) {
-			case 1:
-			    if(Dodge(*choixD, da, db, dc)){
-				da->pv=da->pv-(ac->special.focusdamage*da->defence);
-			    if(ac->special.poison==1) {
-			    da->poison=1;
-			    }    
-			    }
-				if(ac->special.focusheal!=0){
-				   aa->poison=0;
-				   aa->pv=aa->pv+ac->special.focusheal;
-				}
-				break;
-			case 2:
-			    if(Dodge(*choixD, da, db, dc)){
-				db->pv=db->pv-(ac->special.focusdamage*db->defence);
-			    if(ac->special.poison==1) {
-			    db->poison=1;
-			    }    
-			    }
-				if(ac->special.focusheal!=0){
-				   ab->poison=0;
-			       ab->pv=ab->pv+ac->special.focusheal;
-				}
-				break;
-			case 3:
-			    if(Dodge(*choixD, da, db, dc)){
-				dc->pv=dc->pv-(ac->special.focusdamage*dc->defence);
-			    if(ac->special.poison==1) {
-			    dc->poison=1;
-			    }    
-			    }
-				if(ac->special.focusheal!=0){
-				   ac->poison=0;
-				   ac->pv=ac->pv+ac->special.focusheal;
-				}
-				break;
-			}
-			break;
-		case 3:
-		ac->utiliunique=1;
-			if(ac->unique.damage!=0) {
-				da->pv=da->pv-(ac->unique.damage*da->defence);
-				db->pv=db->pv-(ac->unique.damage*db->defence);
-				dc->pv=dc->pv-(ac->unique.damage*dc->defence);
-			}
-			if(ac->unique.heal!=0) {
-				aa->pv=aa->pv+ac->unique.heal;
-				ab->pv=ab->pv+ac->unique.heal;
-				ac->pv=ac->pv+ac->unique.heal;
-				aa->poison=0;
-				ab->poison=0;
-				ac->poison=0;
-			}
-			switch(*choixD) {
-			case 1:
-			    if(Dodge(*choixD, da, db, dc)){
-				da->pv=da->pv-(ac->unique.focusdamage*da->defence);
-			    if(ac->unique.poison==1) {
-			    da->poison=1;
-			    }    
-			    }
-				if(ac->unique.focusheal!=0){
-				   aa->poison=0;
-				   aa->pv=aa->pv+ac->unique.focusheal;
-				}
-				break;
-			case 2:
-			    if(Dodge(*choixD, da, db, dc)){
-				db->pv=db->pv-(ac->unique.focusdamage*db->defence);
-			    if(ac->unique.poison==1) {
-			    db->poison=1;
-			    }   
-			    }
-				if(ac->unique.focusheal!=0){
-				   ab->poison=0;
-				   ab->pv=ab->pv+ac->unique.focusheal;
-				}
-				break;
-			case 3:
-			    if(Dodge(*choixD, da, db, dc)){
-				dc->pv=dc->pv-(ac->unique.focusdamage*dc->defence);
-			    if(ac->unique.poison==1) {
-			    dc->poison=1;
-			    }    
-			    }
-				if(ac->unique.focusheal!=0){
-				   ac->poison=0;
-				   ac->pv=ac->pv+ac->unique.focusheal;
-				}
-				break;
-			}
-			break;
-		}
-		break;
+void AffichAttaque(int *choixP, Bot *aa, Bot *ab, Bot *ac){
+    int k=0;
+    if(*choixP==1){
+		  printf(BWHT"|1:");
+		  for(int i=0; i<strlen(aa->normal.name); i++) {
+		      printf("%c", *(aa->normal.name+i));
+		      k=i;
+	      }
+	      for(int i=k; i<20; i++){
+	          printf(" ");
+	      }
+	      printf("2:");
+	      for(int i=0; i<strlen(aa->special.name); i++) {
+		      printf("%c", *(aa->special.name+i));
+		      k=i;
+	      }
+	      for(int i=k; i<20; i++){
+	          printf(" ");
+	      }
+	      printf("3:");
+	      for(int i=0; i<strlen(aa->unique.name); i++) {
+		      printf("%c", *(aa->unique.name+i));
+		      k=i;
+	      }
+	      for(int i=k; i<20; i++){
+	          printf(" ");
+	      }
+	      printf("4:RETOUR");
+	      printf(RESETT);
+	      printf("\n|    dmg:%d                dmg:%d                dmg:%d\n", aa->normal.focusdamage, aa->special.focusdamage, aa->unique.focusdamage);
+	        printf("| AOEdmg:%d              AOEdmg:%d              AOEdmg:%d\n", aa->normal.damage, aa->special.damage, aa->unique.damage);
+	        printf("|   heal:%d                heal:%d                heal:%d\n", aa->normal.focusheal, aa->special.focusheal, aa->unique.focusheal);
+	        printf("|AOEheal:%d             AOEheal:%d             AOEheal:%d\n", aa->normal.heal, aa->special.heal, aa->unique.heal);
+	printf("effet:\n| poison:%d             poison:%d             poison:%d\n", aa->normal.poison, aa->special.poison, aa->unique.poison);
+	        printf("|   stun:%d               stun:%d               stun:%d\n", aa->normal.stun, aa->special.stun, aa->unique.stun);
+	        printf("| confus:%d             confus:%d             confus:%d\n", aa->normal.confused, aa->special.confused, aa->unique.confused);
+	}else if(*choixP==2){
+	    printf(BWHT"|1:");
+		  for(int i=0; i<strlen(ab->normal.name); i++) {
+		      printf("%c", *(ab->normal.name+i));
+		      k=i;
+	      }
+	      for(int i=k; i<20; i++){
+	          printf(" ");
+	      }
+	      printf("2:");
+	      for(int i=0; i<strlen(ab->special.name); i++) {
+		      printf("%c", *(ab->special.name+i));
+		      k=i;
+	      }
+	      for(int i=k; i<20; i++){
+	          printf(" ");
+	      }
+	      printf("3:");
+	      for(int i=0; i<strlen(ab->unique.name); i++) {
+		      printf("%c", *(ab->unique.name+i));
+		      k=i;
+	      }
+	      for(int i=k; i<20; i++){
+	          printf(" ");
+	      }
+	      printf("4:RETOUR");
+	      printf(RESETT);
+	      printf("\n|    dmg:%d                dmg:%d                dmg:%d\n", ab->normal.focusdamage, ab->special.focusdamage, ab->unique.focusdamage);
+	        printf("| AOEdmg:%d              AOEdmg:%d              AOEdmg:%d\n", ab->normal.damage, ab->special.damage, ab->unique.damage);
+	        printf("|   heal:%d                heal:%d                heal:%d\n", ab->normal.focusheal, ab->special.focusheal, ab->unique.focusheal);
+	        printf("|AOEheal:%d             AOEheal:%d             AOEheal:%d\n", ab->normal.heal, ab->special.heal, ab->unique.heal);
+	printf("effet:\n| poison:%d             poison:%d             poison:%d\n", ab->normal.poison, ab->special.poison, ab->unique.poison);
+	        printf("|   stun:%d               stun:%d               stun:%d\n", ab->normal.stun, ab->special.stun, ab->unique.stun);
+	        printf("| confus:%d             confus:%d             confus:%d\n", ab->normal.confused, ab->special.confused, ab->unique.confused);
+	}else{
+	      printf(BWHT"|1:");
+		  for(int i=0; i<strlen(ac->normal.name); i++) {
+		      printf("%c", *(ac->normal.name+i));
+		      k=i;
+	      }
+	      for(int i=k; i<20; i++){
+	          printf(" ");
+	      }
+	      printf("2:");
+	      for(int i=0; i<strlen(ac->special.name); i++) {
+		      printf("%c", *(ac->special.name+i));
+		      k=i;
+	      }
+	      for(int i=k; i<20; i++){
+	          printf(" ");
+	      }
+	      printf("3:");
+	      for(int i=0; i<strlen(ac->unique.name); i++) {
+		      printf("%c", *(ac->unique.name+i));
+		      k=i;
+	      }
+	      for(int i=k; i<20; i++){
+	          printf(" ");
+	      }
+	      printf("4:RETOUR");
+	      printf(RESETT);
+	      printf("\n|    dmg:%d                dmg:%d                dmg:%d\n", ac->normal.focusdamage, ac->special.focusdamage, ac->unique.focusdamage);
+	        printf("| AOEdmg:%d              AOEdmg:%d              AOEdmg:%d\n", ac->normal.damage, ac->special.damage, ac->unique.damage);
+	        printf("|   heal:%d                heal:%d                heal:%d\n", ac->normal.focusheal, ac->special.focusheal, ac->unique.focusheal);
+	        printf("|AOEheal:%d             AOEheal:%d             AOEheal:%d\n", ac->normal.heal, ac->special.heal, ac->unique.heal);
+	printf("effet:\n| poison:%d             poison:%d             poison:%d\n", ac->normal.poison, ac->special.poison, ac->unique.poison);
+	        printf("|   stun:%d               stun:%d               stun:%d\n", ac->normal.stun, ac->special.stun, ac->unique.stun);
+	        printf("| confus:%d             confus:%d             confus:%d\n", ac->normal.confused, ac->special.confused, ac->unique.confused);
 	}
 }
 
-
-
-
-
-void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc) {
-	if(ja->poison==1) {
-		ja->pv=ja->pv-10;
-	}
-	if(jb->poison==1) {
-		jb->pv=jb->pv-10;
-	}
-	if(jc->poison==1) {
-		jc->pv=jc->pv-10;
-	}
-	if(ra->poison==1) {
-		ra->pv=ra->pv-10;
-	}
-	if(rb->poison==1) {
-		rb->pv=rb->pv-10;
-	}
-	if(rc->poison==1) {
-		rc->pv=rc->pv-10;
-	}
-	if(ja->pv<=0) {
-		ja->dead=1;
-	}
-	if(jb->pv<=0) {
-		jb->dead=1;
-	}
-	if(jc->pv<=0) {
-		jc->dead=1;
-	}
-	if(ra->pv<=0) {
-		ra->dead=1;
-	}
-	if(rb->pv<=0) {
-		rb->dead=1;
-	}
-	if(rc->pv<=0) {
-		rc->dead=1;
-	}
-	if(ja->dead==1) {
-		ja->pv=0;
-		ja->stamina=-1;
-	}
-	if(jb->dead==1) {
-		jb->pv=0;
-		jb->stamina=-1;
-	}
-	if(jc->dead==1) {
-		jc->pv=0;
-		jc->stamina=-1;
-	}
-	if(ra->dead==1) {
-		ra->pv=0;
-		ra->stamina=-1;
-	}
-	if(rb->dead==1) {
-		rb->pv=0;
-		rb->stamina=-1;
-	}
-	if(rc->dead==1) {
-		rc->pv=0;
-		rc->stamina=-1;
-	}
-	if(ja->pv>=ja->pvmax){
-		ja->pv=ja->pvmax;
-	}
-	if(jb->pv>=jb->pvmax){
-		jb->pv=jb->pvmax;
-	}
-	if(jc->pv>=jc->pvmax){
-		jc->pv=jc->pvmax;
-	}
-	if(ra->pv>=ra->pvmax){
-		ra->pv=ra->pvmax;
-	}
-	if(rb->pv>=rb->pvmax){
-		rb->pv=rb->pvmax;
-	}
-	if(rc->pv>=rc->pvmax){
-		rc->pv=rc->pvmax;
-	}
-	if(ja->dead==1 && jb->dead==1 && jc->dead==1 && ra->dead==1 && rb->dead==1 && rc->dead==1) {
-		printf("EgalitC)\n");
-		exit(1);
-	}
-	if(ja->dead==1 && jb->dead==1 && jc->dead==1) {
-		printf("Le joueur A a perdu\n");
-		exit(1);
-	}
-	if(ra->dead==1 && rb->dead==1 && rc->dead==1) {
-		printf("Le joueur B a perdu\n");
-		exit(1);
-	}
-	ja->stamina+=1;
-	jb->stamina+=1;
-	jc->stamina+=1;
-	ra->stamina+=1;
-	rb->stamina+=1;
-	rc->stamina+=1;
-	if(ja->stamina>16) {
-		ja->stamina=16;
-	}
-	if(jb->stamina>16) {
-		jb->stamina=16;
-	}
-	if(jc->stamina>16) {
-		jc->stamina=16;
-	}
-	if(ra->stamina>16) {
-		ra->stamina=16;
-	}
-	if(rb->stamina>16) {
-		rb->stamina=16;
-	}
-	if(rc->stamina>16) {
-		rc->stamina=16;
-	}
-}
-
-int Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc, Bot *ba, Bot *bb, Bot *bc){ // (ligne, colonne, ligne position, colonne position,...)
+void Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc, Bot *ba, Bot *bb, Bot *bc){ // (ligne, colonne, ligne position, colonne position,...)
     int x=0;
     int y=0;
     int i=0;
     int k=0;
     if(lp>l){
-        return 0;
+        return;
     }
     if(cp>=c){
         printf("|\n");
@@ -1699,54 +1145,733 @@ int Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc,
     }
 }
 
+void Turn(int who, int mo, int *dif, int *choixP, int *choixA, int *choixD, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
+    // choixP= selection du personnage, choixA= choix de l'attaque, choixD= choix du personnage affecte)
+	if((mo==0 && who==1) || (mo==1 && who==1) || (mo==1 && who==0)) {
+	    Affichage(21, 120, 1, 1, mo, aa, ab, ac, da, db, dc);
+		do {
+			printf("|Choisir son personnage (1,2,3): ");
+			scanf("%d", choixP);
+		}
+		while(CheckPerso1(*choixP, aa, ab, ac));
+		Affichage(21, 120, 1, 1, mo, aa, ab, ac, da, db, dc);
+		AffichAttaque(choixP, aa, ab, ac);
+		do {
+			printf("Choisir son attaque: ");
+			scanf("%d", choixA);
+			if(*choixA==4){
+			    Turn(who, mo, dif, choixP, choixA, choixD, aa, ab, ac, da, db, dc);
+			    return;
+			}
+		}
+		while(CheckStamina(*choixA, aa, ab, ac));
+		do {
+			printf("Choisir le personnage affecte (1,2,3): ");
+			scanf("%d", choixD);
+			if(*choixD==4){
+			    Turn(who, mo, dif, choixP, choixA, choixD, aa, ab, ac, da, db, dc);
+			    return;
+			}
+		}
+		while(CheckPerso2(*choixD, da, db, dc));
+	} else { 
+	    printf("==============");
+	    Affichage(21, 120, 1, 1, mo, aa, ab, ac, da, db, dc);
+	    Computer(dif, choixP, choixA, choixD, aa, ab, ac, da, db, dc);
+	    // l'IA qui va choisir l'attaque si 'who' est different de 0
+	    printf("==============");
+	    printf("P:%d A:%d D:%d\n", *choixP, *choixA, *choixD);
+	    printf("==============");
+	}
+	switch(*choixP) {
+	case 1:
+	if (aa->confused==1){ 
+	    if(rand()%2){
+	        printf("confused\n");
+	        break; 
+	    }
+	}
+		switch(*choixA) {
+		case 1:
+		aa->stamina-=2;
+			if(aa->normal.damage!=0) {
+				da->pv=da->pv-(aa->normal.damage*da->defence);
+				db->pv=db->pv-(aa->normal.damage*db->defence);
+				dc->pv=dc->pv-(aa->normal.damage*dc->defence);
+			}
+			if(aa->normal.heal!=0) {
+				aa->pv=aa->pv+aa->normal.heal;
+				ab->pv=ab->pv+aa->normal.heal;
+				ac->pv=ac->pv+aa->normal.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			switch(*choixD) {
+			case 1:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				da->pv=da->pv-(aa->normal.focusdamage*da->defence);
+			    if(aa->normal.poison==1) {
+			    da->poison=1;
+				}    
+			    }else{ printf("Coup rate!!!\n");}
+				if(aa->normal.focusheal!=0){
+				   aa->poison=0; 
+				   aa->pv=aa->pv+aa->normal.focusheal;
+				}
+				break;
+			case 2:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				db->pv=db->pv-(aa->normal.focusdamage*db->defence);
+			    if(aa->normal.poison==1) {
+			    db->poison=1;
+				}    
+			    }else{ printf("Coup rate!!!\n");}
+				if(aa->normal.focusheal!=0){
+				   ab->poison=0;
+				   ab->pv=ab->pv+aa->normal.focusheal;
+				}
+				break;
+			case 3:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				dc->pv=dc->pv-(aa->normal.focusdamage*dc->defence);
+			    if(aa->normal.poison==1) {
+			    dc->poison=1;
+				}    
+			    }else{ printf("Coup rate!!!\n");}
+				if(aa->normal.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+aa->normal.focusheal;
+				}
+				break;
+			}
+			break;
+		case 2:
+		aa->stamina-=8;
+			if(aa->special.damage!=0) {
+				da->pv=da->pv-(aa->special.damage*da->defence);
+				db->pv=db->pv-(aa->special.damage*db->defence);
+				dc->pv=dc->pv-(aa->special.damage*dc->defence);
+			}
+			if(aa->special.heal!=0) {
+				aa->pv=aa->pv+aa->special.heal;
+				ab->pv=ab->pv+aa->special.heal;
+				ac->pv=ac->pv+aa->special.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			switch(*choixD) {
+			case 1:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				da->pv=da->pv-(aa->special.focusdamage*da->defence);
+			    if(aa->special.poison==1) {
+			    da->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(aa->special.focusheal!=0){
+				   aa->poison=0;
+				   aa->pv=aa->pv+aa->special.focusheal;
+				}
+				break;
+			case 2:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				db->pv=db->pv-(aa->special.focusdamage*db->defence);
+			    if(aa->special.poison==1) {
+			    db->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(aa->special.focusheal!=0){
+				   ab->poison=0;
+				   ab->pv=ab->pv+aa->special.focusheal;
+				}
+				break;
+			case 3:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				dc->pv=dc->pv-(aa->special.focusdamage*dc->defence);
+			    if(aa->special.poison==1) {
+			    dc->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(aa->special.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+aa->special.focusheal;
+				}
+				break;
+			}
+			break;
+		case 3:
+		aa->utiliunique=1;
+			if(aa->unique.damage!=0) {
+				da->pv=da->pv-(aa->unique.damage*da->defence);
+				db->pv=db->pv-(aa->unique.damage*db->defence);
+				dc->pv=dc->pv-(aa->unique.damage*dc->defence);
+			}
+			if(aa->unique.heal!=0) {
+				aa->pv=aa->pv+aa->unique.heal;
+				ab->pv=ab->pv+aa->unique.heal;
+				ac->pv=ac->pv+aa->unique.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			switch(*choixD) {
+			case 1:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				da->pv=da->pv-(aa->unique.focusdamage*da->defence);
+			    if(aa->unique.poison==1) {
+			    da->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(aa->unique.focusheal!=0){
+				   aa->poison=0;
+				   aa->pv=aa->pv+aa->unique.focusheal;
+				}
+				break;
+			case 2:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				db->pv=db->pv-(aa->unique.focusdamage*db->defence);
+			    if(aa->unique.poison==1) {
+			    db->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(aa->unique.focusheal!=0){
+				   ab->poison=0;
+				   ab->pv=ab->pv+aa->unique.focusheal;
+				}
+				break;
+			case 3:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				dc->pv=dc->pv-(aa->unique.focusdamage*dc->defence);
+			    if(aa->unique.poison==1) {
+			    dc->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(aa->unique.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+aa->unique.focusheal;
+				}
+				break;
+			}
+			break;
+		}
+		break;
+	case 2:
+	if (ab->confused==1){ 
+	    if(rand()%2){
+	        printf("confused\n");
+	        break; 
+	    }
+	}
+		switch(*choixA) {
+		case 1:
+		ab->stamina-=2;
+			if(ab->normal.damage!=0) {
+				da->pv=da->pv-(ab->normal.damage*da->defence);
+				db->pv=db->pv-(ab->normal.damage*db->defence);
+				dc->pv=dc->pv-(ab->normal.damage*dc->defence);
+			}
+			if(ab->normal.heal!=0) {
+				aa->pv=aa->pv+ab->normal.heal;
+				ab->pv=ab->pv+ab->normal.heal;
+				ac->pv=ac->pv+ab->normal.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			switch(*choixD) {
+			case 1:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				da->pv=da->pv-(ab->normal.focusdamage*da->defence);
+			    if(ab->normal.poison==1) {
+			    da->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ab->normal.focusheal!=0){
+				   aa->poison=0;
+				   aa->pv=aa->pv+ab->normal.focusheal;
+				}
+				break;
+			case 2:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				db->pv=db->pv-(ab->normal.focusdamage*db->defence);
+			    if(ab->normal.poison==1) {
+			    db->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ab->normal.focusheal!=0){
+				   ab->poison=0;
+				   ab->pv=ab->pv+ab->normal.focusheal;
+				}
+				break;
+			case 3:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				dc->pv=dc->pv-(ab->normal.focusdamage*dc->defence);
+			    if(ab->normal.poison==1) {
+			    dc->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ab->normal.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+ab->normal.focusheal;
+				}
+				break;
+			}
+			break;
+		case 2:
+		ab->stamina-=8;
+			if(ab->special.damage!=0) {
+				da->pv=da->pv-(ab->special.damage*da->defence);
+				db->pv=db->pv-(ab->special.damage*db->defence);
+				dc->pv=dc->pv-(ab->special.damage*dc->defence);
+			}
+			if(ab->special.heal!=0) {
+				aa->pv=aa->pv+ab->special.heal;
+				ab->pv=ab->pv+ab->special.heal;
+				ac->pv=ac->pv+ab->special.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			switch(*choixD) {
+			case 1:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				da->pv=da->pv-(ab->special.focusdamage*da->defence);
+			    if(ab->special.poison==1) {
+			    da->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ab->special.focusheal!=0){
+				   aa->poison=0;
+				   aa->pv=aa->pv+ab->special.focusheal;
+				}
+				break;
+			case 2:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				db->pv=db->pv-(ab->special.focusdamage*db->defence);
+			    if(ab->special.poison==1) {
+			    db->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ab->special.focusheal!=0){
+				   ab->poison=0;
+				   ab->pv=ab->pv+ab->special.focusheal;
+				}
+				break;
+			case 3:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				dc->pv=dc->pv-(ab->special.focusdamage*dc->defence);
+			    if(ab->special.poison==1) {
+			    dc->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ab->special.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+ab->special.focusheal;
+				}
+				break;
+			}
+			break;
+		case 3:
+		ab->utiliunique=1;
+			if(ab->unique.damage!=0) {
+				da->pv=da->pv-(ab->unique.damage*da->defence);
+				db->pv=db->pv-(ab->unique.damage*db->defence);
+				dc->pv=dc->pv-(ab->unique.damage*dc->defence);
+			}
+			if(ab->unique.heal!=0) {
+				aa->pv=aa->pv+ab->unique.heal;
+				ab->pv=ab->pv+ab->unique.heal;
+				ac->pv=ac->pv+ab->unique.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			switch(*choixD) {
+			case 1:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				da->pv=da->pv-(ab->unique.focusdamage*da->defence);
+			    if(ab->unique.poison==1) {
+			    da->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ab->unique.focusheal!=0){
+				   aa->poison=0;
+				   aa->pv=aa->pv+ab->unique.focusheal;
+				}
+				break;
+			case 2:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				db->pv=db->pv-(ab->unique.focusdamage*db->defence);
+			    if(ab->unique.poison==1) {
+			    db->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ab->unique.focusheal!=0){
+				   ab->poison=0;
+				   ab->pv=ab->pv+ab->unique.focusheal;
+				}
+				break;
+			case 3:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				dc->pv=dc->pv-(ab->unique.focusdamage*dc->defence);
+			    if(ab->unique.poison==1) {
+			    dc->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ab->unique.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+ab->unique.focusheal;
+				}
+				break;
+			}
+			break;
+		}
+		break;
+	case 3:
+	if (aa->confused==1){ 
+	    if(rand()%2){ 
+	        printf("confused\n");
+	        break; 
+	    }
+	}
+		switch(*choixA) {
+		case 1:
+		ac->stamina-=2;
+			if(ac->normal.damage!=0) {
+				da->pv=da->pv-(ac->normal.damage*da->defence);
+				db->pv=db->pv-(ac->normal.damage*db->defence);
+				dc->pv=dc->pv-(ac->normal.damage*dc->defence);
+			}
+			if(ac->normal.heal!=0) {
+				aa->pv=aa->pv+ac->normal.heal;
+				ab->pv=ab->pv+ac->normal.heal;
+				ac->pv=ac->pv+ac->normal.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			switch(*choixD) {
+			case 1:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				da->pv=da->pv-(ac->normal.focusdamage*da->defence);
+			    if(ac->normal.poison==1) {
+			    da->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ac->normal.focusheal!=0){
+				   aa->poison=0;
+				   aa->pv=aa->pv+ac->normal.focusheal;
+				}
+				break;
+			case 2:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				db->pv=db->pv-(ac->normal.focusdamage*db->defence);
+			    if(ac->normal.poison==1) {
+			    db->poison=1;
+		      	}    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ac->normal.focusheal!=0){
+				   ab->poison=0;
+				   ab->pv=ab->pv+ac->normal.focusheal;
+				}
+				break;
+			case 3:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				dc->pv=dc->pv-(ac->normal.focusdamage*dc->defence);
+			    if(ac->normal.poison==1) {
+			    dc->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ac->normal.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+ac->normal.focusheal;
+				}
+				break;
+			}
+			break;
+		case 2:
+		ac->stamina-=8;
+			if(ac->special.damage!=0) {
+				da->pv=da->pv-(ac->special.damage*da->defence);
+				db->pv=db->pv-(ac->special.damage*db->defence);
+				dc->pv=dc->pv-(ac->special.damage*dc->defence);
+			}
+			if(ac->special.heal!=0) {
+				aa->pv=aa->pv+ac->special.heal;
+				ab->pv=ab->pv+ac->special.heal;
+				ac->pv=ac->pv+ac->special.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			switch(*choixD) {
+			case 1:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				da->pv=da->pv-(ac->special.focusdamage*da->defence);
+			    if(ac->special.poison==1) {
+			    da->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ac->special.focusheal!=0){
+				   aa->poison=0;
+				   aa->pv=aa->pv+ac->special.focusheal;
+				}
+				break;
+			case 2:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				db->pv=db->pv-(ac->special.focusdamage*db->defence);
+			    if(ac->special.poison==1) {
+			    db->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ac->special.focusheal!=0){
+				   ab->poison=0;
+			       ab->pv=ab->pv+ac->special.focusheal;
+				}
+				break;
+			case 3:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				dc->pv=dc->pv-(ac->special.focusdamage*dc->defence);
+			    if(ac->special.poison==1) {
+			    dc->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ac->special.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+ac->special.focusheal;
+				}
+				break;
+			}
+			break;
+		case 3:
+		ac->utiliunique=1;
+			if(ac->unique.damage!=0) {
+				da->pv=da->pv-(ac->unique.damage*da->defence);
+				db->pv=db->pv-(ac->unique.damage*db->defence);
+				dc->pv=dc->pv-(ac->unique.damage*dc->defence);
+			}
+			if(ac->unique.heal!=0) {
+				aa->pv=aa->pv+ac->unique.heal;
+				ab->pv=ab->pv+ac->unique.heal;
+				ac->pv=ac->pv+ac->unique.heal;
+				aa->poison=0;
+				ab->poison=0;
+				ac->poison=0;
+			}
+			switch(*choixD) {
+			case 1:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				da->pv=da->pv-(ac->unique.focusdamage*da->defence);
+			    if(ac->unique.poison==1) {
+			    da->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ac->unique.focusheal!=0){
+				   aa->poison=0;
+				   aa->pv=aa->pv+ac->unique.focusheal;
+				}
+				break;
+			case 2:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				db->pv=db->pv-(ac->unique.focusdamage*db->defence);
+			    if(ac->unique.poison==1) {
+			    db->poison=1;
+			    }   
+			    }else{ printf("Coup rate!!!\n");}
+				if(ac->unique.focusheal!=0){
+				   ab->poison=0;
+				   ab->pv=ab->pv+ac->unique.focusheal;
+				}
+				break;
+			case 3:
+			    if(Dodge(*choixD, da, db, dc)==1){
+				dc->pv=dc->pv-(ac->unique.focusdamage*dc->defence);
+			    if(ac->unique.poison==1) {
+			    dc->poison=1;
+			    }    
+			    }else{ printf("Coup rate!!!\n");}
+				if(ac->unique.focusheal!=0){
+				   ac->poison=0;
+				   ac->pv=ac->pv+ac->unique.focusheal;
+				}
+				break;
+			}
+			break;
+		}
+		break;
+	}
+}
+
+
+
+
+
+void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc) {
+	if(ja->poison==1) {
+		ja->pv=ja->pv-10;
+	}
+	if(jb->poison==1) {
+		jb->pv=jb->pv-10;
+	}
+	if(jc->poison==1) {
+		jc->pv=jc->pv-10;
+	}
+	if(ra->poison==1) {
+		ra->pv=ra->pv-10;
+	}
+	if(rb->poison==1) {
+		rb->pv=rb->pv-10;
+	}
+	if(rc->poison==1) {
+		rc->pv=rc->pv-10;
+	}
+	if(ja->pv<=0) {
+		ja->dead=1;
+	}
+	if(jb->pv<=0) {
+		jb->dead=1;
+	}
+	if(jc->pv<=0) {
+		jc->dead=1;
+	}
+	if(ra->pv<=0) {
+		ra->dead=1;
+	}
+	if(rb->pv<=0) {
+		rb->dead=1;
+	}
+	if(rc->pv<=0) {
+		rc->dead=1;
+	}
+	if(ja->dead==1) {
+		ja->pv=0;
+		ja->stamina=-1;
+	}
+	if(jb->dead==1) {
+		jb->pv=0;
+		jb->stamina=-1;
+	}
+	if(jc->dead==1) {
+		jc->pv=0;
+		jc->stamina=-1;
+	}
+	if(ra->dead==1) {
+		ra->pv=0;
+		ra->stamina=-1;
+	}
+	if(rb->dead==1) {
+		rb->pv=0;
+		rb->stamina=-1;
+	}
+	if(rc->dead==1) {
+		rc->pv=0;
+		rc->stamina=-1;
+	}
+	if(ja->pv>=ja->pvmax){
+		ja->pv=ja->pvmax;
+	}
+	if(jb->pv>=jb->pvmax){
+		jb->pv=jb->pvmax;
+	}
+	if(jc->pv>=jc->pvmax){
+		jc->pv=jc->pvmax;
+	}
+	if(ra->pv>=ra->pvmax){
+		ra->pv=ra->pvmax;
+	}
+	if(rb->pv>=rb->pvmax){
+		rb->pv=rb->pvmax;
+	}
+	if(rc->pv>=rc->pvmax){
+		rc->pv=rc->pvmax;
+	}
+	if(ja->dead==1 && jb->dead==1 && jc->dead==1 && ra->dead==1 && rb->dead==1 && rc->dead==1) {
+		printf("Egalite\n");
+		exit(0);
+	}
+	if(ja->dead==1 && jb->dead==1 && jc->dead==1) {
+		printf("Le joueur A a perdu\n");
+		exit(0);
+	}
+	if(ra->dead==1 && rb->dead==1 && rc->dead==1) {
+		printf("Le joueur B a perdu\n");
+		exit(0);
+	}
+	ja->stamina+=1;
+	jb->stamina+=1;
+	jc->stamina+=1;
+	ra->stamina+=1;
+	rb->stamina+=1;
+	rc->stamina+=1;
+	if(ja->stamina>16) {
+		ja->stamina=16;
+	}
+	if(jb->stamina>16) {
+		jb->stamina=16;
+	}
+	if(jc->stamina>16) {
+		jc->stamina=16;
+	}
+	if(ra->stamina>16) {
+		ra->stamina=16;
+	}
+	if(rb->stamina>16) {
+		rb->stamina=16;
+	}
+	if(rc->stamina>16) {
+		rc->stamina=16;
+	}
+	printf("\n\n\n\n\n");
+}
+
 
 int main() {
+    int fin=0;
     int choixD=0;
     int choixA=0;
     int choixP=0;
 	Bot ja=Characterbuilder(1000);
-	Bot jb=Characterbuilder(1001);
-	Bot jc=Characterbuilder(1000);
-	Bot ba=Characterbuilder(1002);
-	Bot bb=Characterbuilder(1001);
+	Bot jb=Characterbuilder(1002);
+	Bot jc=Characterbuilder(1001);
+	Bot ba=Characterbuilder(1000);
+	Bot bb=Characterbuilder(1000);
 	Bot bc=Characterbuilder(1000);
 	int dif=0;
 	int mode=0;
+	
+	printf("%f\n", ja.defence);
+	printf("%f\n", jb.defence);
+	printf("%f\n", jc.defence);
+	int a=bb.pv;
+	printf("%d\n", a);
+	a=bb.pv-(jc.normal.focusdamage*bb.defence);
+	printf("%d\n", a);
+	
 	do {
-			printf("Choisir sa difficulté (1, 2 ou 3) --> ");
+			printf("Choisir sa difficulte (1, 2 ou 3) --> ");
 			scanf("%d", &dif);
 		}
 		while(dif!=1 && dif!=2 && dif!=3);
 	do {
-			printf("Choisir solo:1 ou Multijoueur:2 --> ");
+			printf("Choisir solo:0 ou Multijoueur:1 --> ");
 			scanf("%d", &mode);
 		}
-		while(mode!=1 && mode!=2);
-    printf("===========================================================\n");
-	for(int i=0; i<strlen(ja.name); i++) { // print name
-		printf("%c", *(ja.name+i));
-	}
-	for(int i=0; i<strlen(ja.normal.name); i++) {
-		printf("%c", *(ja.normal.name+i));
-	}
-	printf("\n%d\n",ja.special.focusdamage);
-	printf("\n%d\n",ba.pv);
-	printf("\nJA HEALTH BEFORE: %d\n",ja.pv);
-	printf("===========================================================\n");
-	// Turn(0, &dif, &choixP, &choixA, &choixD, &ja, &jb, &jc, &ba, &bb, &bc);
-	Turn(1, &dif, &choixP, &choixA, &choixD, &ba, &bb, &bc, &ja, &jb, &jc);
-	printf("\n%d\n",ba.pv);
-	printf("\nJA HEALTH AFTER Turn: %d\n",ja.pv);
+		while(mode!=1 && mode!=0);
+	do{
+	Turn(1, mode, &dif, &choixP, &choixA, &choixD, &ja, &jb, &jc, &ba, &bb, &bc);
 	Checkup(&ja, &jb, &jc, &ba, &bb, &bc);
-	printf("\n%d\n",ba.pv);
-	printf("\nJA HEALTH AFTER Checkup: %d\n",ja.pv);
-	printf("\nJB HEALTH AFTER Checkup: %d\n",jb.pv);
-	printf("\nJC HEALTH AFTER Checkup: %d\n",jc.pv);
-	printf("\nBotA HEALTH AFTER Checkup: %d\n",ba.pv);
-	printf("\nBotB HEALTH AFTER Checkup: %d\n",bb.pv);
-	printf("\nBotC HEALTH AFTER Checkup: %d\n\n\n",bc.pv);
-	
-	int a=Affichage(21, 120, 1, 1, mode, &ja, &jb, &jc, &ba, &bb, &bc);
-	
+	if((ja.dead==1 && jb.dead==1 && jc.dead==1) || (ba.dead==1 && bb.dead==1 && bc.dead==1)){
+	    fin=1;
+	}else{ fin=0; }
+	Turn(0, mode, &dif, &choixP, &choixA, &choixD, &ba, &bb, &bc, &ja, &jb, &jc);
+	Checkup(&ja, &jb, &jc, &ba, &bb, &bc);
+	if((ja.dead==1 && jb.dead==1 && jc.dead==1) || (ba.dead==1 && bb.dead==1 && bc.dead==1)){
+	    fin=1;
+	}else{ fin=0; }
+	}while(fin==0);
+
+
+
 	return 0;
 }
