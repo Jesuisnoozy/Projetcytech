@@ -10,9 +10,7 @@ void afficherEcranDemarrage() {
     printf("                                              BATTLE ARENA                                            \n");
     printf("======================================================================================================\n\n");
 
-
     printf("                                       Prêt pour le combat?\n\n");
-
     printf("   Appuie sur Entrée pour continuer...\n");
     getchar(); // attend une touche
 }
@@ -24,31 +22,63 @@ void afficherMenuPrincipal() {
     printf("2. Nouvelle partie\n");
     printf("3. Multi-joueur\n");
     printf("4. Quitter\n");
+    printf("Choix : ");
+}
+
+void modeSolo(int niveau) {
+    char retour;
+    system("clear");
+    printf("\n=== Mode Solo (Niveau %d) ===\n", niveau);
+    printf("Appuie sur 'r' pour retourner au menu principal...\n");
+
+    do {
+        retour = getchar();
+    } while (retour != 'r' && retour != 'R');
+}
+
+void modeMultiJoueur() {
+    char retour;
+    system("clear");
+    printf("\n=== Mode Multi-joueur ===\n");
+    printf("Appuie sur 'r' pour retourner au menu principal...\n");
+
+    do {
+        retour = getchar();
+    } while (retour != 'r' && retour != 'R');
 }
 
 int main() {
     afficherEcranDemarrage();
 
-    int niveau= chargerNiveauSauvegarde();
+    int niveau = chargerNiveauSauvegarde();
     int choix;
 
-    afficherMenuPrincipal();
-    scanf("%d", &choix);
+    while (1) {
+        afficherMenuPrincipal();
+        scanf("%d", &choix);
+        getchar(); // consomme le '\n'
 
-    if (choix == 1) {
-        printf("\n  Chargement de ta partie au niveau %d...\n", niveau);
-        sleep(1);
-    } else if (choix == 2) {
-        niveau = 1;
-        sauvegarderNiveau(niveau);
-        printf("\n  Nouvelle partie lancée ! Niveau : %d\n", niveau);
-        sleep(1);
-    } else if (choix == 3) {
-        printf("\n Mode Multi-joueur\n");
+        if (choix == 1) {
+            printf("\n  Chargement de ta partie au niveau %d...\n", niveau);
+            sleep(1);
+            modeSolo(niveau);
+        } else if (choix == 2) {
+            niveau = 1;
+            sauvegarderNiveau(niveau);
+            printf("\n  Nouvelle partie lancée ! Niveau : %d\n", niveau);
+            sleep(1);
+            modeSolo(niveau);
+        } else if (choix == 3) {
+            modeMultiJoueur();
+        } else if (choix == 4) {
+            printf("\n  À bientôt ! \n");
+            sleep(1);
+            break;
+        } else {
+            printf("Choix invalide. Réessaie.\n");
+            sleep(1);
+        }
+    }
 
-    } else if( choix == 4) {
-        printf("\n  À bientôt ! \n");
-        sleep(1);
-}
-   return 0;
+    return 0;
 }
