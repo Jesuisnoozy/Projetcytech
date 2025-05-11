@@ -175,7 +175,7 @@ Bot Builder(float defen, int agil, int health, int norm, int spec, int uniq) {
 Bot Characterbuilder(int num) {
 	Bot a;
 	switch(num) {
-	// defence, agility, points de vie, att normale, att speciale, att unique)
+	// defence, agility, points de vie, att normal, att special, att unique)
 	case 1:
 		a=Builder(25, 5, 200, 0, 100, 200);
 		a.name=malloc(sizeof(char)*4);
@@ -224,34 +224,29 @@ Bot Characterbuilder(int num) {
 	return a;
 }
 
-void Computer(int *dif, int *choixP, int *choixA, int *choixD, Bot *aa, Bot *ab, Bot *ac, Bot *ra, Bot *rb, Bot *rc){
-    int x;
-    switch(*dif){
-        case 1:
-        *choixP=(rand()%3)+1;
-        *choixA=(rand()%3)+1;
-        *choixD=(rand()%3)+1;
-        break;
-        case 2:
-        *choixP=(rand()%3)+1;
-        *choixA=(rand()%3)+1;
-        *choixD=(rand()%3)+1;
-        break;
-        case 3:
-        *choixP=(rand()%3)+1;
-        *choixA=(rand()%3)+1;
-        *choixD=(rand()%3)+1;
-        break;
-        default:
-        printf("ERREUR: Mauvais numero saisie pour le switchcase Computer\n");
-		exit(1);
+int MinMax(int *x, int a, int b, int c){
+    int max=-1000;
+    if(a>max && a!=0){
+        max=a;
+        *x=1;
     }
-    
-    
+    if(b>max && b!=0){
+        max=b;
+        *x=2;
+    }
+    if(c>max && c!=0){
+        max=c;
+        *x=3;
+    }
+    if(max==-1000){ 
+        printf("ERREUR: variable 'max' pour le switchcase MinMax\n");
+        exit(1);
+    }
+    return max;
 }
 
 int CheckPerso1(int choix, Bot *ja, Bot*jb, Bot *jc){
-    switch(choix) {
+    switch(choix){
     case 1:
         if(ja->dead==1 || ja->stun==1){
             return 1;
@@ -308,13 +303,15 @@ int CheckPerso2(int choix, Bot *ja, Bot*jb, Bot *jc){
 int CheckStamina(int choix, Bot *ja, Bot*jb, Bot *jc) {
     switch(choix) {
     case 1: 
-        if(ja->stamina<3){
+        if(ja->stamina<2){
             return 1;
+        }else if((ja->dead==1 && jb->dead==1) || (ja->dead==1 && jc->dead==1) || (jb->dead==1 && jb->dead==1) || (ja->dead==1 && jb->dead==1 && jc->dead==1)){
+            return 1; // bug fixed (._.)
         }else{
             return 0;
         }
     case 2: 
-        if(ja->stamina<8){
+        if(ja->stamina<7){
             return 1;
         }else{
             return 0;
@@ -361,33 +358,281 @@ int Dodge(int choixD, Bot *ra, Bot *rb, Bot *rc){ // return 0 => dodged
     }
 }
 
-void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
-	int choixP, choixA, choixD; // choixP= selection du personnage, choixA= choix de l'attaque, choixD= choix du personnage affectC)
+void Computer(int *dif, int *choixP, int *choixA, int *choixD, Bot *ra, Bot *rb, Bot *rc, Bot *ja, Bot *jb, Bot *jc){
+    int wtf, wtp;  // \(^-^)/
+    int aa=4;
+    int ab=4;
+    int ac=4;
+    int x; // attaquant séléctionné
+    int y=MinMax(&x, ra->stamina, rb->stamina, rc->stamina); // Max stamina
+    int z; // joueur visé
+    int v=-MinMax(&z, -(ja->pv), -(jb->pv), -(jc->pv)); // Min pv joueur visé
+    switch(*dif){
+        case 1:
+        do {
+            *choixP=(rand()%3)+1;
+		}
+		while(CheckPerso1(*choixP, ra, rb, rc));
+		do {
+			*choixA=(rand()%3)+1;
+		}
+		while(CheckStamina(*choixA, ra, rb, rc));
+		do {
+			*choixD=(rand()%3)+1;
+		}
+		while(CheckPerso2(*choixD, ja, jb, jc));
+        break;
+        case 2:
+        *choixP=(rand()%3)+1;
+        *choixA=(rand()%3)+1;
+        *choixD=(rand()%3)+1;
+        break;
+        case 3:
+        if(z==1){
+            if(ja->pv<ra->normal.damage && ra->stamina>2){
+                aa=1;
+            }else if(ja->pv<ra->special.damage && ra->stamina>7){
+                aa=2;
+            }else{
+                aa=3;
+            }
+            if(ja->pv<rb->normal.damage && rb->stamina>2){
+                ab=1;
+            }else if(ja->pv<rb->special.damage && rb->stamina>7){
+                ab=2;
+            }else{
+                ab=3;
+            }
+            if(ja->pv<rc->normal.damage && rc->stamina>2){
+                ac=1;
+            }else if(ja->pv<rc->special.damage && rc->stamina>7){
+                ac=2;
+            }else{
+                ac=3;
+            }
+            wtf=-MinMax(&wtp, -aa, -ab, -ac);
+            if(wtf<3){
+                *choixP=wtp;
+                *choixA=wtf;
+                *choixD=z;
+            }else{
+                if(y>8 && x!=0){
+                    if(x==1){
+                    aa=2;
+                    ab=0;
+                    ac=0;
+                }else if(x==2){
+                    aa=0;
+                    ab=2;
+                    ac=0;
+                }else{
+                    aa=0;
+                    ab=0;
+                    ac=2;
+                }
+                if(aa==2 && ab!=2 && ac!=2){
+                    *choixP=1;
+                    *choixA=2;
+                    *choixD=z;
+                }else if(aa!=2 && ab==2 && ac!=2){
+                    *choixP=2;
+                    *choixA=2;
+                    *choixD=z;
+                }else if(aa!=2 && ab!=2 && ac==2){
+                    *choixP=3;
+                    *choixA=2;
+                    *choixD=z;
+                }else if((aa==2 && ab==2) || (aa==2 && ac==2) || (aa==2 && ab==2 && ac==2)){
+                    *choixP=1;
+                    *choixA=2;
+                    *choixD=z;
+                }else{
+                    *choixP=2;
+                    *choixA=2;
+                    *choixD=z;
+                }
+                }else{
+                    *choixP=x;
+                    *choixA=1;
+                    *choixD=z;
+                }
+            }
+        }else if(z==2){
+            if(jb->pv<ra->normal.damage && ra->stamina>2){
+                aa=1;
+            }else if(jb->pv<ra->special.damage && ra->stamina>7){
+                aa=2;
+            }else{
+                aa=3;
+            }
+            if(jb->pv<rb->normal.damage && rb->stamina>2){
+                ab=1;
+            }else if(jb->pv<rb->special.damage && rb->stamina>7){
+                ab=2;
+            }else{
+                ab=3;
+            }
+            if(jb->pv<rc->normal.damage && rc->stamina>2){
+                ac=1;
+            }else if(jb->pv<rc->special.damage && rc->stamina>7){
+                ac=2;
+            }else{
+                ac=3;
+            }
+            wtf=-MinMax(&wtp, -aa, -ab, -ac);
+            if(wtf<3){
+                *choixP=wtp;
+                *choixA=wtf;
+                *choixD=z;
+            }else{
+                if(y>8 && x!=0){
+                    if(x==1){
+                    aa=2;
+                    ab=0;
+                    ac=0;
+                }else if(x==2){
+                    aa=0;
+                    ab=2;
+                    ac=0;
+                }else{
+                    aa=0;
+                    ab=0;
+                    ac=2;
+                }
+                if(aa==2 && ab!=2 && ac!=2){
+                    *choixP=1;
+                    *choixA=2;
+                    *choixD=z;
+                }else if(aa!=2 && ab==2 && ac!=2){
+                    *choixP=2;
+                    *choixA=2;
+                    *choixD=z;
+                }else if(aa!=2 && ab!=2 && ac==2){
+                    *choixP=3;
+                    *choixA=2;
+                    *choixD=z;
+                }else if((aa==2 && ab==2) || (aa==2 && ac==2) || (aa==2 && ab==2 && ac==2)){
+                    *choixP=1;
+                    *choixA=2;
+                    *choixD=z;
+                }else{
+                    *choixP=2;
+                    *choixA=2;
+                    *choixD=z;
+                }
+                }else{
+                    *choixP=x;
+                    *choixA=1;
+                    *choixD=z;
+                }
+            }
+        }else{
+            if(jc->pv<ra->normal.damage && ra->stamina>2){
+                aa=1;
+            }else if(jc->pv<ra->special.damage && ra->stamina>7){
+                aa=2;
+            }else{
+                aa=3;
+            }
+            if(jc->pv<rb->normal.damage && rb->stamina>2){
+                ab=1;
+            }else if(jc->pv<rb->special.damage && rb->stamina>7){
+                ab=2;
+            }else{
+                ab=3;
+            }
+            if(jc->pv<rc->normal.damage && rc->stamina>2){
+                ac=1;
+            }else if(jc->pv<rc->special.damage && rc->stamina>7){
+                ac=2;
+            }else{
+                ac=3;
+            }
+            wtf=-MinMax(&wtp, -aa, -ab, -ac);
+            if(wtf<3){
+                *choixP=wtp;
+                *choixA=wtf;
+                *choixD=z;
+            }else{
+                if(y>8 && x!=0){
+                    if(x==1){
+                    aa=2;
+                    ab=0;
+                    ac=0;
+                }else if(x==2){
+                    aa=0;
+                    ab=2;
+                    ac=0;
+                }else{
+                    aa=0;
+                    ab=0;
+                    ac=2;
+                }
+                if(aa==2 && ab!=2 && ac!=2){
+                    *choixP=1;
+                    *choixA=2;
+                    *choixD=z;
+                }else if(aa!=2 && ab==2 && ac!=2){
+                    *choixP=2;
+                    *choixA=2;
+                    *choixD=z;
+                }else if(aa!=2 && ab!=2 && ac==2){
+                    *choixP=3;
+                    *choixA=2;
+                    *choixD=z;
+                }else if((aa==2 && ab==2) || (aa==2 && ac==2) || (aa==2 && ab==2 && ac==2)){
+                    *choixP=1;
+                    *choixA=2;
+                    *choixD=z;
+                }else{
+                    *choixP=2;
+                    *choixA=2;
+                    *choixD=z;
+                }
+                }else{
+                    *choixP=x;
+                    *choixA=1;
+                    *choixD=z;
+                }
+            }
+        }
+        break;
+        default:
+        printf("ERREUR: Mauvais numero saisie pour le switchcase Computer\n");
+		exit(1);
+    }
+}
+
+void Turn(int who, int *dif, int *choixP, int *choixA, int *choixD, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc) {
+    // choixP= selection du personnage, choixA= choix de l'attaque, choixD= choix du personnage affectC)
 	if(who==0) {
 		do {
 			printf("Choisir son personnage (1, 2 ou 3)\n");
-			scanf("%d", &choixP);
+			scanf("%d", choixP);
 		}
-		while(CheckPerso1(choixP, aa, ab, ac));
+		while(CheckPerso1(*choixP, aa, ab, ac));
 		do {
 			printf("Choisir son attaque (1, 2 ou 3)\n");
-			scanf("%d", &choixA);
+			scanf("%d", choixA);
 		}
-		while(CheckStamina(choixA, aa, ab, ac));
+		while(CheckStamina(*choixA, aa, ab, ac));
 		do {
 			printf("Choisir le personnage affecte (1, 2 ou 3)\n");
-			scanf("%d", &choixD);
+			scanf("%d", choixD);
 		}
-		while(CheckPerso2(choixD, da, db, dc));
-	} else { // Faut faire appelle C l'IA qui va choisir l'attaque si 'who' est diffC)rent de 0
+		while(CheckPerso2(*choixD, da, db, dc));
+	} else { 
+	    Computer(dif, choixP, choixA, choixD, aa, ab, ac, da, db, dc);
+	    // l'IA qui va choisir l'attaque si 'who' est different de 0
+	    printf("P:%d A:%d D:%d\n", *choixP, *choixA, *choixD);
 	}
-	switch(choixP) {
+	switch(*choixP) {
 	case 1:
 	if (aa->confused==1){ 
 	    if(rand()%2){ break; 
 	    }
 	}
-		switch(choixA) {
+		switch(*choixA) {
 		case 1:
 			if(aa->normal.damage!=0) {
 				da->pv=da->pv-(aa->normal.damage*da->defence);
@@ -402,9 +647,9 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				ab->poison=0;
 				ac->poison=0;
 			}
-			switch(choixD) {
+			switch(*choixD) {
 			case 1:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				da->pv=da->pv-(aa->normal.focusdamage*da->defence);
 			    if(aa->normal.poison==1) {
 			    da->poison=1;
@@ -416,7 +661,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 2:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				db->pv=db->pv-(aa->normal.focusdamage*db->defence);
 			    if(aa->normal.poison==1) {
 			    db->poison=1;
@@ -428,7 +673,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 3:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				dc->pv=dc->pv-(aa->normal.focusdamage*dc->defence);
 			    if(aa->normal.poison==1) {
 			    dc->poison=1;
@@ -455,9 +700,9 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				ab->poison=0;
 				ac->poison=0;
 			}
-			switch(choixD) {
+			switch(*choixD) {
 			case 1:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				da->pv=da->pv-(aa->special.focusdamage*da->defence);
 			    if(aa->special.poison==1) {
 			    da->poison=1;
@@ -469,7 +714,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 2:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				db->pv=db->pv-(aa->special.focusdamage*db->defence);
 			    if(aa->special.poison==1) {
 			    db->poison=1;
@@ -481,7 +726,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 3:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				dc->pv=dc->pv-(aa->special.focusdamage*dc->defence);
 			    if(aa->special.poison==1) {
 			    dc->poison=1;
@@ -508,9 +753,9 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				ab->poison=0;
 				ac->poison=0;
 			}
-			switch(choixD) {
+			switch(*choixD) {
 			case 1:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				da->pv=da->pv-(aa->unique.focusdamage*da->defence);
 			    if(aa->unique.poison==1) {
 			    da->poison=1;
@@ -522,7 +767,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 2:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				db->pv=db->pv-(aa->unique.focusdamage*db->defence);
 			    if(aa->unique.poison==1) {
 			    db->poison=1;
@@ -534,7 +779,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 3:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				dc->pv=dc->pv-(aa->unique.focusdamage*dc->defence);
 			    if(aa->unique.poison==1) {
 			    dc->poison=1;
@@ -554,7 +799,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 	    if(rand()%2){ break; 
 	    }
 	}
-		switch(choixA) {
+		switch(*choixA) {
 		case 1:
 			if(ab->normal.damage!=0) {
 				da->pv=da->pv-(ab->normal.damage*da->defence);
@@ -569,9 +814,9 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				ab->poison=0;
 				ac->poison=0;
 			}
-			switch(choixD) {
+			switch(*choixD) {
 			case 1:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				da->pv=da->pv-(ab->normal.focusdamage*da->defence);
 			    if(ab->normal.poison==1) {
 			    da->poison=1;
@@ -583,7 +828,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 2:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				db->pv=db->pv-(ab->normal.focusdamage*db->defence);
 			    if(ab->normal.poison==1) {
 			    db->poison=1;
@@ -595,7 +840,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 3:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				dc->pv=dc->pv-(ab->normal.focusdamage*dc->defence);
 			    if(ab->normal.poison==1) {
 			    dc->poison=1;
@@ -622,9 +867,9 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				ab->poison=0;
 				ac->poison=0;
 			}
-			switch(choixD) {
+			switch(*choixD) {
 			case 1:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				da->pv=da->pv-(ab->special.focusdamage*da->defence);
 			    if(ab->special.poison==1) {
 			    da->poison=1;
@@ -636,7 +881,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 2:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				db->pv=db->pv-(ab->special.focusdamage*db->defence);
 			    if(ab->special.poison==1) {
 			    db->poison=1;
@@ -648,7 +893,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 3:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				dc->pv=dc->pv-(ab->special.focusdamage*dc->defence);
 			    if(ab->special.poison==1) {
 			    dc->poison=1;
@@ -675,9 +920,9 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				ab->poison=0;
 				ac->poison=0;
 			}
-			switch(choixD) {
+			switch(*choixD) {
 			case 1:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				da->pv=da->pv-(ab->unique.focusdamage*da->defence);
 			    if(ab->unique.poison==1) {
 			    da->poison=1;
@@ -689,7 +934,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 2:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				db->pv=db->pv-(ab->unique.focusdamage*db->defence);
 			    if(ab->unique.poison==1) {
 			    db->poison=1;
@@ -701,7 +946,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 3:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				dc->pv=dc->pv-(ab->unique.focusdamage*dc->defence);
 			    if(ab->unique.poison==1) {
 			    dc->poison=1;
@@ -721,7 +966,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 	    if(rand()%2){ break; 
 	    }
 	}
-		switch(choixA) {
+		switch(*choixA) {
 		case 1:
 			if(ac->normal.damage!=0) {
 				da->pv=da->pv-(ac->normal.damage*da->defence);
@@ -736,9 +981,9 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				ab->poison=0;
 				ac->poison=0;
 			}
-			switch(choixD) {
+			switch(*choixD) {
 			case 1:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				da->pv=da->pv-(ac->normal.focusdamage*da->defence);
 			    if(ac->normal.poison==1) {
 			    da->poison=1;
@@ -750,7 +995,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 2:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				db->pv=db->pv-(ac->normal.focusdamage*db->defence);
 			    if(ac->normal.poison==1) {
 			    db->poison=1;
@@ -762,7 +1007,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 3:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				dc->pv=dc->pv-(ac->normal.focusdamage*dc->defence);
 			    if(ac->normal.poison==1) {
 			    dc->poison=1;
@@ -789,9 +1034,9 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				ab->poison=0;
 				ac->poison=0;
 			}
-			switch(choixD) {
+			switch(*choixD) {
 			case 1:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				da->pv=da->pv-(ac->special.focusdamage*da->defence);
 			    if(ac->special.poison==1) {
 			    da->poison=1;
@@ -803,7 +1048,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 2:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				db->pv=db->pv-(ac->special.focusdamage*db->defence);
 			    if(ac->special.poison==1) {
 			    db->poison=1;
@@ -815,7 +1060,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 3:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				dc->pv=dc->pv-(ac->special.focusdamage*dc->defence);
 			    if(ac->special.poison==1) {
 			    dc->poison=1;
@@ -842,9 +1087,9 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				ab->poison=0;
 				ac->poison=0;
 			}
-			switch(choixD) {
+			switch(*choixD) {
 			case 1:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				da->pv=da->pv-(ac->unique.focusdamage*da->defence);
 			    if(ac->unique.poison==1) {
 			    da->poison=1;
@@ -856,7 +1101,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 2:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				db->pv=db->pv-(ac->unique.focusdamage*db->defence);
 			    if(ac->unique.poison==1) {
 			    db->poison=1;
@@ -868,7 +1113,7 @@ void Turn(int who, int *dif, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *d
 				}
 				break;
 			case 3:
-			    if(Dodge(choixD, da, db, dc)){
+			    if(Dodge(*choixD, da, db, dc)){
 				dc->pv=dc->pv-(ac->unique.focusdamage*dc->defence);
 			    if(ac->unique.poison==1) {
 			    dc->poison=1;
@@ -909,58 +1154,64 @@ void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc) {
 	if(rc->poison==1) {
 		rc->pv=rc->pv-10;
 	}
-	if(ja->dead==1) {
-		ja->pv=0;
-	}
-	if(jb->dead==1) {
-		ja->pv=0;
-	}
-	if(jc->dead==1) {
-		ja->pv=0;
-	}
-	if(ra->dead==1) {
-		ja->pv=0;
-	}
-	if(rb->dead==1) {
-		ja->pv=0;
-	}
-	if(rc->dead==1) {
-		ja->pv=0;
-	}
 	if(ja->pv<=0) {
 		ja->dead=1;
 	}
 	if(jb->pv<=0) {
-		ja->dead=1;
+		jb->dead=1;
 	}
 	if(jc->pv<=0) {
-		ja->dead=1;
+		jc->dead=1;
 	}
 	if(ra->pv<=0) {
-		ja->dead=1;
+		ra->dead=1;
 	}
 	if(rb->pv<=0) {
-		ja->dead=1;
+		rb->dead=1;
 	}
 	if(rc->pv<=0) {
-		ja->dead=1;
+		rc->dead=1;
 	}
-	if(ja->pv>=ja->pvmax) {
+	if(ja->dead==1) {
+		ja->pv=0;
+		ja->stamina=-1;
+	}
+	if(jb->dead==1) {
+		jb->pv=0;
+		jb->stamina=-1;
+	}
+	if(jc->dead==1) {
+		jc->pv=0;
+		jc->stamina=-1;
+	}
+	if(ra->dead==1) {
+		ra->pv=0;
+		ra->stamina=-1;
+	}
+	if(rb->dead==1) {
+		rb->pv=0;
+		rb->stamina=-1;
+	}
+	if(rc->dead==1) {
+		rc->pv=0;
+		rc->stamina=-1;
+	}
+	if(ja->pv>=ja->pvmax){
 		ja->pv=ja->pvmax;
 	}
-	if(jb->pv>=jb->pvmax) {
+	if(jb->pv>=jb->pvmax){
 		jb->pv=jb->pvmax;
 	}
-	if(jc->pv>=jc->pvmax) {
+	if(jc->pv>=jc->pvmax){
 		jc->pv=jc->pvmax;
 	}
-	if(ra->pv>=ra->pvmax) {
+	if(ra->pv>=ra->pvmax){
 		ra->pv=ra->pvmax;
 	}
-	if(rb->pv>=rb->pvmax) {
+	if(rb->pv>=rb->pvmax){
 		rb->pv=rb->pvmax;
 	}
-	if(rc->pv>=rc->pvmax) {
+	if(rc->pv>=rc->pvmax){
 		rc->pv=rc->pvmax;
 	}
 	if(ja->dead==1 && jb->dead==1 && jc->dead==1 && ra->dead==1 && rb->dead==1 && rc->dead==1) {
@@ -984,10 +1235,13 @@ void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc) {
 }
 
 int main() {
-	Bot ja=Characterbuilder(1001);
-	Bot jb=Characterbuilder(1002);
-	Bot jc=Characterbuilder(1001);
-	Bot ba=Characterbuilder(1003);
+    int choixD=0;
+    int choixA=0;
+    int choixP=0;
+	Bot ja=Characterbuilder(1000);
+	Bot jb=Characterbuilder(1000);
+	Bot jc=Characterbuilder(1000);
+	Bot ba=Characterbuilder(1000);
 	Bot bb=Characterbuilder(1000);
 	Bot bc=Characterbuilder(1000);
 	int dif=0;
@@ -1008,12 +1262,18 @@ int main() {
 	printf("\n%d\n",ba.pv);
 	printf("\nJA HEALTH BEFORE: %d\n",ja.pv);
 	printf("===========================================================\n");
-	Turn(0, &dif, &ja, &jb, &jc, &ba, &bb, &bc);
+	// Turn(0, &dif, &choixP, &choixA, &choixD, &ja, &jb, &jc, &ba, &bb, &bc);
+	Turn(1, &dif, &choixP, &choixA, &choixD, &ba, &bb, &bc, &ja, &jb, &jc);
 	printf("\n%d\n",ba.pv);
 	printf("\nJA HEALTH AFTER Turn: %d\n",ja.pv);
 	Checkup(&ja, &jb, &jc, &ba, &bb, &bc);
 	printf("\n%d\n",ba.pv);
 	printf("\nJA HEALTH AFTER Checkup: %d\n",ja.pv);
-
+	printf("\nJB HEALTH AFTER Checkup: %d\n",jb.pv);
+	printf("\nJC HEALTH AFTER Checkup: %d\n",jc.pv);
+	printf("\nBotA HEALTH AFTER Checkup: %d\n",ba.pv);
+	printf("\nBotB HEALTH AFTER Checkup: %d\n",bb.pv);
+	printf("\nBotC HEALTH AFTER Checkup: %d\n",bc.pv);
+	
 	return 0;
 }
