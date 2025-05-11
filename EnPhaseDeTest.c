@@ -242,7 +242,7 @@ Bot Builder(float defen, int agil, int health, int norm, int spec, int uniq) {
 	a.poison=0;
 	a.stun=0;
 	a.confused=0;
-	a.stamina=4;
+	a.stamina=2;
 	a.dead=0;
 	a.utiliunique=0;
 	return a;
@@ -717,6 +717,7 @@ void Turn(int who, int *dif, int *choixP, int *choixA, int *choixD, Bot *aa, Bot
 	}
 		switch(*choixA) {
 		case 1:
+		aa->stamina-=2;
 			if(aa->normal.damage!=0) {
 				da->pv=da->pv-(aa->normal.damage*da->defence);
 				db->pv=db->pv-(aa->normal.damage*db->defence);
@@ -770,6 +771,7 @@ void Turn(int who, int *dif, int *choixP, int *choixA, int *choixD, Bot *aa, Bot
 			}
 			break;
 		case 2:
+		aa->stamina-=8;
 			if(aa->special.damage!=0) {
 				da->pv=da->pv-(aa->special.damage*da->defence);
 				db->pv=db->pv-(aa->special.damage*db->defence);
@@ -823,6 +825,7 @@ void Turn(int who, int *dif, int *choixP, int *choixA, int *choixD, Bot *aa, Bot
 			}
 			break;
 		case 3:
+		aa->utiliunique=1;
 			if(aa->unique.damage!=0) {
 				da->pv=da->pv-(aa->unique.damage*da->defence);
 				db->pv=db->pv-(aa->unique.damage*db->defence);
@@ -884,6 +887,7 @@ void Turn(int who, int *dif, int *choixP, int *choixA, int *choixD, Bot *aa, Bot
 	}
 		switch(*choixA) {
 		case 1:
+		ab->stamina-=2;
 			if(ab->normal.damage!=0) {
 				da->pv=da->pv-(ab->normal.damage*da->defence);
 				db->pv=db->pv-(ab->normal.damage*db->defence);
@@ -937,6 +941,7 @@ void Turn(int who, int *dif, int *choixP, int *choixA, int *choixD, Bot *aa, Bot
 			}
 			break;
 		case 2:
+		ab->stamina-=8;
 			if(ab->special.damage!=0) {
 				da->pv=da->pv-(ab->special.damage*da->defence);
 				db->pv=db->pv-(ab->special.damage*db->defence);
@@ -990,6 +995,7 @@ void Turn(int who, int *dif, int *choixP, int *choixA, int *choixD, Bot *aa, Bot
 			}
 			break;
 		case 3:
+		ab->utiliunique=1;
 			if(ab->unique.damage!=0) {
 				da->pv=da->pv-(ab->unique.damage*da->defence);
 				db->pv=db->pv-(ab->unique.damage*db->defence);
@@ -1051,6 +1057,7 @@ void Turn(int who, int *dif, int *choixP, int *choixA, int *choixD, Bot *aa, Bot
 	}
 		switch(*choixA) {
 		case 1:
+		ac->stamina-=2;
 			if(ac->normal.damage!=0) {
 				da->pv=da->pv-(ac->normal.damage*da->defence);
 				db->pv=db->pv-(ac->normal.damage*db->defence);
@@ -1104,6 +1111,7 @@ void Turn(int who, int *dif, int *choixP, int *choixA, int *choixD, Bot *aa, Bot
 			}
 			break;
 		case 2:
+		ac->stamina-=8;
 			if(ac->special.damage!=0) {
 				da->pv=da->pv-(ac->special.damage*da->defence);
 				db->pv=db->pv-(ac->special.damage*db->defence);
@@ -1157,6 +1165,7 @@ void Turn(int who, int *dif, int *choixP, int *choixA, int *choixD, Bot *aa, Bot
 			}
 			break;
 		case 3:
+		ac->utiliunique=1;
 			if(ac->unique.damage!=0) {
 				da->pv=da->pv-(ac->unique.damage*da->defence);
 				db->pv=db->pv-(ac->unique.damage*db->defence);
@@ -1315,6 +1324,24 @@ void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc) {
 	ra->stamina+=1;
 	rb->stamina+=1;
 	rc->stamina+=1;
+	if(ja->stamina>16) {
+		ja->stamina=16;
+	}
+	if(jb->stamina>16) {
+		jb->stamina=16;
+	}
+	if(jc->stamina>16) {
+		jc->stamina=16;
+	}
+	if(ra->stamina>16) {
+		ra->stamina=16;
+	}
+	if(rb->stamina>16) {
+		rb->stamina=16;
+	}
+	if(rc->stamina>16) {
+		rc->stamina=16;
+	}
 }
 
 int Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc, Bot *ba, Bot *bb, Bot *bc){ // (ligne, colonne, ligne position, colonne position,...)
@@ -1359,16 +1386,52 @@ int Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc,
     }else if(lp>4 && lp<l && (cp==59 || cp==60 || cp==61)){
 		printf("X");
         Affichage(l, c, lp, cp+1, mode, ja, jb, jc, ba, bb, bc);
-    }else if((lp==9 || lp==15) && (cp==3 || cp==79)){
-		printf("________");
-        Affichage(l, c, lp, cp+8, mode, ja, jb, jc, ba, bb, bc);
+    }else if((lp==9 || lp==15) && (cp==3 || cp==75)){
+		printf("_________");
+        Affichage(l, c, lp, cp+9, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==6 && cp==2){
+        printf("STA: %d", ja->stamina);
+        if(ja->stamina<10){
+            printf(" ");
+        }
+        Affichage(l, c, lp, cp+7, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==12 && cp==2){
+        printf("STA: %d", jb->stamina);
+        if(jb->stamina<10){
+            printf(" ");
+        }
+        Affichage(l, c, lp, cp+7, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==18 && cp==2){
+        printf("STA: %d", jc->stamina);
+        if(jc->stamina<10){
+            printf(" ");
+        }
+        Affichage(l, c, lp, cp+7, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==6 && cp==76){
+        printf("STA: %d", ba->stamina);
+        if(ba->stamina<10){
+            printf(" ");
+        }
+        Affichage(l, c, lp, cp+7, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==12 && cp==76){
+        printf("STA: %d", bb->stamina);
+        if(bb->stamina<10){
+            printf(" ");
+        }
+        Affichage(l, c, lp, cp+7, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==18 && cp==76){
+        printf("STA: %d", bc->stamina);
+        if(bc->stamina<10){
+            printf(" ");
+        }
+        Affichage(l, c, lp, cp+7, mode, ja, jb, jc, ba, bb, bc);
     }else if(lp==4 && cp==4){ ////
         printf("1: ");
 		for(int i=0; i<strlen(ja->name); i++) {
 		printf("%c", *(ja->name+i));
         }
         Affichage(l, c, lp, cp+strlen(ja->name)+3, mode, ja, jb, jc, ba, bb, bc);
-    }else if(lp==4 && cp==80){
+    }else if(lp==4 && cp==77){
         printf("1: ");
 		for(int i=0; i<strlen(ba->name); i++) {
 		printf("%c", *(ba->name+i));
@@ -1405,7 +1468,7 @@ int Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc,
         }
         if(ja->poison==1){printf(RESETT);}
         Affichage(l, c, lp, cp+4+k+6, mode, ja, jb, jc, ba, bb, bc);
-    }else if(lp==5 && cp==79){
+    }else if(lp==5 && cp==76){
         x=ba->pv;
         y=ba->pvmax;
         if(ba->poison==1){printf(GRN);}
@@ -1442,7 +1505,7 @@ int Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc,
 		printf("%c", *(jb->name+i));
         }
         Affichage(l, c, lp, cp+strlen(jb->name)+3, mode, ja, jb, jc, ba, bb, bc);
-    }else if(lp==10 && cp==80){
+    }else if(lp==10 && cp==77){
         printf("2: ");
 		for(int i=0; i<strlen(bb->name); i++) {
 		printf("%c", *(bb->name+i));
@@ -1479,7 +1542,7 @@ int Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc,
         }
         if(jb->poison==1){printf(RESETT);}
         Affichage(l, c, lp, cp+4+k+6, mode, ja, jb, jc, ba, bb, bc);
-    }else if(lp==11 && cp==79){
+    }else if(lp==11 && cp==76){
         x=bb->pv;
         y=bb->pvmax;
         if(bb->poison==1){printf(GRN);}
@@ -1516,7 +1579,7 @@ int Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc,
 		printf("%c", *(jc->name+i));
         }
         Affichage(l, c, lp, cp+strlen(jc->name)+3, mode, ja, jb, jc, ba, bb, bc);
-    }else if(lp==16 && cp==80){
+    }else if(lp==16 && cp==77){
         printf("3: ");
 		for(int i=0; i<strlen(bc->name); i++) {
 		printf("%c", *(bc->name+i));
@@ -1553,7 +1616,7 @@ int Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc,
         }
         if(jc->poison==1){printf(RESETT);}
         Affichage(l, c, lp, cp+4+k+6, mode, ja, jb, jc, ba, bb, bc);
-    }else if(lp==17 && cp==79){
+    }else if(lp==17 && cp==76){
         x=bc->pv;
         y=bc->pvmax;
         if(bc->poison==1){printf(GRN);}
