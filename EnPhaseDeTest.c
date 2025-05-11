@@ -5,6 +5,82 @@
 #include <time.h>
 #include <errno.h>
 #define NAMESIZE 21
+
+//Regular text
+#define BLK "\e[0;30m"
+#define RED "\e[0;31m"
+#define GRN "\e[0;32m"
+#define YEL "\e[0;33m"
+#define BLU "\e[0;34m"
+#define MAG "\e[0;35m"
+#define CYN "\e[0;36m"
+#define WHT "\e[0;37m"
+
+//Regular bold text
+#define BBLK "\e[1;30m"
+#define BRED "\e[1;31m"
+#define BGRN "\e[1;32m"
+#define BYEL "\e[1;33m"
+#define BBLU "\e[1;34m"
+#define BMAG "\e[1;35m"
+#define BCYN "\e[1;36m"
+#define BWHT "\e[1;37m"
+
+//Regular underline text
+#define UBLK "\e[4;30m"
+#define URED "\e[4;31m"
+#define UGRN "\e[4;32m"
+#define UYEL "\e[4;33m"
+#define UBLU "\e[4;34m"
+#define UMAG "\e[4;35m"
+#define UCYN "\e[4;36m"
+#define UWHT "\e[4;37m"
+
+//Regular background
+#define BLKB "\e[40m"
+#define REDB "\e[41m"
+#define GRNB "\e[42m"
+#define YELB "\e[43m"
+#define BLUB "\e[44m"
+#define MAGB "\e[45m"
+#define CYNB "\e[46m"
+#define WHTB "\e[47m"
+
+//High intensty background 
+#define BLKHB "\e[0;100m"
+#define REDHB "\e[0;101m"
+#define GRNHB "\e[0;102m"
+#define YELHB "\e[0;103m"
+#define BLUHB "\e[0;104m"
+#define MAGHB "\e[0;105m"
+#define CYNHB "\e[0;106m"
+#define WHTHB "\e[0;107m"
+
+//High intensty text
+#define HBLK "\e[0;90m"
+#define HRED "\e[0;91m"
+#define HGRN "\e[0;92m"
+#define HYEL "\e[0;93m"
+#define HBLU "\e[0;94m"
+#define HMAG "\e[0;95m"
+#define HCYN "\e[0;96m"
+#define HWHT "\e[0;97m"
+
+//Bold high intensity text
+#define BHBLK "\e[1;90m"
+#define BHRED "\e[1;91m"
+#define BHGRN "\e[1;92m"
+#define BHYEL "\e[1;93m"
+#define BHBLU "\e[1;94m"
+#define BHMAG "\e[1;95m"
+#define BHCYN "\e[1;96m"
+#define BHWHT "\e[1;97m"
+
+//Reset
+#define RESETT "\e[0m"
+#define CRESET "\e[0m"
+#define COLOR_RESET "\e[0m"
+
 typedef struct {
 	char *name;
 	int damage, focusdamage, heal, focusheal, poison, stun, confused;
@@ -186,7 +262,7 @@ Bot Characterbuilder(int num) {
 		break;
 	
 	case 1000:
-		a=Builder(5.0, 0, 150, 0, 100, 200);
+		a=Builder(5.0, 0, 250, 0, 100, 200);
 		a.name=malloc(sizeof(char)*5);
 		if(a.name==NULL) {
 			exit(1);
@@ -1241,23 +1317,348 @@ void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc) {
 	rc->stamina+=1;
 }
 
+int Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc, Bot *ba, Bot *bb, Bot *bc){ // (ligne, colonne, ligne position, colonne position,...)
+    int x=0;
+    int y=0;
+    int i=0;
+    int k=0;
+    if(lp>l){
+        return 0;
+    }
+    if(cp>=c){
+        printf("|\n");
+        Affichage(l, c, lp+1, 1, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==1){
+        printf("________________________________________________________________________________________________________________________\n");
+        Affichage(l, c, lp+1, 1, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==3){
+        printf("|_______________________________________________________[]___[]________________________________________________________|\n");
+        Affichage(l, c, lp+1, 1, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==l){
+        printf("|_______________________________________________________[]___[]________________________________________________________|\n");
+        Affichage(l, c, lp+1, 1, mode, ja, jb, jc, ba, bb, bc);
+    }else if(cp==1){
+        printf("|");
+        Affichage(l, c, lp, 2, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==2 && cp==4){
+        for(int i=0; i<strlen(ja->normal.name); i++) {
+		printf("%c", *(ja->normal.name+i));
+        }
+        Affichage(l, c, lp, cp+strlen(ja->normal.name), mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==2 && cp==(97-strlen(ja->normal.name))){
+        for(int i=0; i<strlen(ja->normal.name); i++) {
+		printf("%c", *(ja->normal.name+i));
+        }
+        Affichage(l, c, lp, cp+strlen(ja->normal.name), mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==2 && cp==59){
+		printf("V-S");
+        Affichage(l, c, lp, cp+3, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp>3 && lp<l && (cp==57 || cp==58 || cp==62 || cp==63)){
+		printf("|");
+        Affichage(l, c, lp, cp+1, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp>4 && lp<l && (cp==59 || cp==60 || cp==61)){
+		printf("X");
+        Affichage(l, c, lp, cp+1, mode, ja, jb, jc, ba, bb, bc);
+    }else if((lp==9 || lp==15) && (cp==3 || cp==79)){
+		printf("________");
+        Affichage(l, c, lp, cp+8, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==4 && cp==4){ ////
+        printf("1: ");
+		for(int i=0; i<strlen(ja->name); i++) {
+		printf("%c", *(ja->name+i));
+        }
+        Affichage(l, c, lp, cp+strlen(ja->name)+3, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==4 && cp==80){
+        printf("1: ");
+		for(int i=0; i<strlen(ba->name); i++) {
+		printf("%c", *(ba->name+i));
+        }
+        Affichage(l, c, lp, cp+strlen(ba->name)+3, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==5 && cp==3){
+        x=ja->pv;
+        y=ja->pvmax;
+        if(ja->poison==1){printf(GRN);}
+        printf("PV: ");
+        while(x>=20){
+            printf("[]");
+            x-=20;
+            i+=20;
+            k+=2;
+        }
+        if(x>=10){
+            printf("[");
+            x-=10;
+            i+=10;
+            k+=1;
+        }
+        while(i<y){
+            printf("-");
+            i+=10;
+            k+=1;
+        }
+        printf(" (%d)",ja->pv);
+        if(ja->pv<100){
+            printf(" ");
+        }
+        if(ja->pv<10){
+            printf(" ");
+        }
+        if(ja->poison==1){printf(RESETT);}
+        Affichage(l, c, lp, cp+4+k+6, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==5 && cp==79){
+        x=ba->pv;
+        y=ba->pvmax;
+        if(ba->poison==1){printf(GRN);}
+        printf("PV: ");
+        while(x>=20){
+            printf("[]");
+            x-=20;
+            i+=20;
+            k+=2;
+        }
+        if(x>=10){
+            printf("[");
+            x-=10;
+            i+=10;
+            k+=1;
+        }
+        while(i<y){
+            printf("-");
+            i+=10;
+            k+=1;
+        }
+        printf(" (%d)",ba->pv);
+        if(ba->pv<100){
+            printf(" ");
+        }
+        if(ba->pv<10){
+            printf(" ");
+        }
+        if(ba->poison==1){printf(RESETT);}
+        Affichage(l, c, lp, cp+4+k+6, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==10 && cp==4){ ////
+        printf("2: ");
+		for(int i=0; i<strlen(jb->name); i++) {
+		printf("%c", *(jb->name+i));
+        }
+        Affichage(l, c, lp, cp+strlen(jb->name)+3, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==10 && cp==80){
+        printf("2: ");
+		for(int i=0; i<strlen(bb->name); i++) {
+		printf("%c", *(bb->name+i));
+        }
+        Affichage(l, c, lp, cp+strlen(bb->name)+3, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==11 && cp==3){
+        x=jb->pv;
+        y=jb->pvmax;
+        if(jb->poison==1){printf(GRN);}
+        printf("PV: ");
+        while(x>=20){
+            printf("[]");
+            x-=20;
+            i+=20;
+            k+=2;
+        }
+        if(x>=10){
+            printf("[");
+            x-=10;
+            i+=10;
+            k+=1;
+        }
+        while(i<y){
+            printf("-");
+            i+=10;
+            k+=1;
+        }
+        printf(" (%d)",jb->pv);
+        if(jb->pv<100){
+            printf(" ");
+        }
+        if(jb->pv<10){
+            printf(" ");
+        }
+        if(jb->poison==1){printf(RESETT);}
+        Affichage(l, c, lp, cp+4+k+6, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==11 && cp==79){
+        x=bb->pv;
+        y=bb->pvmax;
+        if(bb->poison==1){printf(GRN);}
+        printf("PV: ");
+        while(x>=20){
+            printf("[]");
+            x-=20;
+            i+=20;
+            k+=2;
+        }
+        if(x>=10){
+            printf("[");
+            x-=10;
+            i+=10;
+            k+=1;
+        }
+        while(i<y){
+            printf("-");
+            i+=10;
+            k+=1;
+        }
+        printf(" (%d)",bb->pv);
+        if(bb->pv<100){
+            printf(" ");
+        }
+        if(bb->pv<10){
+            printf(" ");
+        }
+        if(bb->poison==1){printf(RESETT);}
+        Affichage(l, c, lp, cp+4+k+6, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==16 && cp==4){ ////
+        printf("3: ");
+		for(int i=0; i<strlen(jc->name); i++) {
+		printf("%c", *(jc->name+i));
+        }
+        Affichage(l, c, lp, cp+strlen(jc->name)+3, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==16 && cp==80){
+        printf("3: ");
+		for(int i=0; i<strlen(bc->name); i++) {
+		printf("%c", *(bc->name+i));
+        }
+        Affichage(l, c, lp, cp+strlen(bc->name)+3, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==17 && cp==3){
+        x=jc->pv;
+        y=jc->pvmax;
+        if(jc->poison==1){printf(GRN);}
+        printf("PV: ");
+        while(x>=20){
+            printf("[]");
+            x-=20;
+            i+=20;
+            k+=2;
+        }
+        if(x>=10){
+            printf("[");
+            x-=10;
+            i+=10;
+            k+=1;
+        }
+        while(i<y){
+            printf("-");
+            i+=10;
+            k+=1;
+        }
+        printf(" (%d)",jc->pv);
+        if(jc->pv<100){
+            printf(" ");
+        }
+        if(jc->pv<10){
+            printf(" ");
+        }
+        if(jc->poison==1){printf(RESETT);}
+        Affichage(l, c, lp, cp+4+k+6, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==17 && cp==79){
+        x=bc->pv;
+        y=bc->pvmax;
+        if(bc->poison==1){printf(GRN);}
+        printf("PV: ");
+        while(x>=20){
+            printf("[]");
+            x-=20;
+            i+=20;
+            k+=2;
+        }
+        if(x>=10){
+            printf("[");
+            x-=10;
+            i+=10;
+            k+=1;
+        }
+        while(i<y){
+            printf("-");
+            i+=10;
+            k+=1;
+        }
+        printf(" (%d)",bc->pv);
+        if(bc->pv<100){
+            printf(" ");
+        }
+        if(bc->pv<10){
+            printf(" ");
+        }
+        if(bc->poison==1){printf(RESETT);}
+        Affichage(l, c, lp, cp+4+k+6, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==7 && cp==20 || lp==13 && cp==20 || lp==19 && cp==20 || lp==7 && cp==90 || lp==13 && cp==90 || lp==19 && cp==90){
+        printf(" (\\___/) ");
+        Affichage(l, c, lp, cp+9, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==8 && cp==20){
+        if(ja->dead==0){
+            printf("\\{-___-}-[X]");
+        }else{
+            printf(" {X _ X}    ");
+        }
+        Affichage(l, c, lp, cp+12, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==14 && cp==20){
+        if(jb->dead==0){
+            printf("\\{x u O}--");
+        }else{
+            printf(" {X - X}  ");
+        }
+        Affichage(l, c, lp, cp+10, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==20 && cp==20){
+        if(jc->dead==0){
+            printf("/{^ - ^}_/");
+        }else{
+            printf(" {X _ X}  ");
+        }
+        Affichage(l, c, lp, cp+10, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==8 && cp==87){
+        if(ba->dead==0){
+            printf("(X)-{.___.}/");
+        }else{
+            printf("    {X ^ X} ");
+        }
+        Affichage(l, c, lp, cp+12, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==14 && cp==90){
+        if(bb->dead==0){
+            printf("/{O___o}\\");
+        }else{
+            printf(" {X - X} ");
+        }
+        Affichage(l, c, lp, cp+9, mode, ja, jb, jc, ba, bb, bc);
+    }else if(lp==20 && cp==89){
+        if(bc->dead==0){
+            printf(" /{^ . ~}/");
+        }else{
+            printf("  {X - X} ");
+        }
+        Affichage(l, c, lp, cp+10, mode, ja, jb, jc, ba, bb, bc);
+    }else{
+        printf(" ");
+        Affichage(l, c, lp, cp+1, mode, ja, jb, jc, ba, bb, bc);
+        
+    }
+}
+
+
 int main() {
     int choixD=0;
     int choixA=0;
     int choixP=0;
 	Bot ja=Characterbuilder(1000);
-	Bot jb=Characterbuilder(1000);
+	Bot jb=Characterbuilder(1001);
 	Bot jc=Characterbuilder(1000);
-	Bot ba=Characterbuilder(1000);
-	Bot bb=Characterbuilder(1000);
+	Bot ba=Characterbuilder(1002);
+	Bot bb=Characterbuilder(1001);
 	Bot bc=Characterbuilder(1000);
 	int dif=0;
+	int mode=0;
 	do {
-			printf("Choisir sa difficulté (1, 2 ou 3)\n");
+			printf("Choisir sa difficulté (1, 2 ou 3) --> ");
 			scanf("%d", &dif);
 		}
 		while(dif!=1 && dif!=2 && dif!=3);
-
+	do {
+			printf("Choisir solo:1 ou Multijoueur:2 --> ");
+			scanf("%d", &mode);
+		}
+		while(mode!=1 && mode!=2);
     printf("===========================================================\n");
 	for(int i=0; i<strlen(ja.name); i++) { // print name
 		printf("%c", *(ja.name+i));
@@ -1280,7 +1681,9 @@ int main() {
 	printf("\nJC HEALTH AFTER Checkup: %d\n",jc.pv);
 	printf("\nBotA HEALTH AFTER Checkup: %d\n",ba.pv);
 	printf("\nBotB HEALTH AFTER Checkup: %d\n",bb.pv);
-	printf("\nBotC HEALTH AFTER Checkup: %d\n",bc.pv);
+	printf("\nBotC HEALTH AFTER Checkup: %d\n\n\n",bc.pv);
+	
+	int a=Affichage(21, 120, 1, 1, mode, &ja, &jb, &jc, &ba, &bb, &bc);
 	
 	return 0;
 }
