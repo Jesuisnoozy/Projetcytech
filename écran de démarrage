@@ -1,28 +1,103 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include "sauvegarde.h"
+
+#define LIGNES 25
+#define COLONNES 120
+
+void afficherCadre() {
+    for (int i = 0; i < COLONNES; i++){
+        printf("=");
+    }
+    printf("\n");
+}
+
+void afficherLigneVide() {
+    for (int i = 0; i < COLONNES ; i++){
+        printf(" ");
+    }
+    printf("\n");
+}
+
+void afficherTexteCentre(const char* texte) {
+    int longueurTexte = strlen(texte);
+    int espace = (COLONNES  - longueurTexte) / 2;
+
+
+    for (int i = 0; i < espace; i++) {
+        printf(" ");
+    }
+    printf("%s", texte);
+    for (int i = 0; i < COLONNES  - espace - longueurTexte; i++){ 
+        printf(" ");
+    }
+    printf("\n");
+}
 
 void afficherEcranDemarrage() {
     system("clear");
+    afficherCadre();
+    for (int i = 0; i < 5; i++) afficherLigneVide();
 
-    printf("======================================================================================================\n");
-    printf("                                              BATTLE ARENA                                            \n");
-    printf("======================================================================================================\n\n");
+    afficherTexteCentre("BATTLE ARENA");
+    afficherLigneVide();
+    afficherTexteCentre("Prêt pour le combat ?");
+    afficherLigneVide();
+    afficherTexteCentre("Appuie sur Entrée pour continuer...");
+    
+    for (int i = 0; i < 5; i++) afficherLigneVide();
+    afficherCadre();
 
-    printf("                                       Prêt pour le combat?\n\n");
-    printf("   Appuie sur Entrée pour continuer...\n");
-    getchar(); // attend une touche
+    getchar(); // attendre Entrée
 }
 
-void afficherMenuPrincipal() {
+void afficherMenuPrincipalRecursif(int niveau) {
     system("clear");
-    printf("============================================= MENU PRINCIPAL =========================================\n");
-    printf("1. Continuer la partie\n");
-    printf("2. Nouvelle partie\n");
-    printf("3. Multi-joueur\n");
-    printf("4. Quitter\n");
+    afficherCadre();
+    afficherTexteCentre("MENU PRINCIPAL");
+    afficherLigneVide();
+    afficherTexteCentre("1. Continuer la partie");
+    afficherTexteCentre("2. Nouvelle partie");
+    afficherTexteCentre("3. Multi-joueur");
+    afficherTexteCentre("4. Quitter");
+    afficherLigneVide();
+    afficherCadre();
+
     printf("Choix : ");
+    int choix;
+    scanf("%d", &choix);
+    getchar(); // pour consommer le '\n'
+
+    switch (choix) {
+        case 1:
+            printf("\n  Chargement de ta partie au niveau %d...\n", niveau);
+            sleep(1);
+            modeSolo(niveau);
+            break;
+        case 2:
+            niveau = 1;
+            sauvegarderNiveau(niveau);
+            printf("\n  Nouvelle partie lancée ! Niveau : %d\n", niveau);
+            sleep(1);
+            modeSolo(niveau);
+            break;
+        case 3:
+            modeMultiJoueur();
+            break;
+        case 4:
+            printf("\n  À bientôt ! \n");
+            sleep(1);
+            return;
+        default:
+            printf("Choix invalide. Réessaie.\n");
+            sleep(1);
+            break;
+    }
+
+    
+    afficherMenuPrincipalRecursif(niveau);
 }
 
 void modeSolo(int niveau) {
@@ -49,36 +124,7 @@ void modeMultiJoueur() {
 
 int main() {
     afficherEcranDemarrage();
-
     int niveau = chargerNiveauSauvegarde();
-    int choix;
-
-    while (1) {
-        afficherMenuPrincipal();
-        scanf("%d", &choix);
-        getchar(); // consomme le '\n'
-
-        if (choix == 1) {
-            printf("\n  Chargement de ta partie au niveau %d...\n", niveau);
-            sleep(1);
-            modeSolo(niveau);
-        } else if (choix == 2) {
-            niveau = 1;
-            sauvegarderNiveau(niveau);
-            printf("\n  Nouvelle partie lancée ! Niveau : %d\n", niveau);
-            sleep(1);
-            modeSolo(niveau);
-        } else if (choix == 3) {
-            modeMultiJoueur();
-        } else if (choix == 4) {
-            printf("\n  À bientôt ! \n");
-            sleep(1);
-            break;
-        } else {
-            printf("Choix invalide. Réessaie.\n");
-            sleep(1);
-        }
-    }
-
+    afficherMenuPrincipalRecursif(niveau);
     return 0;
 }
