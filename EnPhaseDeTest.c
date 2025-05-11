@@ -376,8 +376,9 @@ int CheckPerso2(int choix, Bot *ja, Bot*jb, Bot *jc){
     }
 }
 
-int CheckStamina(int choix, Bot *ja, Bot*jb, Bot *jc) {
-    switch(choix) {
+int CheckStamina(int choixP, int choixA, Bot *ja, Bot*jb, Bot *jc) {
+    if(choixP==1){
+    switch(choixA) {
     case 1: 
         if(ja->stamina<1){
             return 1;
@@ -385,7 +386,7 @@ int CheckStamina(int choix, Bot *ja, Bot*jb, Bot *jc) {
             return 0;
         }
     case 2: 
-        if(ja->stamina<7){
+        if(ja->stamina<=7){
             return 1;
         }else{
             return 0;
@@ -399,6 +400,56 @@ int CheckStamina(int choix, Bot *ja, Bot*jb, Bot *jc) {
     default:
         return 1;
     }
+    }else if(choixP==2){
+    switch(choixA) {
+    case 1: 
+        if(jb->stamina<1){
+            return 1;
+        }else{
+            return 0;
+        }
+    case 2: 
+        if(jb->stamina<=7){
+            return 1;
+        }else{
+            return 0;
+        }  
+    case 3: 
+        if(jb->utiliunique==1){
+            return 1;
+        }else{
+            return 0;
+        }
+    default:
+        return 1;
+    }
+    }else if(choixP==3){
+        switch(choixA) {
+    case 1: 
+        if(jc->stamina<1){
+            return 1;
+        }else{
+            return 0;
+        }
+    case 2: 
+        if(jc->stamina<=7){
+            return 1;
+        }else{
+            return 0;
+        }  
+    case 3: 
+        if(jc->utiliunique==1){
+            return 1;
+        }else{
+            return 0;
+        }
+    default:
+        return 1;
+    }
+    }else{
+        printf("ERREUR: saisie choixP fonction CheckStamina");
+        exit(1);
+    }    
 }
 
 int Dodge(int choixD, Bot *ra, Bot *rb, Bot *rc){ // return 0 => dodged
@@ -465,7 +516,7 @@ void Computer(int *dif, int *choixP, int *choixA, int *choixD, Bot *ra, Bot *rb,
 		do {
 	    *choixA=(rand()%3)+1;
 		}
-		while(CheckStamina(*choixA, ra, rb, rc));
+		while(CheckStamina(*choixP, *choixA, ra, rb, rc));
 		
 		do {
 		*choixD=(rand()%3)+1;
@@ -1164,7 +1215,7 @@ void Turn(int who, int mo, int *dif, int *choixP, int *choixA, int *choixD, Bot 
 			    return;
 			}
 		}
-		while(CheckStamina(*choixA, aa, ab, ac));
+		while(CheckStamina(*choixP, *choixA, aa, ab, ac));
 		do {
 			printf("Choisir le personnage affecte (1,2,3): ");
 			scanf("%d", choixD);
@@ -1831,8 +1882,8 @@ int main() {
     int choixA=0;
     int choixP=0;
 	Bot ja=Characterbuilder(1000);
-	Bot jb=Characterbuilder(1002);
-	Bot jc=Characterbuilder(1001);
+	Bot jb=Characterbuilder(1000);
+	Bot jc=Characterbuilder(1000);
 	Bot ba=Characterbuilder(1000);
 	Bot bb=Characterbuilder(1000);
 	Bot bc=Characterbuilder(1000);
