@@ -4,6 +4,7 @@
 #include <math.h>
 #include <time.h>
 #include <errno.h>
+#include<unistd.h>
 #define NAMESIZE 21
 
 //Regular text
@@ -1274,15 +1275,47 @@ void AffichAttaque(int *choixP, Bot *aa, Bot *ab, Bot *ac) {
 		for(int i=k; i<20; i++) {
 			printf(" ");
 		}
-		printf("4:RETOUR");
-		printf(RESETT);
-		printf("\n|    dmg:%d                dmg:%d                dmg:%d\n", aa->normal.focusdamage, aa->special.focusdamage, aa->unique.focusdamage);
-		printf("| AOEdmg:%d              AOEdmg:%d              AOEdmg:%d\n", aa->normal.damage, aa->special.damage, aa->unique.damage);
-		printf("|   heal:%d                heal:%d                heal:%d\n", aa->normal.focusheal, aa->special.focusheal, aa->unique.focusheal);
-		printf("|AOEheal:%d             AOEheal:%d             AOEheal:%d\n", aa->normal.heal, aa->special.heal, aa->unique.heal);
-		printf("effet:\n| poison:%d             poison:%d             poison:%d\n", aa->normal.poison, aa->special.poison, aa->unique.poison);
-		printf("|   stun:%d               stun:%d               stun:%d\n", aa->normal.stun, aa->special.stun, aa->unique.stun);
-		printf("| confus:%d             confus:%d             confus:%d\n", aa->normal.confused, aa->special.confused, aa->unique.confused);
+		printf("4:RETOUR"RESETT" en arriere");
+		printf("\n|    dmg:%d", aa->normal.focusdamage); 
+		if(aa->normal.focusdamage==0){
+		    printf("                  ");
+		}else{  printf("                 "); }
+		printf("dmg:%d", aa->special.focusdamage); 
+		if(aa->special.focusdamage==0){
+		    printf("                  ");
+		}else{  printf("                 "); }
+		printf("dmg:%d\n", aa->unique.focusdamage);
+		printf("| AOEdmg:%d", aa->normal.damage); 
+		if(aa->normal.damage==0){
+		    printf("               ");
+		}else{  printf("              "); }
+		printf("AOEdmg:%d", aa->special.damage); 
+		if(aa->special.damage==0){
+		    printf("               ");
+		}else{  printf("              "); }
+		printf("AOEdmg:%d\n", aa->unique.damage);
+		printf("|   heal:%d", aa->normal.focusheal); 
+		if(aa->normal.focusheal==0){
+		    printf("                 ");
+		}else{  printf("                "); }
+		printf("heal:%d", aa->special.focusheal); 
+		if(aa->special.focusheal==0){
+		    printf("                 ");
+		}else{  printf("                "); }
+		printf("heal:%d\n", aa->unique.focusheal);
+		printf("|AOEheal:%d", aa->normal.heal); 
+		if(aa->normal.heal==0){
+		    printf("              ");
+		}else{  printf("             "); }
+		printf("AOEheal:%d", aa->special.heal); 
+		if(aa->special.heal==0){
+		    printf("              ");
+		}else{  printf("             "); }
+		printf("AOEheal:%d\n", aa->unique.heal);
+		
+		printf("effet:\n" GRN "| poison:%d             poison:%d             poison:%d\n", aa->normal.poison, aa->special.poison, aa->unique.poison);
+		printf(YEL"|   stun:%d               stun:%d               stun:%d\n", aa->normal.stun, aa->special.stun, aa->unique.stun);
+		printf(MAG"| confus:%d             confus:%d             confus:%d\n"RESETT, aa->normal.confused, aa->special.confused, aa->unique.confused);
 	} else if(*choixP==2) {
 		printf(BWHT"|1:");
 		for(int i=0; i<strlen(ab->normal.name); i++) {
@@ -1308,15 +1341,47 @@ void AffichAttaque(int *choixP, Bot *aa, Bot *ab, Bot *ac) {
 		for(int i=k; i<20; i++) {
 			printf(" ");
 		}
-		printf("4:RETOUR");
-		printf(RESETT);
-		printf("\n|    dmg:%d                dmg:%d                dmg:%d\n", ab->normal.focusdamage, ab->special.focusdamage, ab->unique.focusdamage);
-		printf("| AOEdmg:%d              AOEdmg:%d              AOEdmg:%d\n", ab->normal.damage, ab->special.damage, ab->unique.damage);
-		printf("|   heal:%d                heal:%d                heal:%d\n", ab->normal.focusheal, ab->special.focusheal, ab->unique.focusheal);
-		printf("|AOEheal:%d             AOEheal:%d             AOEheal:%d\n", ab->normal.heal, ab->special.heal, ab->unique.heal);
-		printf("effet:\n| poison:%d             poison:%d             poison:%d\n", ab->normal.poison, ab->special.poison, ab->unique.poison);
-		printf("|   stun:%d               stun:%d               stun:%d\n", ab->normal.stun, ab->special.stun, ab->unique.stun);
-		printf("| confus:%d             confus:%d             confus:%d\n", ab->normal.confused, ab->special.confused, ab->unique.confused);
+		printf("4:RETOUR"RESETT" en arriere");
+		printf("\n|    dmg:%d", ab->normal.focusdamage); 
+		if(ab->normal.focusdamage==0){
+		    printf("                  ");
+		}else{  printf("                 "); }
+		printf("dmg:%d", ab->special.focusdamage); 
+		if(ab->special.focusdamage==0){
+		    printf("                  ");
+		}else{  printf("                 "); }
+		printf("dmg:%d\n", ab->unique.focusdamage);
+		printf("| AOEdmg:%d", ab->normal.damage); 
+		if(ab->normal.damage==0){
+		    printf("               ");
+		}else{  printf("              "); }
+		printf("AOEdmg:%d", ab->special.damage); 
+		if(ab->special.damage==0){
+		    printf("               ");
+		}else{  printf("              "); }
+		printf("AOEdmg:%d\n", ab->unique.damage);
+		printf("|   heal:%d", ab->normal.focusheal); 
+		if(ab->normal.focusheal==0){
+		    printf("                 ");
+		}else{  printf("                "); }
+		printf("heal:%d", ab->special.focusheal); 
+		if(ab->special.focusheal==0){
+		    printf("                 ");
+		}else{  printf("                "); }
+		printf("heal:%d\n", ab->unique.focusheal);
+		printf("|AOEheal:%d", ab->normal.heal); 
+		if(ab->normal.heal==0){
+		    printf("              ");
+		}else{  printf("             "); }
+		printf("AOEheal:%d", ab->special.heal); 
+		if(ab->special.heal==0){
+		    printf("              ");
+		}else{  printf("             "); }
+		printf("AOEheal:%d\n", ab->unique.heal);
+		
+		printf("effet:\n" GRN "| poison:%d             poison:%d             poison:%d\n", ab->normal.poison, ab->special.poison, ab->unique.poison);
+		printf(YEL"|   stun:%d               stun:%d               stun:%d\n", ab->normal.stun, ab->special.stun, ab->unique.stun);
+		printf(MAG"| confus:%d             confus:%d             confus:%d\n"RESETT, ab->normal.confused, ab->special.confused, ab->unique.confused);
 	} else {
 		printf(BWHT"|1:");
 		for(int i=0; i<strlen(ac->normal.name); i++) {
@@ -1342,15 +1407,47 @@ void AffichAttaque(int *choixP, Bot *aa, Bot *ab, Bot *ac) {
 		for(int i=k; i<20; i++) {
 			printf(" ");
 		}
-		printf("4:RETOUR");
-		printf(RESETT);
-		printf("\n|    dmg:%d                dmg:%d                dmg:%d\n", ac->normal.focusdamage, ac->special.focusdamage, ac->unique.focusdamage);
-		printf("| AOEdmg:%d              AOEdmg:%d              AOEdmg:%d\n", ac->normal.damage, ac->special.damage, ac->unique.damage);
-		printf("|   heal:%d                heal:%d                heal:%d\n", ac->normal.focusheal, ac->special.focusheal, ac->unique.focusheal);
-		printf("|AOEheal:%d             AOEheal:%d             AOEheal:%d\n", ac->normal.heal, ac->special.heal, ac->unique.heal);
-		printf("effet:\n| poison:%d             poison:%d             poison:%d\n", ac->normal.poison, ac->special.poison, ac->unique.poison);
-		printf("|   stun:%d               stun:%d               stun:%d\n", ac->normal.stun, ac->special.stun, ac->unique.stun);
-		printf("| confus:%d             confus:%d             confus:%d\n", ac->normal.confused, ac->special.confused, ac->unique.confused);
+		printf("4:RETOUR"RESETT" en arriere");
+		printf("\n|    dmg:%d", ac->normal.focusdamage); 
+		if(ac->normal.focusdamage==0){
+		    printf("                  ");
+		}else{  printf("                 "); }
+		printf("dmg:%d", ac->special.focusdamage); 
+		if(ac->special.focusdamage==0){
+		    printf("                  ");
+		}else{  printf("                 "); }
+		printf("dmg:%d\n", ac->unique.focusdamage);
+		printf("| AOEdmg:%d", ac->normal.damage); 
+		if(ac->normal.damage==0){
+		    printf("               ");
+		}else{  printf("              "); }
+		printf("AOEdmg:%d", ac->special.damage); 
+		if(ac->special.damage==0){
+		    printf("               ");
+		}else{  printf("              "); }
+		printf("AOEdmg:%d\n", ac->unique.damage);
+		printf("|   heal:%d", ac->normal.focusheal); 
+		if(ac->normal.focusheal==0){
+		    printf("                 ");
+		}else{  printf("                "); }
+		printf("heal:%d", ac->special.focusheal); 
+		if(ac->special.focusheal==0){
+		    printf("                 ");
+		}else{  printf("                "); }
+		printf("heal:%d\n", ac->unique.focusheal);
+		printf("|AOEheal:%d", ac->normal.heal); 
+		if(ac->normal.heal==0){
+		    printf("              ");
+		}else{  printf("             "); }
+		printf("AOEheal:%d", ac->special.heal); 
+		if(ac->special.heal==0){
+		    printf("              ");
+		}else{  printf("             "); }
+		printf("AOEheal:%d\n", ac->unique.heal);
+		
+		printf("effet:\n" GRN "| poison:%d             poison:%d             poison:%d\n", ac->normal.poison, ac->special.poison, ac->unique.poison);
+		printf(YEL"|   stun:%d               stun:%d               stun:%d\n", ac->normal.stun, ac->special.stun, ac->unique.stun);
+		printf(MAG"| confus:%d             confus:%d             confus:%d\n"RESETT, ac->normal.confused, ac->special.confused, ac->unique.confused);
 	}
 }
 
@@ -1436,16 +1533,18 @@ void Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc
 		}
 		Affichage(l, c, lp, cp+7, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==4 && cp==4) { ////
-		printf("1: ");
+		printf( BBLU "1: ");
 		for(int i=0; i<strlen(ja->name); i++) {
 			printf("%c", *(ja->name+i));
 		}
+		printf(RESETT);
 		Affichage(l, c, lp, cp+strlen(ja->name)+3, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==4 && cp==77) {
-		printf("1: ");
+		printf( BRED "1: ");
 		for(int i=0; i<strlen(ba->name); i++) {
 			printf("%c", *(ba->name+i));
 		}
+		printf(RESETT);
 		Affichage(l, c, lp, cp+strlen(ba->name)+3, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==5 && cp==3) {
 		x=ja->pv;
@@ -1518,16 +1617,18 @@ void Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc
 		}
 		Affichage(l, c, lp, cp+4+k+6, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==10 && cp==4) { ////
-		printf("2: ");
+		printf( BBLU "2: ");
 		for(int i=0; i<strlen(jb->name); i++) {
 			printf("%c", *(jb->name+i));
 		}
+		printf(RESETT);
 		Affichage(l, c, lp, cp+strlen(jb->name)+3, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==10 && cp==77) {
-		printf("2: ");
+		printf( BRED "2: ");
 		for(int i=0; i<strlen(bb->name); i++) {
 			printf("%c", *(bb->name+i));
 		}
+		printf(RESETT);
 		Affichage(l, c, lp, cp+strlen(bb->name)+3, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==11 && cp==3) {
 		x=jb->pv;
@@ -1600,16 +1701,18 @@ void Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc
 		}
 		Affichage(l, c, lp, cp+4+k+6, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==16 && cp==4) { ////
-		printf("3: ");
+		printf( BBLU "3: ");
 		for(int i=0; i<strlen(jc->name); i++) {
 			printf("%c", *(jc->name+i));
 		}
+		printf(RESETT);
 		Affichage(l, c, lp, cp+strlen(jc->name)+3, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==16 && cp==77) {
-		printf("3: ");
+		printf( BRED "3: ");
 		for(int i=0; i<strlen(bc->name); i++) {
 			printf("%c", *(bc->name+i));
 		}
+		printf(RESETT);
 		Affichage(l, c, lp, cp+strlen(bc->name)+3, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==17 && cp==3) {
 		x=jc->pv;
@@ -1778,10 +1881,9 @@ void Turn(int who, int mo, int *dif, int *choixP, int *choixA, int *choixD, Bot 
 		while(CheckPerso2(*choixD, da, db, dc));
 	} else {
 		Computer(dif, choixP, choixA, choixD, aa, ab, ac, da, db, dc);
-		// l'IA qui va choisir l'attaque si 'who' est different de 0
-		printf("\n\n==============");
-		printf("\nP:%d A:%d D:%d\n", *choixP, *choixA, *choixD);
-		printf("==============\n");
+		// l'IA qui va choisir l'attaque si 'who' est different de 0 et mo==0
+		printf("\nCOMPUTER:\n==============\nP:%d A:%d D:%d\n==============\n", *choixP, *choixA, *choixD);
+		sleep(1);
 	}
 	switch(*choixP) {
 	case 1:
@@ -2440,18 +2542,6 @@ void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc) {
 	if(rc->pv>=rc->pvmax) {
 		rc->pv=rc->pvmax;
 	}
-	if(ja->dead==1 && jb->dead==1 && jc->dead==1 && ra->dead==1 && rb->dead==1 && rc->dead==1) {
-		printf("Egalite\n");
-		exit(0);
-	}
-	if(ja->dead==1 && jb->dead==1 && jc->dead==1) {
-		printf("Le joueur A a perdu\n");
-		exit(0);
-	}
-	if(ra->dead==1 && rb->dead==1 && rc->dead==1) {
-		printf("Le joueur B a perdu\n");
-		exit(0);
-	}
 	ja->stamina+=1;
 	jb->stamina+=1;
 	jc->stamina+=1;
@@ -2509,11 +2599,6 @@ int main() {
 	scanf("%s", nameA);
 
 	do {
-		printf("Choisir sa difficulte (1, 2 ou 3)--> ");
-		scanf("%d", &dif);
-	}
-	while(dif!=1 && dif!=2 && dif!=3);
-	do {
 		printf("Choisir solo: 0 ou Multijoueur: 1 |--> ");
 		scanf("%d", &mode);
 	}
@@ -2526,6 +2611,11 @@ int main() {
 		printf("Nom du joueur B (20 caracteres MAX sans espace)--> ");
 		scanf("%s", nameB);
 	}else{
+	do {
+		printf("Choisir sa difficulte (1, 2 ou 3)--> ");
+		scanf("%d", &dif);
+	}
+	while(dif!=1 && dif!=2 && dif!=3);
 	    nameB="Computer";
 	}
 	do {
@@ -2545,8 +2635,18 @@ int main() {
 		}
 	}
 	while(fin==0);
+	if(ja.dead==1 && jb.dead==1 && jc.dead==1 && ba.dead==1 && bb.dead==1 && bc.dead==1) {
+		printf("Egalite\n");
+		exit(0);
+	}else if(ja.dead==1 && jb.dead==1 && jc.dead==1) {
+		printf("Le joueur A a perdu\n");
+		exit(0);
+	}else if(ba.dead==1 && bb.dead==1 && bc.dead==1) {
+		printf("Le joueur B a perdu\n");
+		exit(0);
+	}
 
 
 
 	return 0;
-}	
+}
