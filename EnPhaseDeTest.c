@@ -106,6 +106,19 @@ void ImprimeMap(int l, int c, int lp, int cp, int position) {//(26, 121, 1, 1, p
 	} else if(cp==2 && lp==2) {
 		printf(UWHT"Carte du dongeon:"RESETT);
 		ImprimeMap(l, c, lp, cp+17, position);
+	} else if(cp==10 && lp==6) {
+		printf("Position actuelle: ");
+		ImprimeMap(l, c, lp, cp+19, position);
+	} else if(cp==10 && lp==8) {
+		printf("Position suivante: ");
+		ImprimeMap(l, c, lp, cp+19, position);
+	} else if(cp==29 && lp==6) {
+	    int i=1;
+		printf("%d", position);
+		if(position){
+		    i=2;
+		}
+		ImprimeMap(l, c, lp, cp+i, position);
 	} else if(lp==1) {
 		printf("_________________________________________________________________________________________________________________________\n");
 		ImprimeMap(l, c, lp+1, 1, position);
@@ -115,16 +128,16 @@ void ImprimeMap(int l, int c, int lp, int cp, int position) {//(26, 121, 1, 1, p
 	} else if(cp==1) {
 		printf("|");
 		ImprimeMap(l, c, lp, 2, position);
-	} else if((lp==6 && cp==60) || (lp==7 && cp==59) || (lp==9 && cp==57) || (lp==10 && cp==55) || (lp==13 && cp==62) || (lp==12 && cp==63) || (lp==15 && cp==67) || (lp==16 && cp==66) || (lp==18 && cp==64) || (lp==19 && cp==62)) {
+	} else if((lp==13 && cp==55) || (lp==12 && cp==56) || (lp==15 && cp==60) || (lp==16 && cp==59) || (lp==6 && cp==60) || (lp==7 && cp==59) || (lp==9 && cp==57) || (lp==10 && cp==55) || (lp==13 && cp==62) || (lp==12 && cp==63) || (lp==15 && cp==67) || (lp==16 && cp==66) || (lp==18 && cp==64) || (lp==19 && cp==62)) {
 		printf(BWHT"/"RESETT);
 		ImprimeMap(l, c, lp, cp+1, position);
-	} else if((lp==6 && cp==62) || (lp==7 && cp==63) || (lp==9 && cp==65) || (lp==10 && cp==67) || (lp==13 && cp==60) || (lp==12 && cp==59) || (lp==15 && cp==55) || (lp==16 && cp==56) || (lp==18 && cp==58) || (lp==19 && cp==60)) {
+	} else if((lp==12 && cp==66) || (lp==13 && cp==67) ||(lp==15 && cp==62) || (lp==16 && cp==63) || (lp==6 && cp==62) || (lp==7 && cp==63) || (lp==9 && cp==65) || (lp==10 && cp==67) || (lp==13 && cp==60) || (lp==12 && cp==59) || (lp==15 && cp==55) || (lp==16 && cp==56) || (lp==18 && cp==58) || (lp==19 && cp==60)) {
 		printf(BWHT"\\"RESETT);
 		ImprimeMap(l, c, lp, cp+1, position);
 	} else if((lp==9 && cp==58) || (lp==10 && cp==58) || (lp==9 && cp==64) || (lp==10 && cp==64) || (lp==13 && cp==54) || (lp==13 && cp==68) || (lp==12 && cp==54) || (lp==12 && cp==68)) {
 		printf(BWHT"|"RESETT);
 		ImprimeMap(l, c, lp, cp+1, position);
-	} else if((lp==9 && cp==56) || (lp==9 && cp==66) || (lp==18 && cp==59) || (lp==18 && cp==63)) {
+	} else if((lp==11 && cp==65) || (lp==11 && cp==57) || (lp==9 && cp==56) || (lp==9 && cp==66) || (lp==18 && cp==59) || (lp==18 && cp==63)) {
 		printf(BWHT"_"RESETT);
 		ImprimeMap(l, c, lp, cp+1, position);
 	} else if(lp==5 && cp==61) {
@@ -3064,7 +3077,7 @@ int main() {
 	int mode=0;
 	
 	///////////// map.cha
-	int position=100;
+	int position=13;
 	ImprimeMap(26, 121, 1, 1, position);
 	/////////////
 	
