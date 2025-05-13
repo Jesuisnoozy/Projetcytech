@@ -3575,7 +3575,6 @@ int main() { // |(^-^)/ main
 	}
 	///////////// map.c
 	int position=0;
-	ImprimeMap(26, 121, 1, 1, position);
 	/////////////
 	
 	char *nameA=malloc(sizeof(char)*NAMESIZE);
