@@ -83,19 +83,19 @@
 #define CRESET "\e[0m"
 #define COLOR_RESET "\e[0m"
 
-typedef struct {
+typedef struct { //structure pour creer des attaques
 	char *name;
 	int damage, focusdamage, heal, focusheal, poison, stun, confused;
 } Attack;
 
-typedef struct {
+typedef struct { //structure principale personnage (Bunny) surnommé 'Bot'
 	char *name;
 	int agility, pvmax, stamina, poison, stun, confused, pv, dead, utiliunique, chosen;
 	float defence;
 	Attack normal, special, unique;
 } Bot;
 
-Attack Attackbuilder(int num) {
+Attack Attackbuilder(int num) { // Switchase constructeur d'attaque predefinie
 	Attack att;
 	switch(num) { // attaque normal (0-99) ; attaque special (100-199) ; attaque unique (200-299)
 	case 1234:
@@ -743,7 +743,7 @@ Attack Attackbuilder(int num) {
 	return att;
 }
 
-Bot Builder(float defen, int agil, int health, int norm, int spec, int uniq, int chosen) {
+Bot Builder(float defen, int agil, int health, int norm, int spec, int uniq, int chosen) {  // Constructeur personnage (Bunny)
 	Bot a;
 	a.defence=1-(defen/100);
 	a.agility=agil;
@@ -758,11 +758,11 @@ Bot Builder(float defen, int agil, int health, int norm, int spec, int uniq, int
 	a.stamina=2;
 	a.dead=0;
 	a.utiliunique=0;
-	a.chosen=chosen;
+	a.chosen=chosen; //affichage
 	return a;
 }
 
-Bot Characterbuilder(int num) {
+Bot Characterbuilder(int num) { // Personnages predefinie---> utilise Bot 'Builder'
 	Bot a;
 	switch(num) {
 	// defence, agility, points de vie, att normal, att special, att unique)
@@ -991,7 +991,7 @@ Bot Characterbuilder(int num) {
 }
 
 /////////////////////// map.c
-void ImprimeMap(int l, int c, int lp, int cp, int position) {//(26, 121, 1, 1, position sur la map);
+void ImprimeMap(int l, int c, int lp, int cp, int position) { //(26, 121, 1, 1, position sur la map)
 	int k=0;
 	if(lp>l) {
 		return;
@@ -1006,9 +1006,9 @@ void ImprimeMap(int l, int c, int lp, int cp, int position) {//(26, 121, 1, 1, p
 		printf("Position actuelle: ");
 		ImprimeMap(l, c, lp, cp+19, position);
 	} else if(cp==29 && lp==6) {
-	    int i=1;
+	        int i=1;
 		printf("%d", position);
-		if(position){
+		if(position>=10){
 		    i=2;
 		}
 		ImprimeMap(l, c, lp, cp+i, position);
@@ -1086,7 +1086,7 @@ void ImprimeMap(int l, int c, int lp, int cp, int position) {//(26, 121, 1, 1, p
 }
 ////////////////////// protosecteur.c
 
-int Secteur(int position, Bot *ra, Bot *rb, Bot *rc){
+int Secteur(int position, Bot *ra, Bot *rb, Bot *rc){  //fonction pour changer de position
    int choix;
    switch(position){
         case 0:
@@ -1306,7 +1306,7 @@ int Secteur(int position, Bot *ra, Bot *rb, Bot *rc){
 
 /////////////////////
 
-int MinMax(int *x, int a, int b, int c) {
+int MinMax(int *x, int a, int b, int c) { //prends le Max entre a, b et c
 	int max=-1000;
 	if(a>max && a!=0) {
 		max=a;
@@ -1328,7 +1328,7 @@ int MinMax(int *x, int a, int b, int c) {
 	return max;
 }
 
-int CheckPerso1(int choix, Bot *ja, Bot*jb, Bot *jc) {
+int CheckPerso1(int choix, Bot *ja, Bot*jb, Bot *jc) { // fonction qui regarde si le personnage selectionné peut attaquer
 	switch(choix) {
 	case 1:
 		if(ja->dead==1 || ja->stun==1) {
@@ -1355,7 +1355,7 @@ int CheckPerso1(int choix, Bot *ja, Bot*jb, Bot *jc) {
 		return 1;
 	}
 }
-int CheckPerso2(int choix, Bot *ja, Bot*jb, Bot *jc) {
+int CheckPerso2(int choix, Bot *ja, Bot*jb, Bot *jc) { // fonction qui regarde si le personnage selectionné n'est pas mort
 	switch(choix) {
 	case 1:
 		if(ja->dead==1) {
@@ -1383,7 +1383,7 @@ int CheckPerso2(int choix, Bot *ja, Bot*jb, Bot *jc) {
 	}
 }
 
-int CheckStamina(int choixP, int choixA, Bot *ja, Bot*jb, Bot *jc) {
+int CheckStamina(int choixP, int choixA, Bot *ja, Bot*jb, Bot *jc) { //// fonction qui regarde si le personnage a assez  de stamina pour attaquer
 	if(choixP==1) {
 		switch(choixA) {
 		case 1:
@@ -1785,11 +1785,13 @@ void Computer(int *dif, int *choixP, int *choixA, int *choixD, Bot *ra, Bot *rb,
 			}
 		}
 	}
-	if(CheckPerso1(*choixP, ra, rb, rc) || CheckStamina(*choixP, *choixA, ra, rb, rc) || CheckPerso2(*choixD, ja, jb, jc)){
+	if(CheckPerso1(*choixP, ra, rb, rc) && CheckStamina(*choixP, *choixA, ra, rb, rc) && CheckPerso2(*choixD, ja, jb, jc)){
+		/// un vide monstrueux
+	}else{
 	    Computer(dif, choixP, choixA, choixD, ra, rb, rc, ja, jb, jc);
 	}
 }
-void AffichAttaque(int *choixP, Bot *aa, Bot *ab, Bot *ac) {
+void AffichAttaque(int *choixP, Bot *aa, Bot *ab, Bot *ac) { //affiche les attaques du personnage selectionner durant le tour
 	int k=0;
 	if(*choixP==1) {
 		printf(BWHT"|1:");
@@ -2038,7 +2040,7 @@ void AffichAttaque(int *choixP, Bot *aa, Bot *ab, Bot *ac) {
 	}
 }
 
-void AffichBunny(int x) {
+void AffichBunny(int x) { //affiche les visages des BUNNY RAIDERS
 	switch(x) {
 	case 1:
 		printf("\\{x u O}-|    ");
@@ -2605,7 +2607,7 @@ void AffichPersoAttaque(int sexy){
 		return;
 }
 
-void AffichPersoChoix(int l, int c, int lp, int cp) {//(27, 120, 1, 1);
+void AffichPersoChoix(int l, int c, int lp, int cp) {//(27, 120, 1, 1); // affiche les different personnages a selectionner
 	int k=0;
 	if(lp>l) {
 		return;
@@ -3366,7 +3368,7 @@ void Turn(int who, int mo, int *dif, int *choixP, int *choixA, int *choixD, Bot 
 
 
 
-void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc, int *turn) {
+void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc, int *turn) { // procedure necessaire a la fin du tour pour appliquer des effets et corriger des bugs
     turn+=1;
     if((*turn%2)==0){
         ja->stun=0;
@@ -3487,7 +3489,7 @@ void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc, int *turn) {
 	}
 	printf("\n\n\n");
 }
-void GameEnd(int *win, int position, Bot *ja, Bot *jb, Bot *jc){
+void GameEnd(int *win, int position, Bot *ja, Bot *jb, Bot *jc){ // necessaire a la fin d'une partie pour en lancer une suivante, ou pas.
     if(*win==1){
         *win=0;
     }else{
@@ -3525,7 +3527,7 @@ void GameEnd(int *win, int position, Bot *ja, Bot *jb, Bot *jc){
 }
 
 
-void ChooseBunny(int var, int *bandicoot){
+void ChooseBunny(int var, int *bandicoot){ // procedure qui fonctionne avec l'ecran de selection dde personnage et la procedure Choose
     *bandicoot=0;
 	do{
 	    printf("(Selectionez:1  Retour:2)---> ");
@@ -3535,7 +3537,7 @@ void ChooseBunny(int var, int *bandicoot){
 	while(*bandicoot!=1 && *bandicoot!=2);
 }
 
-void Choose(int *var){
+void Choose(int *var){ // procedure qui fonctionne avec l'ecran de selection dde personnage et la procedure ChooseBunny
     do{
         printf("Selectioner un Bunny pour les détailes (1-16): ");
 		scanf("%d", var);
@@ -3546,7 +3548,7 @@ void Choose(int *var){
 }
 
 
-int main() {
+int main() { // |(^-^)/ main
 	int fin=0;
 	int choixD=0;
 	int choixA=0;
@@ -3586,7 +3588,7 @@ int main() {
 	if(nameB==NULL) {
 		exit(1);
 	}
-	if(mode==1) {
+	if(mode==1) { // MODE MULTIJOUEUR INITIALISATION
 		printf("Nom du joueur B (20 caracteres MAX sans espace)--> ");
 		scanf("%s", nameB);
 		getchar();
@@ -3638,7 +3640,7 @@ int main() {
     	}
 	    while(bandicoot!=1);
 	    bc=Characterbuilder(var);
-	} else {
+	} else { // MODE SOLO INITIALISATION
 		do {
 			printf("Choisir sa difficulte (1, 2 ou 3)--> ");
 			scanf("%d", &dif);
@@ -3671,7 +3673,7 @@ int main() {
 	    while(bandicoot!=1);
 	    jc=Characterbuilder(var);
 	}
-if(mode==0){
+if(mode==0){ // MODE SOLO
     do{
         do {
 		    Turn(1, mode, &dif, &choixP, &choixA, &choixD, &ja, &jb, &jc, &ba, &bb, &bc, nameA, nameB);
@@ -3745,7 +3747,7 @@ if(mode==0){
 	    if(win==1){
 	        GameEnd(&win, position, &ja, &jb, &jc);
 	    }
-}else{
+}else{ // MODE MULTIJOUEUR
     do {
 		    Turn(1, mode, &dif, &choixP, &choixA, &choixD, &ja, &jb, &jc, &ba, &bb, &bc, nameA, nameB);
 		    Checkup(&ja, &jb, &jc, &ba, &bb, &bc, &tour);
@@ -3774,4 +3776,4 @@ if(mode==0){
 	    }
     }
 return 0;
-}
+} // THE END
