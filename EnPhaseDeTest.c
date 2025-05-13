@@ -975,7 +975,7 @@ Bot Characterbuilder(int num) {
 		strcpy(a.name, "Dark Zombie");
 		break;
 	case 105:
-		a=Builder(25, 25, 400, 99, 199, 298, num);
+		a=Builder(80, 25, 250, 99, 199, 298, num);
 		a.name=malloc(sizeof(char)*9);
 		if(a.name==NULL) {
 			exit(1);
