@@ -6,6 +6,7 @@
 #include <errno.h>
 #include<unistd.h>
 #define NAMESIZE 21
+#define BUNNY 14
 
 //Regular text
 #define BLK "\e[0;30m"
@@ -89,7 +90,7 @@ typedef struct {
 
 typedef struct {
 	char *name;
-	int agility, pvmax, stamina, poison, stun, confused, pv, dead, utiliunique;
+	int agility, pvmax, stamina, poison, stun, confused, pv, dead, utiliunique, chosen;
 	float defence;
 	Attack normal, special, unique;
 } Bot;
@@ -501,11 +502,11 @@ Attack Attackbuilder(int num) {
 		att.poison=1;
 		att.stun=0;
 		att.confused=1;
-		att.name=malloc(sizeof(char)*17);
+		att.name=malloc(sizeof(char)*19);
 		if(att.name==NULL) {
 			exit(1);
 		}
-		strcpy(att.name, "TempC*te des C	ons");
+		strcpy(att.name, "Tempete des ombres");
 		break;
 
 
@@ -537,7 +538,7 @@ Attack Attackbuilder(int num) {
 		if(att.name==NULL) {
 			exit(1);
 		}
-		strcpy(att.name, "Eil du Faucon");
+		strcpy(att.name, "Oeil du Faucon");
 		break;
 
 	case 207:
@@ -609,7 +610,7 @@ Attack Attackbuilder(int num) {
 	return att;
 }
 
-Bot Builder(float defen, int agil, int health, int norm, int spec, int uniq) {
+Bot Builder(float defen, int agil, int health, int norm, int spec, int uniq, int chosen) {
 	Bot a;
 	a.defence=1-(defen/100);
 	a.agility=agil;
@@ -624,6 +625,7 @@ Bot Builder(float defen, int agil, int health, int norm, int spec, int uniq) {
 	a.stamina=2;
 	a.dead=0;
 	a.utiliunique=0;
+	a.chosen=chosen;
 	return a;
 }
 
@@ -632,7 +634,7 @@ Bot Characterbuilder(int num) {
 	switch(num) {
 	// defence, agility, points de vie, att normal, att special, att unique)
 	case 1:
-		a=Builder(25, 5, 200, 0, 100, 200);
+		a=Builder(25, 5, 200, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*9);
 		if(a.name==NULL) {
 			exit(1);
@@ -640,7 +642,7 @@ Bot Characterbuilder(int num) {
 		strcpy(a.name, "Forgeron");
 		break;// trC(s bonne dC)fense
 	case 2:
-		a=Builder(75, 25, 120, 0, 100, 200);
+		a=Builder(75, 25, 120, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*7);
 		if(a.name==NULL) {
 			exit(1);
@@ -649,7 +651,7 @@ Bot Characterbuilder(int num) {
 		break;// trC(s bonne agilitC)
 
 	case 3:
-		a=Builder(45, 50, 225, 0, 100, 200);
+		a=Builder(45, 50, 225, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*9);
 		if(a.name==NULL) {
 			exit(1);
@@ -658,24 +660,24 @@ Bot Characterbuilder(int num) {
 		break;// haut taux de PV
 
 	case 4:
-		a=Builder(2, 50, 240, 0, 100, 200);
+		a=Builder(2, 50, 240, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*7);
 		if(a.name==NULL) {
 			exit(1);
 		}
-		strcpy(a.name, "RC4deur");
+		strcpy(a.name, "Raideur");
 		break;// Tout++ car trop d'aura enfaite
 	case 5:
-		a=Builder(80, 35, 180, 5, 105, 209);
+		a=Builder(80, 35, 180, 5, 105, 209, num);
 		a.name=malloc(sizeof(char)*13);
 		if(a.name==NULL) {
 			exit(1);
 		}
-		strcpy(a.name, "NC)cromancien");
+		strcpy(a.name, "Necromancien");
 		break;// PV/agilitC)+
 
 	case 6:
-		a=Builder(30, 40, 200, 0, 100, 200);
+		a=Builder(30, 40, 200, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*6);
 		if(a.name==NULL) {
 			exit(1);
@@ -684,7 +686,7 @@ Bot Characterbuilder(int num) {
 		break;// PV++
 
 	case 7:
-		a=Builder(0, 50, 100, 0, 100, 200);
+		a=Builder(0, 50, 100, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*14);
 		if(a.name==NULL) {
 			exit(1);
@@ -695,7 +697,7 @@ Bot Characterbuilder(int num) {
 
 
 	case 8:
-		a=Builder(90, 10, 190, 0, 100, 200);
+		a=Builder(90, 10, 190, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*7);
 		if(a.name==NULL) {
 			exit(1);
@@ -704,7 +706,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 9:
-		a=Builder(5, 30, 135, 0, 100, 200);
+		a=Builder(5, 30, 135, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*11);
 		if(a.name==NULL) {
 			exit(1);
@@ -713,7 +715,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 10:
-		a=Builder(5, 45, 225, 0, 100, 200);
+		a=Builder(5, 45, 225, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*9);
 		if(a.name==NULL) {
 			exit(1);
@@ -722,7 +724,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 11:
-		a=Builder(66, 37, 111, 0, 100, 200);
+		a=Builder(66, 37, 111, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*11);
 		if(a.name==NULL) {
 			exit(1);
@@ -731,7 +733,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 12:
-		a=Builder(100, 39, 168, 0, 100, 200);
+		a=Builder(50, 39, 168, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*14);
 		if(a.name==NULL) {
 			exit(1);
@@ -740,7 +742,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 13:
-		a=Builder(15, 30, 175, 0, 100, 200);
+		a=Builder(15, 30, 175, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*9);
 		if(a.name==NULL) {
 			exit(1);
@@ -749,7 +751,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 14:
-		a=Builder(73, 18, 190, 0, 100, 200);
+		a=Builder(35, 18, 190, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*5);
 		if(a.name==NULL) {
 			exit(1);
@@ -758,7 +760,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 15:
-		a=Builder(55, 34, 250, 0, 100, 200);
+		a=Builder(55, 34, 250, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*13);
 		if(a.name==NULL) {
 			exit(1);
@@ -767,7 +769,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 16:
-		a=Builder(5, 0, 187, 0, 100, 200);
+		a=Builder(5, 0, 187, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*11);
 		if(a.name==NULL) {
 			exit(1);
@@ -776,7 +778,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 1000:
-		a=Builder(5.0, 0, 250, 0, 100, 200);
+		a=Builder(5.0, 0, 250, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*5);
 		if(a.name==NULL) {
 			exit(1);
@@ -784,7 +786,7 @@ Bot Characterbuilder(int num) {
 		strcpy(a.name, "Test");
 		break;
 	case 1001:
-		a=Builder(5.0, 5, 150, 1, 101, 201);
+		a=Builder(5.0, 5, 150, 1, 101, 201, num);
 		a.name=malloc(sizeof(char)*11);
 		if(a.name==NULL) {
 			exit(1);
@@ -792,20 +794,20 @@ Bot Characterbuilder(int num) {
 		strcpy(a.name, "TestPoison");
 		break;
 	case 1002:
-		a=Builder(5.0, 20, 150, 2, 102, 202);
+		a=Builder(5.0, 20, 150, 2, 102, 202, num);
 		a.name=malloc(sizeof(char)*14);
 		if(a.name==NULL) {
 			exit(1);
 		}
 		strcpy(a.name, "TestMaxHealth");
 		break;
-	case 1003:
-		a=Builder(5.0, 80, 150, 0, 100, 200);
+	case 100:
+		a=Builder(90.0, 100, 250, 0, 100, 200, num);
 		a.name=malloc(sizeof(char)*10);
 		if(a.name==NULL) {
 			exit(1);
 		}
-		strcpy(a.name, "DodgeTest");
+		strcpy(a.name, "GOD");
 		break;
 	default:
 		printf("ERREUR: Mauvais numero saisie pour le switchcase Characterbuilder\n");
@@ -1037,8 +1039,50 @@ void Computer(int *dif, int *choixP, int *choixA, int *choixD, Bot *ra, Bot *rb,
 		}
 		while(CheckPerso2(*choixD, ja, jb, jc));
 
-	} else {
-		if(z==1) {
+	} else {                 ///////
+		if(ra->pv<=50 && ra->utiliunique!=1) {
+			*choixP=1;
+			*choixA=2;
+			do {
+				*choixD=(rand()%3)+1;
+			}
+			while(CheckPerso2(*choixD, ja, jb, jc));
+		} else if(rb->pv<=50 && rb->utiliunique!=1) {
+			*choixP=1;
+			*choixA=2;
+			do {
+				*choixD=(rand()%3)+1;
+			}
+			while(CheckPerso2(*choixD, ja, jb, jc));
+		} else if(rc->pv<=50 && rc->utiliunique!=1) {
+			*choixP=1;
+			*choixA=2;
+			do {
+				*choixD=(rand()%3)+1;
+			}
+			while(CheckPerso2(*choixD, ja, jb, jc));
+		} else if(ra->pv<=50 && ra->stamina>=8) {
+			*choixP=1;
+			*choixA=2;
+			do {
+				*choixD=(rand()%3)+1;
+			}
+			while(CheckPerso2(*choixD, ja, jb, jc));
+		} else if(rb->pv<=50 && rb->stamina>=8) {
+			*choixP=1;
+			*choixA=2;
+			do {
+				*choixD=(rand()%3)+1;
+			}
+			while(CheckPerso2(*choixD, ja, jb, jc));
+		} else if(rc->pv<=50 && rc->stamina>=8) {
+			*choixP=1;
+			*choixA=2;
+			do {
+				*choixD=(rand()%3)+1;
+			}
+			while(CheckPerso2(*choixD, ja, jb, jc));
+		} else if(z==1) {
 			if(ja->pv<ra->normal.damage && ra->stamina>2) {
 				aa=1;
 			} else if(ja->pv<ra->special.damage && ra->stamina>7) {
@@ -1276,46 +1320,61 @@ void AffichAttaque(int *choixP, Bot *aa, Bot *ab, Bot *ac) {
 			printf(" ");
 		}
 		printf("4:RETOUR"RESETT" en arriere");
-		printf("\n|    dmg:%d", aa->normal.focusdamage); 
-		if(aa->normal.focusdamage==0){
-		    printf("                  ");
-		}else{  printf("                 "); }
-		printf("dmg:%d", aa->special.focusdamage); 
-		if(aa->special.focusdamage==0){
-		    printf("                  ");
-		}else{  printf("                 "); }
+		printf("\n|    dmg:%d", aa->normal.focusdamage);
+		if(aa->normal.focusdamage==0) {
+			printf("                  ");
+		} else {
+			printf("                 ");
+		}
+		printf("dmg:%d", aa->special.focusdamage);
+		if(aa->special.focusdamage==0) {
+			printf("                  ");
+		} else {
+			printf("                 ");
+		}
 		printf("dmg:%d\n", aa->unique.focusdamage);
-		printf("| AOEdmg:%d", aa->normal.damage); 
-		if(aa->normal.damage==0){
-		    printf("               ");
-		}else{  printf("              "); }
-		printf("AOEdmg:%d", aa->special.damage); 
-		if(aa->special.damage==0){
-		    printf("               ");
-		}else{  printf("              "); }
+		printf("| AOEdmg:%d", aa->normal.damage);
+		if(aa->normal.damage==0) {
+			printf("               ");
+		} else {
+			printf("              ");
+		}
+		printf("AOEdmg:%d", aa->special.damage);
+		if(aa->special.damage==0) {
+			printf("               ");
+		} else {
+			printf("              ");
+		}
 		printf("AOEdmg:%d\n", aa->unique.damage);
-		printf("|   heal:%d", aa->normal.focusheal); 
-		if(aa->normal.focusheal==0){
-		    printf("                 ");
-		}else{  printf("                "); }
-		printf("heal:%d", aa->special.focusheal); 
-		if(aa->special.focusheal==0){
-		    printf("                 ");
-		}else{  printf("                "); }
+		printf("|   heal:%d", aa->normal.focusheal);
+		if(aa->normal.focusheal==0) {
+			printf("                 ");
+		} else {
+			printf("                ");
+		}
+		printf("heal:%d", aa->special.focusheal);
+		if(aa->special.focusheal==0) {
+			printf("                 ");
+		} else {
+			printf("                ");
+		}
 		printf("heal:%d\n", aa->unique.focusheal);
-		printf("|AOEheal:%d", aa->normal.heal); 
-		if(aa->normal.heal==0){
-		    printf("              ");
-		}else{  printf("             "); }
-		printf("AOEheal:%d", aa->special.heal); 
-		if(aa->special.heal==0){
-		    printf("              ");
-		}else{  printf("             "); }
+		printf("|AOEheal:%d", aa->normal.heal);
+		if(aa->normal.heal==0) {
+			printf("              ");
+		} else {
+			printf("             ");
+		}
+		printf("AOEheal:%d", aa->special.heal);
+		if(aa->special.heal==0) {
+			printf("              ");
+		} else {
+			printf("             ");
+		}
 		printf("AOEheal:%d\n", aa->unique.heal);
-		
-		printf("effet:\n" GRN "| poison:%d             poison:%d             poison:%d\n", aa->normal.poison, aa->special.poison, aa->unique.poison);
-		printf(YEL"|   stun:%d               stun:%d               stun:%d\n", aa->normal.stun, aa->special.stun, aa->unique.stun);
-		printf(MAG"| confus:%d             confus:%d             confus:%d\n"RESETT, aa->normal.confused, aa->special.confused, aa->unique.confused);
+		printf("effet:\n" GRN "| poison:" RESETT "%d" GRN "             poison:" RESETT "%d" GRN "             poison:" RESETT "%d\n", aa->normal.poison, aa->special.poison, aa->unique.poison);
+		printf(YEL"|   stun:" RESETT "%d" YEL "               stun:" RESETT "%d" YEL "               stun:" RESETT "%d\n", aa->normal.stun, aa->special.stun, aa->unique.stun);
+		printf(MAG"| confus:" RESETT "%d" MAG "             confus:" RESETT "%d" MAG "             confus:" RESETT "%d\n", aa->normal.confused, aa->special.confused, aa->unique.confused);
 	} else if(*choixP==2) {
 		printf(BWHT"|1:");
 		for(int i=0; i<strlen(ab->normal.name); i++) {
@@ -1342,46 +1401,61 @@ void AffichAttaque(int *choixP, Bot *aa, Bot *ab, Bot *ac) {
 			printf(" ");
 		}
 		printf("4:RETOUR"RESETT" en arriere");
-		printf("\n|    dmg:%d", ab->normal.focusdamage); 
-		if(ab->normal.focusdamage==0){
-		    printf("                  ");
-		}else{  printf("                 "); }
-		printf("dmg:%d", ab->special.focusdamage); 
-		if(ab->special.focusdamage==0){
-		    printf("                  ");
-		}else{  printf("                 "); }
+		printf("\n|    dmg:%d", ab->normal.focusdamage);
+		if(ab->normal.focusdamage==0) {
+			printf("                  ");
+		} else {
+			printf("                 ");
+		}
+		printf("dmg:%d", ab->special.focusdamage);
+		if(ab->special.focusdamage==0) {
+			printf("                  ");
+		} else {
+			printf("                 ");
+		}
 		printf("dmg:%d\n", ab->unique.focusdamage);
-		printf("| AOEdmg:%d", ab->normal.damage); 
-		if(ab->normal.damage==0){
-		    printf("               ");
-		}else{  printf("              "); }
-		printf("AOEdmg:%d", ab->special.damage); 
-		if(ab->special.damage==0){
-		    printf("               ");
-		}else{  printf("              "); }
+		printf("| AOEdmg:%d", ab->normal.damage);
+		if(ab->normal.damage==0) {
+			printf("               ");
+		} else {
+			printf("              ");
+		}
+		printf("AOEdmg:%d", ab->special.damage);
+		if(ab->special.damage==0) {
+			printf("               ");
+		} else {
+			printf("              ");
+		}
 		printf("AOEdmg:%d\n", ab->unique.damage);
-		printf("|   heal:%d", ab->normal.focusheal); 
-		if(ab->normal.focusheal==0){
-		    printf("                 ");
-		}else{  printf("                "); }
-		printf("heal:%d", ab->special.focusheal); 
-		if(ab->special.focusheal==0){
-		    printf("                 ");
-		}else{  printf("                "); }
+		printf("|   heal:%d", ab->normal.focusheal);
+		if(ab->normal.focusheal==0) {
+			printf("                 ");
+		} else {
+			printf("                ");
+		}
+		printf("heal:%d", ab->special.focusheal);
+		if(ab->special.focusheal==0) {
+			printf("                 ");
+		} else {
+			printf("                ");
+		}
 		printf("heal:%d\n", ab->unique.focusheal);
-		printf("|AOEheal:%d", ab->normal.heal); 
-		if(ab->normal.heal==0){
-		    printf("              ");
-		}else{  printf("             "); }
-		printf("AOEheal:%d", ab->special.heal); 
-		if(ab->special.heal==0){
-		    printf("              ");
-		}else{  printf("             "); }
+		printf("|AOEheal:%d", ab->normal.heal);
+		if(ab->normal.heal==0) {
+			printf("              ");
+		} else {
+			printf("             ");
+		}
+		printf("AOEheal:%d", ab->special.heal);
+		if(ab->special.heal==0) {
+			printf("              ");
+		} else {
+			printf("             ");
+		}
 		printf("AOEheal:%d\n", ab->unique.heal);
-		
-		printf("effet:\n" GRN "| poison:%d             poison:%d             poison:%d\n", ab->normal.poison, ab->special.poison, ab->unique.poison);
-		printf(YEL"|   stun:%d               stun:%d               stun:%d\n", ab->normal.stun, ab->special.stun, ab->unique.stun);
-		printf(MAG"| confus:%d             confus:%d             confus:%d\n"RESETT, ab->normal.confused, ab->special.confused, ab->unique.confused);
+		printf("effet:\n" GRN "| poison:" RESETT "%d" GRN "             poison:" RESETT "%d" GRN "             poison:" RESETT "%d\n", ab->normal.poison, ab->special.poison, ab->unique.poison);
+		printf(YEL"|   stun:" RESETT "%d" YEL "               stun:" RESETT "%d" YEL "               stun:" RESETT "%d\n", ab->normal.stun, ab->special.stun, ab->unique.stun);
+		printf(MAG"| confus:" RESETT "%d" MAG "             confus:" RESETT "%d" MAG "             confus:" RESETT "%d\n", ab->normal.confused, ab->special.confused, ab->unique.confused);
 	} else {
 		printf(BWHT"|1:");
 		for(int i=0; i<strlen(ac->normal.name); i++) {
@@ -1408,46 +1482,123 @@ void AffichAttaque(int *choixP, Bot *aa, Bot *ab, Bot *ac) {
 			printf(" ");
 		}
 		printf("4:RETOUR"RESETT" en arriere");
-		printf("\n|    dmg:%d", ac->normal.focusdamage); 
-		if(ac->normal.focusdamage==0){
-		    printf("                  ");
-		}else{  printf("                 "); }
-		printf("dmg:%d", ac->special.focusdamage); 
-		if(ac->special.focusdamage==0){
-		    printf("                  ");
-		}else{  printf("                 "); }
+		printf("\n|    dmg:%d", ac->normal.focusdamage);
+		if(ac->normal.focusdamage==0) {
+			printf("                  ");
+		} else {
+			printf("                 ");
+		}
+		printf("dmg:%d", ac->special.focusdamage);
+		if(ac->special.focusdamage==0) {
+			printf("                  ");
+		} else {
+			printf("                 ");
+		}
 		printf("dmg:%d\n", ac->unique.focusdamage);
-		printf("| AOEdmg:%d", ac->normal.damage); 
-		if(ac->normal.damage==0){
-		    printf("               ");
-		}else{  printf("              "); }
-		printf("AOEdmg:%d", ac->special.damage); 
-		if(ac->special.damage==0){
-		    printf("               ");
-		}else{  printf("              "); }
+		printf("| AOEdmg:%d", ac->normal.damage);
+		if(ac->normal.damage==0) {
+			printf("               ");
+		} else {
+			printf("              ");
+		}
+		printf("AOEdmg:%d", ac->special.damage);
+		if(ac->special.damage==0) {
+			printf("               ");
+		} else {
+			printf("              ");
+		}
 		printf("AOEdmg:%d\n", ac->unique.damage);
-		printf("|   heal:%d", ac->normal.focusheal); 
-		if(ac->normal.focusheal==0){
-		    printf("                 ");
-		}else{  printf("                "); }
-		printf("heal:%d", ac->special.focusheal); 
-		if(ac->special.focusheal==0){
-		    printf("                 ");
-		}else{  printf("                "); }
+		printf("|   heal:%d", ac->normal.focusheal);
+		if(ac->normal.focusheal==0) {
+			printf("                 ");
+		} else {
+			printf("                ");
+		}
+		printf("heal:%d", ac->special.focusheal);
+		if(ac->special.focusheal==0) {
+			printf("                 ");
+		} else {
+			printf("                ");
+		}
 		printf("heal:%d\n", ac->unique.focusheal);
-		printf("|AOEheal:%d", ac->normal.heal); 
-		if(ac->normal.heal==0){
-		    printf("              ");
-		}else{  printf("             "); }
-		printf("AOEheal:%d", ac->special.heal); 
-		if(ac->special.heal==0){
-		    printf("              ");
-		}else{  printf("             "); }
+		printf("|AOEheal:%d", ac->normal.heal);
+		if(ac->normal.heal==0) {
+			printf("              ");
+		} else {
+			printf("             ");
+		}
+		printf("AOEheal:%d", ac->special.heal);
+		if(ac->special.heal==0) {
+			printf("              ");
+		} else {
+			printf("             ");
+		}
 		printf("AOEheal:%d\n", ac->unique.heal);
-		
-		printf("effet:\n" GRN "| poison:%d             poison:%d             poison:%d\n", ac->normal.poison, ac->special.poison, ac->unique.poison);
-		printf(YEL"|   stun:%d               stun:%d               stun:%d\n", ac->normal.stun, ac->special.stun, ac->unique.stun);
-		printf(MAG"| confus:%d             confus:%d             confus:%d\n"RESETT, ac->normal.confused, ac->special.confused, ac->unique.confused);
+
+		printf("effet:\n" GRN "| poison:" RESETT "%d" GRN "             poison:" RESETT "%d" GRN "             poison:" RESETT "%d\n", ac->normal.poison, ac->special.poison, ac->unique.poison);
+		printf(YEL"|   stun:" RESETT "%d" YEL "               stun:" RESETT "%d" YEL "               stun:" RESETT "%d\n", ac->normal.stun, ac->special.stun, ac->unique.stun);
+		printf(MAG"| confus:" RESETT "%d" MAG "             confus:" RESETT "%d" MAG "             confus:" RESETT "%d\n", ac->normal.confused, ac->special.confused, ac->unique.confused);
+	}
+}
+
+void AffichBunny(int x) {
+	switch(x) {
+	case 1:
+		printf("\\{x u O}-|    ");
+		break;
+	case 2:
+		printf("/{^ - ^}_/    ");
+		break;
+	case 3:
+		printf("\\(.___.)-  }X)");
+		break;
+	case 4:
+	    printf("/{O___o}\\     ");
+		break;
+	case 5:
+        printf("/{^ . ~}/     ");
+		break;
+	case 6:
+        printf("\\{-___-}-[X]  ");
+		break;
+	case 7:
+        printf("/{' V ^}_|    ");
+		break;
+	case 8:
+        printf("/[o _ o]--#   ");
+		break;
+	case 9:
+        printf("\\[' v ']/     ");
+		break;
+	case 10:
+        printf("|(' _ .)~~/   ");
+		break;
+	case 11:
+        printf("/{-  .-}~D    ");
+		break;
+	case 12:
+        printf("/{* - *}~$ zap");
+		break;
+	case 13:
+        printf("'( .-. )'     ");
+		break;
+	case 14:
+        printf("({o . o})     ");
+		break;
+	case 15:
+        printf("/{. O .}/     ");
+		break;
+	case 16:
+        printf("\\{  -_.}~|Z|  ");
+		break;
+	case 69:
+	    printf(" {X . X}      ");
+	    break;
+	case 100:
+	    printf("/{  oWo}~BAM  ");
+	    break;
+	default:
+		printf("\\{? w ?}/     ");
 	}
 }
 
@@ -1789,46 +1940,46 @@ void Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc
 		Affichage(l, c, lp, cp+9, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==8 && cp==20) {
 		if(ja->dead==0) {
-			printf("\\{-___-}-[X]");
+			AffichBunny(ja->chosen);
 		} else {
-			printf(" {X _ X}    ");
+			AffichBunny(69);
 		}
-		Affichage(l, c, lp, cp+12, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
+		Affichage(l, c, lp, cp+BUNNY, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==14 && cp==20) {
 		if(jb->dead==0) {
-			printf("\\{x u O}--");
+			AffichBunny(jb->chosen);
 		} else {
-			printf(" {X - X}  ");
+			AffichBunny(69);
 		}
-		Affichage(l, c, lp, cp+10, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
+		Affichage(l, c, lp, cp+BUNNY, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==20 && cp==20) {
 		if(jc->dead==0) {
-			printf("/{^ - ^}_/");
+			AffichBunny(jc->chosen);
 		} else {
-			printf(" {X _ X}  ");
+			AffichBunny(69);
 		}
-		Affichage(l, c, lp, cp+10, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
-	} else if(lp==8 && cp==87) {
+		Affichage(l, c, lp, cp+BUNNY, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
+	} else if(lp==8 && cp==90) {
 		if(ba->dead==0) {
-			printf("(X)-{.___.}/");
+			AffichBunny(ba->chosen);
 		} else {
-			printf("    {X ^ X} ");
+			AffichBunny(69);
 		}
-		Affichage(l, c, lp, cp+12, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
+		Affichage(l, c, lp, cp+BUNNY, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==14 && cp==90) {
 		if(bb->dead==0) {
-			printf("/{O___o}\\");
+			AffichBunny(bb->chosen);
 		} else {
-			printf(" {X - X} ");
+			AffichBunny(69);
 		}
-		Affichage(l, c, lp, cp+9, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
-	} else if(lp==20 && cp==89) {
+		Affichage(l, c, lp, cp+BUNNY, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
+	} else if(lp==20 && cp==90) {
 		if(bc->dead==0) {
-			printf(" /{^ . ~}/");
+			AffichBunny(bc->chosen);
 		} else {
-			printf("  {X - X} ");
+			AffichBunny(69);
 		}
-		Affichage(l, c, lp, cp+10, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
+		Affichage(l, c, lp, cp+BUNNY, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else {
 		printf(" ");
 		Affichage(l, c, lp, cp+1, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
@@ -1836,19 +1987,243 @@ void Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc
 	}
 }
 
-void AffichChoixPerso(int mode) {
-	int a, b, c, d, e, f, g;
-	printf("1:");
-	Bot ja=Characterbuilder(a);
-	Bot jb=Characterbuilder(b);
-	Bot jc=Characterbuilder(c);
-	Bot ba=Characterbuilder(e);
-	Bot bb=Characterbuilder(f);
-	Bot bc=Characterbuilder(g);
-	printf(" ");
+void AffichPersoAttaque(int sexy){
+    Bot a=Characterbuilder(sexy);
+    int k=0;
+        printf("\n|Nom du Bunny: ");
+        for(int i=0; i<strlen(a.name); i++) {
+			printf("%c", *(a.name+i));
+		}
+	    printf("|PV: %d\n", a.pvmax);
+	    printf("|Agilite: %d  (pourcentage de chance d'esquiver une attaque-> x100) \n", a.agility);
+	    printf("|defence: %d  (reduction de degat-> attaque*defence)\n", a.pvmax);
+        printf(BWHT"|1:");
+		for(int i=0; i<strlen(a.normal.name); i++) {
+			printf("%c", *(a.normal.name+i));
+			k=i;
+		}
+		for(int i=k; i<20; i++) {
+			printf(" ");
+		}
+		printf("2:");
+		for(int i=0; i<strlen(a.special.name); i++) {
+			printf("%c", *(a.special.name+i));
+			k=i;
+		}
+		for(int i=k; i<20; i++) {
+			printf(" ");
+		}
+		printf("3:");
+		for(int i=0; i<strlen(a.unique.name); i++) {
+			printf("%c", *(a.unique.name+i));
+			k=i;
+		}
+		for(int i=k; i<20; i++) {
+			printf(" ");
+		}
+		printf("4:RETOUR"RESETT" en arriere");
+		printf("\n|    dmg:%d", a.normal.focusdamage);
+		if(a.normal.focusdamage==0) {
+			printf("                  ");
+		} else {
+			printf("                 ");
+		}
+		printf("dmg:%d", a.special.focusdamage);
+		if(a.special.focusdamage==0) {
+			printf("                  ");
+		} else {
+			printf("                 ");
+		}
+		printf("dmg:%d\n", a.unique.focusdamage);
+		printf("| AOEdmg:%d", a.normal.damage);
+		if(a.normal.damage==0) {
+			printf("               ");
+		} else {
+			printf("              ");
+		}
+		printf("AOEdmg:%d", a.special.damage);
+		if(a.special.damage==0) {
+			printf("               ");
+		} else {
+			printf("              ");
+		}
+		printf("AOEdmg:%d\n", a.unique.damage);
+		printf("|   heal:%d", a.normal.focusheal);
+		if(a.normal.focusheal==0) {
+			printf("                 ");
+		} else {
+			printf("                ");
+		}
+		printf("heal:%d", a.special.focusheal);
+		if(a.special.focusheal==0) {
+			printf("                 ");
+		} else {
+			printf("                ");
+		}
+		printf("heal:%d\n", a.unique.focusheal);
+		printf("|AOEheal:%d", a.normal.heal);
+		if(a.normal.heal==0) {
+			printf("              ");
+		} else {
+			printf("             ");
+		}
+		printf("AOEheal:%d", a.special.heal);
+		if(a.special.heal==0) {
+			printf("              ");
+		} else {
+			printf("             ");
+		}
+		printf("AOEheal:%d\n", a.unique.heal);
+
+		printf("effet:\n" GRN "| poison:" RESETT "%d" GRN "             poison:" RESETT "%d" GRN "             poison:" RESETT "%d\n", a.normal.poison, a.special.poison, a.unique.poison);
+		printf(YEL"|   stun:" RESETT "%d" YEL "               stun:" RESETT "%d" YEL "               stun:" RESETT "%d\n", a.normal.stun, a.special.stun, a.unique.stun);
+		printf(MAG"| confus:" RESETT "%d" MAG "             confus:" RESETT "%d" MAG "             confus:" RESETT "%d\n", a.normal.confused, a.special.confused, a.unique.confused);
+		return;
 }
 
-
+void AffichPersoChoix(int l, int c, int lp, int cp) {//(27, 120, 1, 1);
+	int k=0;
+	if(lp>l) {
+		return;
+	}
+	if(cp>=c) {
+		printf("|\n");
+		AffichPersoChoix(l, c, lp+1, 1);
+	} else if(lp==1) {
+		printf("________________________________________________________________________________________________________________________\n");
+		AffichPersoChoix(l, c, lp+1, 1);
+	} else if(lp==l) {
+		printf("|_______________________________________________________[]___[]________________________________________________________|\n");
+		AffichPersoChoix(l, c, lp+1, 1);
+	} else if(cp==1) {
+		printf("|");
+		AffichPersoChoix(l, c, lp, 2);
+	} else if(lp>1 && lp<l && (cp==57 || cp==58 || cp==62 || cp==63)) {
+		printf("|");
+		AffichPersoChoix(l, c, lp, cp+1);
+	} else if(lp>2 && lp<l && (cp==59 || cp==60 || cp==61)) {
+		printf("X");
+		AffichPersoChoix(l, c, lp, cp+1);
+	} else if(lp==2 && (cp==47 || cp==71)) {
+		printf("|");
+		AffichPersoChoix(l, c, lp, cp+1);
+	} else if(lp==2 && cp==48) {
+		printf( UBLU "Selection" RESETT );
+		AffichPersoChoix(l, c, lp, cp+9);
+	} else if(lp==2 && cp==59) {
+		printf( UWHT "des" RESETT );
+		AffichPersoChoix(l, c, lp, cp+3);
+	} else if(lp==2 && cp==64) {
+		printf( URED "raiders" RESETT );
+		AffichPersoChoix(l, c, lp, cp+7);
+	} else if(lp==4 && cp==40 || lp==10 && cp==40 || lp==16 && cp==40 || lp==22 && cp==40 || lp==4 && cp==70 || lp==10 && cp==70 || lp==16 && cp==70 || lp==22 && cp==70){
+		printf(" (\\___/) ");
+		AffichPersoChoix(l, c, lp, cp+9);
+	} else if(lp==7 && cp==30 || lp==13 && cp==30 || lp==19 && cp==30 || lp==25 && cp==30 || lp==7 && cp==80 || lp==13 && cp==80 || lp==19 && cp==80 || lp==25 && cp==80){
+		printf(" (\\___/) ");
+		AffichPersoChoix(l, c, lp, cp+9);
+	} else if(lp==5 && cp==40) {
+		AffichBunny(1);
+		AffichPersoChoix(l, c, lp, cp+BUNNY);
+	} else if(lp==8 && cp==30) {
+		AffichBunny(2);
+		AffichPersoChoix(l, c, lp, cp+BUNNY);
+	} else if(lp==11 && cp==40) {
+		AffichBunny(3);
+		AffichPersoChoix(l, c, lp, cp+BUNNY);
+	} else if(lp==14 && cp==30) {
+		AffichBunny(4);
+		AffichPersoChoix(l, c, lp, cp+BUNNY);
+	} else if(lp==17 && cp==40) {
+		AffichBunny(5);
+		AffichPersoChoix(l, c, lp, cp+BUNNY);
+	} else if(lp==20 && cp==30) {
+		AffichBunny(6);
+		AffichPersoChoix(l, c, lp, cp+BUNNY);
+	} else if(lp==23 && cp==40) {
+		AffichBunny(7);
+		AffichPersoChoix(l, c, lp, cp+BUNNY);
+	} else if(lp==26 && cp==30) {
+		AffichBunny(8);
+		AffichPersoChoix(l, c, lp, cp+BUNNY);
+	} else if(lp==5 && cp==70) {
+		AffichBunny(9);
+		AffichPersoChoix(l, c, lp, cp+BUNNY);
+	} else if(lp==8 && cp==80) {
+		AffichBunny(10);
+		AffichPersoChoix(l, c, lp, cp+BUNNY);
+	} else if(lp==11 && cp==70) {
+		AffichBunny(11);
+		AffichPersoChoix(l, c, lp, cp+BUNNY);
+	} else if(lp==14 && cp==80) {
+		AffichBunny(12);
+		AffichPersoChoix(l, c, lp, cp+BUNNY);
+	} else if(lp==17 && cp==70) {
+		AffichBunny(13);
+		AffichPersoChoix(l, c, lp, cp+BUNNY);
+	} else if(lp==20 && cp==80) {
+		AffichBunny(14);
+		AffichPersoChoix(l, c, lp, cp+BUNNY);
+	} else if(lp==23 && cp==70) {
+		AffichBunny(15);
+		AffichPersoChoix(l, c, lp, cp+BUNNY);
+	} else if(lp==26 && cp==80) {
+		AffichBunny(16);
+		AffichPersoChoix(l, c, lp, cp+BUNNY);
+	} else if(lp==3 && cp==2) {
+		printf( BWHT "1:Forgeron" RESETT );
+		AffichPersoChoix(l, c, lp, cp+10);
+	} else if(lp==6 && cp==2) {
+		printf( BWHT "2:Oracle" RESETT );
+		AffichPersoChoix(l, c, lp, cp+8);
+	} else if(lp==9 && cp==2) {
+		printf( BWHT "3:Magicien" RESETT );
+		AffichPersoChoix(l, c, lp, cp+10);
+	} else if(lp==12 && cp==2) {
+		printf( BWHT "4:Raideur" RESETT );
+		AffichPersoChoix(l, c, lp, cp+9);
+	} else if(lp==15 && cp==2) {
+		printf( BWHT "5:Necromancien" RESETT );
+		AffichPersoChoix(l, c, lp, cp+14);
+	} else if(lp==18 && cp==2) {
+		printf( BWHT "6:Clerc" RESETT );
+		AffichPersoChoix(l, c, lp, cp+7);
+	} else if(lp==21 && cp==2) {
+		printf( BWHT "7:Illusionniste" RESETT );
+		AffichPersoChoix(l, c, lp, cp+15);
+	} else if(lp==24 && cp==2) {
+		printf( BWHT "8:Druide" RESETT );
+		AffichPersoChoix(l, c, lp, cp+8);
+		//////
+	} else if(lp==3 && cp==(108)) {
+		printf( BWHT "Invocateur:9" RESETT );
+		AffichPersoChoix(l, c, lp, cp+12);
+	} else if(lp==6 && cp==109) {
+		printf( BWHT "Champion:10" RESETT );
+		AffichPersoChoix(l, c, lp, cp+11);
+	} else if(lp==9 && cp==106) {
+		printf( BWHT "Explorateur:11" RESETT );
+		AffichPersoChoix(l, c, lp, cp+14);
+	} else if(lp==12 && cp==104) {
+		printf( BWHT "Chronomancien:12" RESETT );
+		AffichPersoChoix(l, c, lp, cp+16);
+	} else if(lp==15 && cp==109) {
+		printf( BWHT "Assassin:13" RESETT );
+		AffichPersoChoix(l, c, lp, cp+11);
+	} else if(lp==18 && cp==113) {
+		printf( BWHT "Juge:14" RESETT );
+		AffichPersoChoix(l, c, lp, cp+7);
+	} else if(lp==21 && cp==105) {
+		printf( BWHT "Empoisonneur:15" RESETT );
+		AffichPersoChoix(l, c, lp, cp+15);
+	} else if(lp==24 && cp==107) {
+		printf( BWHT "Sentinelle:16" RESETT );
+		AffichPersoChoix(l, c, lp, cp+13);
+	} else {
+		printf(" ");
+		AffichPersoChoix(l, c, lp, cp+1);
+	}
+}
 
 void Turn(int who, int mo, int *dif, int *choixP, int *choixA, int *choixD, Bot *aa, Bot *ab, Bot *ac, Bot *da, Bot *db, Bot *dc, char *nameA, char *nameB) {
 	// choixP= selection du personnage, choixA= choix de l'attaque, choixD= choix du personnage affecte)
@@ -2569,12 +2944,32 @@ void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc) {
 	printf("\n\n\n");
 }
 
+void ChooseBunny(int var, int *bandicoot){
+    *bandicoot=0;
+	do{
+	    printf("(Selectionez:1  Retour:2)---> ");
+		scanf("%d", bandicoot);
+	}
+	while(*bandicoot!=1 && *bandicoot!=2);
+}
+
+void Choose(int *var){
+    do{
+        printf("Selectioner un Bunny pour les détailes (1-16): ");
+		scanf("%d", var);
+	}
+	while(*var!=1 && *var!=2 && *var!=3 && *var!=4 && *var!=5 && *var!=6 && *var!=7 && *var!=8 && *var!=9 && *var!=10 && *var!=11 && *var!=12 && *var!=13 && *var!=14 && *var!=15 && *var!=16 && *var!=100);
+    AffichPersoAttaque(*var);
+}
+
 
 int main() {
 	int fin=0;
 	int choixD=0;
 	int choixA=0;
 	int choixP=0;
+	int var=0;
+	int bandicoot=0;
 	Bot ja=Characterbuilder(1000);
 	Bot jb=Characterbuilder(1000);
 	Bot jc=Characterbuilder(1000);
@@ -2583,21 +2978,13 @@ int main() {
 	Bot bc=Characterbuilder(1000);
 	int dif=0;
 	int mode=0;
-
-	printf("%f\n", ja.defence);
-	printf("%f\n", jb.defence);
-	printf("%f\n", jc.defence);
-	int a=bb.pv;
-	printf("%d\n", a);
-	a=bb.pv-(jc.normal.focusdamage*bb.defence);
-	printf("%d\n", a);
+	
 	char *nameA=malloc(sizeof(char)*NAMESIZE);
 	if(nameA==NULL) {
 		exit(1);
 	}
 	printf("Nom du joueur A (20 caracteres MAX sans espace)--> ");
 	scanf("%s", nameA);
-
 	do {
 		printf("Choisir solo: 0 ou Multijoueur: 1 |--> ");
 		scanf("%d", &mode);
@@ -2609,14 +2996,86 @@ int main() {
 	}
 	if(mode==1) {
 		printf("Nom du joueur B (20 caracteres MAX sans espace)--> ");
-		scanf("%s", nameB);
-	}else{
-	do {
-		printf("Choisir sa difficulte (1, 2 ou 3)--> ");
-		scanf("%d", &dif);
-	}
-	while(dif!=1 && dif!=2 && dif!=3);
-	    nameB="Computer";
+		scanf("%s\n", nameB);
+	    printf("Joueur A choisie son premier personnage... \n");
+	    do{
+	    AffichPersoChoix(27, 120, 1, 1);
+	    Choose(&var);
+	    ChooseBunny(var, &bandicoot);
+	    }
+	    while(bandicoot!=1);
+	    ja=Characterbuilder(var);
+	    printf("Joueur B choisie son premier personnage... \n");
+	    do{
+	    AffichPersoChoix(27, 120, 1, 1);
+	    Choose(&var);
+	    ChooseBunny(var, &bandicoot);
+	    }
+	    while(bandicoot!=1);
+	    ba=Characterbuilder(var);
+		printf("Joueur A choisie son deuxieme personnage... \n");
+		do{
+	    AffichPersoChoix(27, 120, 1, 1);
+	    Choose(&var);
+	    ChooseBunny(var, &bandicoot);
+    	}
+    	while(bandicoot!=1);
+    	jb=Characterbuilder(var);
+		printf("Joueur B choisie son deuxieme personnage... \n");
+		do{
+	    AffichPersoChoix(27, 120, 1, 1);
+	    Choose(&var);
+	    ChooseBunny(var, &bandicoot);
+    	}
+    	while(bandicoot!=1);
+    	bb=Characterbuilder(var);
+		printf("Joueur A choisie son troixieme personnage... \n");
+		do{
+	    AffichPersoChoix(27, 120, 1, 1);
+	    Choose(&var);
+	    ChooseBunny(var, &bandicoot);
+    	}
+    	while(bandicoot!=1);
+	    jc=Characterbuilder(var);
+		printf("Joueur B choisie son troixieme personnage... \n");
+		do{
+	    AffichPersoChoix(27, 120, 1, 1);
+	    Choose(&var);
+	    ChooseBunny(var, &bandicoot);
+    	}
+	    while(bandicoot!=1);
+	    bc=Characterbuilder(var);
+	} else {
+		do {
+			printf("Choisir sa difficulte (1, 2 ou 3)--> ");
+			scanf("%d", &dif);
+		}
+		while(dif!=1 && dif!=2 && dif!=3);
+		nameB="Computer";
+		printf("Le joueur choisie son premier personnage... \n");
+		do{
+	    AffichPersoChoix(27, 120, 1, 1);
+	    Choose(&var);
+	    ChooseBunny(var, &bandicoot);
+	    }
+	    while(bandicoot!=1);
+	    ja=Characterbuilder(var);
+		printf("Le joueur choisie son deuxieme personnage... \n");
+		do{
+	    AffichPersoChoix(27, 120, 1, 1);
+	    Choose(&var);
+	    ChooseBunny(var, &bandicoot);
+	    }
+	    while(bandicoot!=1);
+	    jb=Characterbuilder(var);
+		printf("Le joueur choisie son troixieme personnage... \n");
+		do{
+	    AffichPersoChoix(27, 120, 1, 1);
+	    Choose(&var);
+	    ChooseBunny(var, &bandicoot);
+	    }
+	    while(bandicoot!=1);
+	    jc=Characterbuilder(var);
 	}
 	do {
 		Turn(1, mode, &dif, &choixP, &choixA, &choixD, &ja, &jb, &jc, &ba, &bb, &bc, nameA, nameB);
@@ -2638,15 +3097,14 @@ int main() {
 	if(ja.dead==1 && jb.dead==1 && jc.dead==1 && ba.dead==1 && bb.dead==1 && bc.dead==1) {
 		printf("Egalite\n");
 		exit(0);
-	}else if(ja.dead==1 && jb.dead==1 && jc.dead==1) {
+	} else if(ja.dead==1 && jb.dead==1 && jc.dead==1) {
 		printf("Le joueur A a perdu\n");
 		exit(0);
-	}else if(ba.dead==1 && bb.dead==1 && bc.dead==1) {
+	} else if(ba.dead==1 && bb.dead==1 && bc.dead==1) {
 		printf("Le joueur B a perdu\n");
 		exit(0);
 	}
-
-
-
+	free(nameA);
+	free(nameB);
 	return 0;
 }
