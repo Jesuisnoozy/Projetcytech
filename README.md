@@ -1,7 +1,7 @@
 # Projetcytech-(BUNNY RAIDERS)
 
 -Projet PréIng 1 Supméca groupe k-----> sujet choisie: CY-Fighters
--Recommendé de mettre le terminale d'execution en plein écran pour jouer
+\n -Recommendé de mettre le terminale d'execution en plein écran pour jouer
 
 # IMPUTS
 
