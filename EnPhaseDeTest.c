@@ -94,108 +94,25 @@ typedef struct {
 	float defence;
 	Attack normal, special, unique;
 } Bot;
-/////////////////////// map.c
-void ImprimeMap(int l, int c, int lp, int cp, int position) {//(26, 121, 1, 1, position sur la map);
-	int k=0;
-	if(lp>l) {
-		return;
-	}
-	if(cp>=c) {
-		printf("|\n");
-		ImprimeMap(l, c, lp+1, 1, position);
-	} else if(cp==2 && lp==2) {
-		printf(UWHT"Carte du dongeon:"RESETT);
-		ImprimeMap(l, c, lp, cp+17, position);
-	} else if(cp==10 && lp==6) {
-		printf("Position actuelle: ");
-		ImprimeMap(l, c, lp, cp+19, position);
-	} else if(cp==10 && lp==8) {
-		printf("Position suivante: ");
-		ImprimeMap(l, c, lp, cp+19, position);
-	} else if(cp==29 && lp==6) {
-	    int i=1;
-		printf("%d", position);
-		if(position){
-		    i=2;
-		}
-		ImprimeMap(l, c, lp, cp+i, position);
-	} else if(lp==1) {
-		printf("_________________________________________________________________________________________________________________________\n");
-		ImprimeMap(l, c, lp+1, 1, position);
-	} else if(lp==l) {
-		printf("|_______________________________________________________________________________________________________________________|\n");
-		ImprimeMap(l, c, lp+1, 1, position);
-	} else if(cp==1) {
-		printf("|");
-		ImprimeMap(l, c, lp, 2, position);
-	} else if((lp==13 && cp==55) || (lp==12 && cp==56) || (lp==15 && cp==60) || (lp==16 && cp==59) || (lp==6 && cp==60) || (lp==7 && cp==59) || (lp==9 && cp==57) || (lp==10 && cp==55) || (lp==13 && cp==62) || (lp==12 && cp==63) || (lp==15 && cp==67) || (lp==16 && cp==66) || (lp==18 && cp==64) || (lp==19 && cp==62)) {
-		printf(BWHT"/"RESETT);
-		ImprimeMap(l, c, lp, cp+1, position);
-	} else if((lp==12 && cp==66) || (lp==13 && cp==67) ||(lp==15 && cp==62) || (lp==16 && cp==63) || (lp==6 && cp==62) || (lp==7 && cp==63) || (lp==9 && cp==65) || (lp==10 && cp==67) || (lp==13 && cp==60) || (lp==12 && cp==59) || (lp==15 && cp==55) || (lp==16 && cp==56) || (lp==18 && cp==58) || (lp==19 && cp==60)) {
-		printf(BWHT"\\"RESETT);
-		ImprimeMap(l, c, lp, cp+1, position);
-	} else if((lp==9 && cp==58) || (lp==10 && cp==58) || (lp==9 && cp==64) || (lp==10 && cp==64) || (lp==13 && cp==54) || (lp==13 && cp==68) || (lp==12 && cp==54) || (lp==12 && cp==68)) {
-		printf(BWHT"|"RESETT);
-		ImprimeMap(l, c, lp, cp+1, position);
-	} else if((lp==11 && cp==65) || (lp==11 && cp==57) || (lp==9 && cp==56) || (lp==9 && cp==66) || (lp==18 && cp==59) || (lp==18 && cp==63)) {
-		printf(BWHT"_"RESETT);
-		ImprimeMap(l, c, lp, cp+1, position);
-	} else if(lp==5 && cp==61) {
-		printf(BWHT"0"RESETT);
-		ImprimeMap(l, c, lp, cp+1, position);
-	} else if(lp==8 && cp==58) {
-		printf(BWHT"1"RESETT);
-		ImprimeMap(l, c, lp, cp+1, position);
-	} else if(lp==8 && cp==64) {
-		printf(BWHT"2"RESETT);
-		ImprimeMap(l, c, lp, cp+1, position);
-	} else if(lp==11 && cp==54) {
-		printf(BWHT"3"RESETT);
-		ImprimeMap(l, c, lp, cp+1, position);
-	} else if(lp==11 && cp==58) {
-		printf(BWHT"4"RESETT);
-		ImprimeMap(l, c, lp, cp+1, position);
-	} else if(lp==11 && cp==64) {
-		printf(BWHT"5"RESETT);
-		ImprimeMap(l, c, lp, cp+1, position);
-	} else if(lp==11 && cp==68) {
-		printf(BWHT"6"RESETT);
-		ImprimeMap(l, c, lp, cp+1, position);
-	} else if(lp==14 && cp==54) {
-		printf(BWHT"7"RESETT);
-		ImprimeMap(l, c, lp, cp+1, position);
-	} else if(lp==14 && cp==61) {
-		printf(BWHT"8"RESETT);
-		ImprimeMap(l, c, lp, cp+1, position);
-	} else if(lp==14 && cp==68) {
-		printf(BWHT"9"RESETT);
-		ImprimeMap(l, c, lp, cp+1, position);
-	} else if(lp==17 && cp==57) {
-		printf(BWHT"10"RESETT);
-		ImprimeMap(l, c, lp, cp+2, position);
-	} else if(lp==17 && cp==64) {
-		printf(BWHT"11"RESETT);
-		ImprimeMap(l, c, lp, cp+2, position);
-	} else if(lp==20 && cp==59) {
-		printf(BWHT"FINAL"RESETT);
-		ImprimeMap(l, c, lp, cp+5, position);
-	} else if(lp==8 && cp==64) {
-		if(position==100){
-		    printf(BWHT"?"RESETT);
-		}else{
-		    printf(" ");
-		}
-		ImprimeMap(l, c, lp, cp+1, position);
-	} else {
-		printf(" ");
-		ImprimeMap(l, c, lp, cp+1, position);
-	}
-}
-//////////////////////
 
 Attack Attackbuilder(int num) {
 	Attack att;
 	switch(num) { // attaque normal (0-99) ; attaque special (100-199) ; attaque unique (200-299)
+	case 1234:
+		att.damage=0;
+		att.focusdamage=500;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*NAMESIZE);
+		if(att.name==NULL) {
+			exit(1);
+		}
+		strcpy(att.name, "Coup Simple");
+		break;
+	
 	case 0:
 		att.damage=0;
 		att.focusdamage=50;
@@ -1018,7 +935,7 @@ Bot Characterbuilder(int num) {
 		strcpy(a.name, "TestMaxHealth");
 		break;
 	case 100:
-		a=Builder(90.0, 100, 250, 0, 100, 200, num);
+		a=Builder(90.0, 100, 250, 1234, 1234, 1234, num);
 		a.name=malloc(sizeof(char)*10);
 		if(a.name==NULL) {
 			exit(1);
@@ -1073,6 +990,322 @@ Bot Characterbuilder(int num) {
 	return a;
 }
 
+/////////////////////// map.c
+void ImprimeMap(int l, int c, int lp, int cp, int position) {//(26, 121, 1, 1, position sur la map);
+	int k=0;
+	if(lp>l) {
+		return;
+	}
+	if(cp>=c) {
+		printf("|\n");
+		ImprimeMap(l, c, lp+1, 1, position);
+	} else if(cp==2 && lp==2) {
+		printf(UWHT"Carte du dongeon:"RESETT);
+		ImprimeMap(l, c, lp, cp+17, position);
+	} else if(cp==10 && lp==6) {
+		printf("Position actuelle: ");
+		ImprimeMap(l, c, lp, cp+19, position);
+	} else if(cp==29 && lp==6) {
+	    int i=1;
+		printf("%d", position);
+		if(position){
+		    i=2;
+		}
+		ImprimeMap(l, c, lp, cp+i, position);
+	} else if(lp==1) {
+		printf("_________________________________________________________________________________________________________________________\n");
+		ImprimeMap(l, c, lp+1, 1, position);
+	} else if(lp==l) {
+		printf("|_______________________________________________________________________________________________________________________|\n");
+		ImprimeMap(l, c, lp+1, 1, position);
+	} else if(cp==1) {
+		printf("|");
+		ImprimeMap(l, c, lp, 2, position);
+	} else if((lp==13 && cp==55) || (lp==12 && cp==56) || (lp==15 && cp==60) || (lp==16 && cp==59) || (lp==6 && cp==60) || (lp==7 && cp==59) || (lp==9 && cp==57) || (lp==10 && cp==55) || (lp==13 && cp==62) || (lp==12 && cp==63) || (lp==15 && cp==67) || (lp==16 && cp==66) || (lp==18 && cp==64) || (lp==19 && cp==62)) {
+		printf(BWHT"/"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if((lp==12 && cp==66) || (lp==13 && cp==67) ||(lp==15 && cp==62) || (lp==16 && cp==63) || (lp==6 && cp==62) || (lp==7 && cp==63) || (lp==9 && cp==65) || (lp==10 && cp==67) || (lp==13 && cp==60) || (lp==12 && cp==59) || (lp==15 && cp==55) || (lp==16 && cp==56) || (lp==18 && cp==58) || (lp==19 && cp==60)) {
+		printf(BWHT"\\"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if((lp==9 && cp==58) || (lp==10 && cp==58) || (lp==9 && cp==64) || (lp==10 && cp==64) || (lp==13 && cp==54) || (lp==13 && cp==68) || (lp==12 && cp==54) || (lp==12 && cp==68)) {
+		printf(BWHT"|"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if((lp==11 && cp==65) || (lp==11 && cp==57) || (lp==9 && cp==56) || (lp==9 && cp==66) || (lp==18 && cp==59) || (lp==18 && cp==63)) {
+		printf(BWHT"_"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==5 && cp==61) {
+		printf(BWHT"0"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==8 && cp==58) {
+		printf(BWHT"1"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==8 && cp==64) {
+		printf(BWHT"2"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==11 && cp==54) {
+		printf(BWHT"3"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==11 && cp==58) {
+		printf(BWHT"4"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==11 && cp==64) {
+		printf(BWHT"5"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==11 && cp==68) {
+		printf(BWHT"6"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==14 && cp==54) {
+		printf(BWHT"7"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==14 && cp==61) {
+		printf(BWHT"8"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==14 && cp==68) {
+		printf(BWHT"9"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==17 && cp==57) {
+		printf(BWHT"10"RESETT);
+		ImprimeMap(l, c, lp, cp+2, position);
+	} else if(lp==17 && cp==64) {
+		printf(BWHT"11"RESETT);
+		ImprimeMap(l, c, lp, cp+2, position);
+	} else if(lp==20 && cp==59) {
+		printf(BWHT"FINAL"RESETT);
+		ImprimeMap(l, c, lp, cp+5, position);
+	} else if(lp==8 && cp==64) {
+		if(position==100){
+		    printf(BWHT"?"RESETT);
+		}else{
+		    printf(" ");
+		}
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else {
+		printf(" ");
+		ImprimeMap(l, c, lp, cp+1, position);
+	}
+}
+////////////////////// protosecteur.c
+
+int Secteur(int position, Bot *ra, Bot *rb, Bot *rc){
+   int choix;
+   switch(position){
+        case 0:
+            do{
+                printf("Choississez entre secteur 1 ou 2: ");
+                scanf("%d", &choix);
+                getchar();
+            }while((choix!=1)&&(choix!=2));
+            if(choix==1){
+                position=1;
+                *ra=Characterbuilder(101);
+                *rb=Characterbuilder(102);
+                *rc=Characterbuilder(101);
+            }
+            else{
+                position=2;
+                *ra=Characterbuilder(102);
+                *rb=Characterbuilder(101);
+                *rc=Characterbuilder(102);
+            }
+        break;   
+             
+        case 1:
+            do{
+                printf("Choississez entre secteur 3 ou 4: ");
+                scanf("%d", &choix);
+                getchar();
+            }while((choix!=3)&&(choix!=4)&&(choix!=13));
+            if(choix==3){
+                position=3;
+                *ra=Characterbuilder(101);
+                *rb=Characterbuilder(103);
+                *rc=Characterbuilder(101);
+            }else if(choix==13){             // easter egg
+                position=12;
+                *ra=Characterbuilder(103);
+                *rb=Characterbuilder(105);
+                *rc=Characterbuilder(104);
+            }else{
+                position=4;
+                *ra=Characterbuilder(103);
+                *rb=Characterbuilder(102);
+                *rc=Characterbuilder(101);
+            }
+        break;
+        
+        case 2:
+            do{
+                printf("Choississez entre secteur 5 ou 6: ");
+                scanf("%d", &choix);
+                getchar();
+            }while((choix!=5)&&(choix!=6));
+            if(choix==5){
+                position=5;
+                *ra=Characterbuilder(101);
+                *rb=Characterbuilder(104);
+                *rc=Characterbuilder(101);
+            }
+            else{
+                position=6;
+                *ra=Characterbuilder(101);
+                *rb=Characterbuilder(102);
+                *rc=Characterbuilder(104);
+            }
+        break;
+        
+        case 3:
+            do{
+                printf("Choississez le secteur 7: ");
+                scanf("%d", &choix);
+                getchar();
+            }while(choix!=7);
+            position=7;
+            *ra=Characterbuilder(103);
+            *rb=Characterbuilder(103);
+            *rc=Characterbuilder(103);
+        break;
+        
+        case 4:
+            do{
+                printf("Choississez entre secteur 7 ou 8: ");
+                scanf("%d", &choix);
+                getchar();
+            }while((choix!=7)&&(choix!=8));
+            if(choix==7){
+                position=7;
+                *ra=Characterbuilder(103);
+                *rb=Characterbuilder(103);
+                *rc=Characterbuilder(103);
+            }
+            else{
+                position=8;
+                *ra=Characterbuilder(104);
+                *rb=Characterbuilder(104);
+                *rc=Characterbuilder(104);
+            }
+        break;
+        
+        case 5:
+            do{
+                printf("Choississez entre secteur 8 ou 9: ");
+                scanf("%d", &choix);
+                getchar();
+            }while((choix!=9)&&(choix!=8));
+            if(choix==9){
+                position=9;
+                *ra=Characterbuilder(104);
+                *rb=Characterbuilder(103);
+                *rc=Characterbuilder(104);
+            }
+            else{
+                position=8;
+                *ra=Characterbuilder(104);
+                *rb=Characterbuilder(104);
+                *rc=Characterbuilder(104);
+            }
+        break;
+        
+        case 6:
+            do{
+                printf("Choississez le secteur 9: ");
+                scanf("%d", &choix);
+                getchar();
+            }while(choix!=9);
+            position=9;
+            *ra=Characterbuilder(104);
+            *rb=Characterbuilder(103);
+            *rc=Characterbuilder(104);
+        break;
+        
+        case 7:
+            do{
+                printf("Choississez le secteur 10: ");
+                scanf("%d", &choix);
+                getchar();
+            }while(choix!=10);
+            position=10;
+            *ra=Characterbuilder(101);
+            *rb=Characterbuilder(103);
+            *rc=Characterbuilder(104);
+        break;
+        
+        case 8:
+            do{
+                printf("Choississez entre secteur 10 ou 11: ");
+                scanf("%d", &choix);
+                getchar();
+            }while((choix!=10)&&(choix!=11));
+            if(choix==10){
+                position=10;
+                *ra=Characterbuilder(101);
+                *rb=Characterbuilder(103);
+                *rc=Characterbuilder(104);
+            }
+            else{
+                position=11;
+                *ra=Characterbuilder(101);
+                *rb=Characterbuilder(103);
+                *rc=Characterbuilder(102);
+            }
+        break;
+        
+        case 9:
+            do{
+                printf("Choississez le secteur 11: ");
+                scanf("%d", &choix);
+                getchar();
+            }while(choix!=11);
+            position=11;
+            *ra=Characterbuilder(101);
+            *rb=Characterbuilder(103);
+            *rc=Characterbuilder(102);
+        break;
+        
+        case 10:
+            do{
+                printf("Choississez secteur FINAL 12: ");
+                scanf("%d", &choix);
+                getchar();
+            }while(choix!=12);
+            position=12;
+            *ra=Characterbuilder(103);
+            *rb=Characterbuilder(105);
+            *rc=Characterbuilder(104);
+        break;
+        
+        case 11:
+            do{
+                printf("Choississez secteur FINAL 12: ");
+                scanf("%d", &choix);
+                getchar();
+            }while(choix!=12);
+            position=12;
+            *ra=Characterbuilder(103);
+            *rb=Characterbuilder(105);
+            *rc=Characterbuilder(104);
+        break;
+        
+        case 13: // easter egg????
+            do{
+                printf("Choississez secteur FINAL 12: ");
+                scanf("%d", &choix);
+                getchar();
+            }while(choix!=12);
+            position=12;
+            *ra=Characterbuilder(103);
+            *rb=Characterbuilder(105);
+            *rc=Characterbuilder(104);
+        break;
+        
+        default:
+            printf("erreur de secteur\n"); 
+            exit(100);
+    }    
+    return position;
+}
+
+/////////////////////
+
 int MinMax(int *x, int a, int b, int c) {
 	int max=-1000;
 	if(a>max && a!=0) {
@@ -1089,7 +1322,8 @@ int MinMax(int *x, int a, int b, int c) {
 	}
 	if(max==-1000) {
 		printf("ERREUR: variable 'max' pour le switchcase MinMax\n");
-		exit(1);
+		max=a;
+		*x=1;
 	}
 	return max;
 }
@@ -1551,6 +1785,9 @@ void Computer(int *dif, int *choixP, int *choixA, int *choixD, Bot *ra, Bot *rb,
 			}
 		}
 	}
+	if(CheckPerso1(*choixP, ra, rb, rc) || CheckStamina(*choixP, *choixA, ra, rb, rc) || CheckPerso2(*choixD, ja, jb, jc)){
+	    Computer(dif, choixP, choixA, choixD, ra, rb, rc, ja, jb, jc);
+	}
 }
 void AffichAttaque(int *choixP, Bot *aa, Bot *ab, Bot *ac) {
 	int k=0;
@@ -1855,7 +2092,22 @@ void AffichBunny(int x) {
 	    printf(" {X . X}      ");
 	    break;
 	case 100:
-	    printf("/{  oWo}~BAM  ");
+	    printf(" {/ oWo}~BAM  ");
+	    break;
+	case 101:
+	    printf("\\{*-* \\}      ");
+	    break;
+	case 102:
+	    printf("c{-_- c}      ");
+	    break;
+	case 103:
+	    printf("\\{*.* }-|     ");
+	    break;
+	case 104:
+	    printf("c{o.o c}      ");
+	    break;
+	case 105:
+	    printf(BRED"~('v' ~)      "RESETT);
 	    break;
 	default:
 		printf("\\{? w ?}/     ");
@@ -1908,22 +2160,34 @@ void Affichage(int l, int c, int lp, int cp, int mode, Bot *ja, Bot *jb, Bot *jc
 		printf("_________");
 		Affichage(l, c, lp, cp+9, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==6 && cp==2) {
+	    if(ja->stamina<0){
+	        printf("STA: 0 ");
+	    }else{
 		printf("STA: %d", ja->stamina);
 		if(ja->stamina<10) {
 			printf(" ");
 		}
+	    }
 		Affichage(l, c, lp, cp+7, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==12 && cp==2) {
+	    if(ja->stamina<0){
+	        printf("STA: 0 ");
+	    }else{
 		printf("STA: %d", jb->stamina);
 		if(jb->stamina<10) {
 			printf(" ");
 		}
+	    }
 		Affichage(l, c, lp, cp+7, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==18 && cp==2) {
 		printf("STA: %d", jc->stamina);
+		if(ja->stamina<0){
+	        printf("STA: 0 ");
+	    }else{
 		if(jc->stamina<10) {
 			printf(" ");
 		}
+	    }
 		Affichage(l, c, lp, cp+7, mode, ja, jb, jc, ba, bb, bc, nameA, nameB);
 	} else if(lp==6 && cp==76) {
 		printf("STA: %d", ba->stamina);
@@ -2517,8 +2781,9 @@ void Turn(int who, int mo, int *dif, int *choixP, int *choixA, int *choixD, Bot 
 			}
 		}
 		while(CheckPerso2(*choixD, da, db, dc));
+		printf("\n\n\n\n\n");
 	} else {
-		Computer(dif, choixP, choixA, choixD, aa, ab, ac, da, db, dc);
+		Computer(dif, choixP, choixA, choixD, da, db, dc, aa, ab, ac);
 		// l'IA qui va choisir l'attaque si 'who' est different de 0 et mo==0
 		printf("\nCOMPUTER:\n==============\nP:%d A:%d D:%d\n==============\n", *choixP, *choixA, *choixD);
 		sleep(1);
@@ -3222,6 +3487,43 @@ void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc, int *turn) {
 	}
 	printf("\n\n\n");
 }
+void GameEnd(int *win, int position, Bot *ja, Bot *jb, Bot *jc){
+    if(*win==1){
+        *win=0;
+    }else{
+        printf("  ___    __    __  __  ____    _____  _  _  ____  ____ \n / __)  /__\\  (  \\/  )( ___)  (  _  )( \\/ )( ___)(  _ \\ \n");
+        printf("( (_-. /(__)\\  )    (  )__)    )(_)(  \\  /  )__)  )   / \n \\___/(__)(__)(_/\\/\\_)(____)  (_____)  \\/  (____)(_)\\_) \n");
+        exit(0);
+    }
+    ja->utiliunique=0;
+    jb->utiliunique=0;
+    jc->utiliunique=0;
+    ja->poison=0;
+    jb->poison=0;
+    jc->poison=0;
+    ja->stun=0;
+    jb->stun=0;
+    jc->stun=0;
+    ja->confused=0;
+    jb->confused=0;
+    jc->confused=0;
+    ja->pv=ja->pvmax;
+    jb->pv=jb->pvmax;
+    jc->pv=jc->pvmax;
+    ja->stamina=2;
+    jb->stamina=2;
+    jc->stamina=2;
+    ja->dead=0;
+    jb->dead=0;
+    jc->dead=0;
+    if(position==12){
+    printf("\n$$\\      $$\\ $$$$$$\\ $$\\   $$\\ $$\\   $$\\ $$$$$$$$\\ $$$$$$$\\ \n$$ | $\\  $$ |\\_$$  _|$$$\\  $$ |$$$\\  $$ |$$  _____|$$  __$$\\ \n$$ |$$$\\ $$ |  $$ |  $$$$\\ $$ |$$$$\\ $$ |$$ |      $$ |  $$ | \n");
+    printf("$$ $$ $$\\$$ |  $$ |  $$ $$\\$$ |$$ $$\\$$ |$$$$$\\    $$$$$$$  | \n$$$$  _$$$$ |  $$ |  $$ \\$$$$ |$$ \\$$$$ |$$  __|   $$  __$$ |   \n$$$  / \\$$$ |  $$ |  $$ |\\$$$ |$$ |\\$$$ |$$ |      $$ |  $$ |\n");
+    printf("$$  /   \\$$ |$$$$$$\\ $$ | \\$$ |$$ | \\$$ |$$$$$$$$\\ $$ |  $$ |  \n\\__/     \\__|\\______|\\__|  \\__|\\__|  \\__|\\________|\\__|  \\__|\n");
+        exit(0);
+    }
+}
+
 
 void ChooseBunny(int var, int *bandicoot){
     *bandicoot=0;
@@ -3255,14 +3557,15 @@ int main() {
 	Bot ja=Characterbuilder(1000);
 	Bot jb=Characterbuilder(1000);
 	Bot jc=Characterbuilder(1000);
-	Bot ba=Characterbuilder(1000);
-	Bot bb=Characterbuilder(1000);
-	Bot bc=Characterbuilder(1000);
+	Bot ba=Characterbuilder(101);
+	Bot bb=Characterbuilder(101);
+	Bot bc=Characterbuilder(101);
 	int dif=0;
 	int mode=0;
+	int win=0;
 	
-	///////////// map.cha
-	int position=13;
+	///////////// map.c
+	int position=0;
 	ImprimeMap(26, 121, 1, 1, position);
 	/////////////
 	
@@ -3285,53 +3588,53 @@ int main() {
 	}
 	if(mode==1) {
 		printf("Nom du joueur B (20 caracteres MAX sans espace)--> ");
-		scanf("%s\n", nameB);
+		scanf("%s", nameB);
 		getchar();
-	    printf("Joueur A choisie son premier personnage... \n");
+	    printf("\n\n\n\n\nJoueur A choisie son premier personnage... \n");
 	    do{
-	    AffichPersoChoix(27, 120, 1, 1);
-	    Choose(&var);
-	    ChooseBunny(var, &bandicoot);
+	        AffichPersoChoix(27, 120, 1, 1);
+	        Choose(&var);
+	        ChooseBunny(var, &bandicoot);
 	    }
 	    while(bandicoot!=1);
 	    ja=Characterbuilder(var);
-	    printf("Joueur B choisie son premier personnage... \n");
+	    printf("\n\n\n\n\nJoueur B choisie son premier personnage... \n");
 	    do{
-	    AffichPersoChoix(27, 120, 1, 1);
-	    Choose(&var);
-	    ChooseBunny(var, &bandicoot);
+	        AffichPersoChoix(27, 120, 1, 1);
+	        Choose(&var);
+	        ChooseBunny(var, &bandicoot);
 	    }
 	    while(bandicoot!=1);
 	    ba=Characterbuilder(var);
-		printf("Joueur A choisie son deuxieme personnage... \n");
+		printf("\n\n\n\n\nJoueur A choisie son deuxieme personnage... \n");
 		do{
-	    AffichPersoChoix(27, 120, 1, 1);
-	    Choose(&var);
-	    ChooseBunny(var, &bandicoot);
+	        AffichPersoChoix(27, 120, 1, 1);
+	        Choose(&var);
+	        ChooseBunny(var, &bandicoot);
     	}
     	while(bandicoot!=1);
     	jb=Characterbuilder(var);
-		printf("Joueur B choisie son deuxieme personnage... \n");
+		printf("\n\n\n\n\nJoueur B choisie son deuxieme personnage... \n");
 		do{
-	    AffichPersoChoix(27, 120, 1, 1);
-	    Choose(&var);
-	    ChooseBunny(var, &bandicoot);
+	        AffichPersoChoix(27, 120, 1, 1);
+	        Choose(&var);
+	        ChooseBunny(var, &bandicoot);
     	}
     	while(bandicoot!=1);
     	bb=Characterbuilder(var);
-		printf("Joueur A choisie son troixieme personnage... \n");
+		printf("\n\n\n\n\nJoueur A choisie son troixieme personnage... \n");
 		do{
-	    AffichPersoChoix(27, 120, 1, 1);
-	    Choose(&var);
-	    ChooseBunny(var, &bandicoot);
+	        AffichPersoChoix(27, 120, 1, 1);
+	        Choose(&var);
+	        ChooseBunny(var, &bandicoot);
     	}
     	while(bandicoot!=1);
 	    jc=Characterbuilder(var);
-		printf("Joueur B choisie son troixieme personnage... \n");
+		printf("\n\n\n\n\nJoueur B choisie son troixieme personnage... \n");
 		do{
-	    AffichPersoChoix(27, 120, 1, 1);
-	    Choose(&var);
-	    ChooseBunny(var, &bandicoot);
+	        AffichPersoChoix(27, 120, 1, 1);
+	        Choose(&var);
+	        ChooseBunny(var, &bandicoot);
     	}
 	    while(bandicoot!=1);
 	    bc=Characterbuilder(var);
@@ -3343,7 +3646,7 @@ int main() {
 		}
 		while(dif!=1 && dif!=2 && dif!=3);
 		nameB="Computer";
-		printf("Le joueur choisie son premier personnage... \n");
+		printf("\n\n\n\n\nLe joueur choisie son premier personnage... \n");
 		do{
 		    AffichPersoChoix(27, 120, 1, 1);
 	        Choose(&var);
@@ -3351,7 +3654,7 @@ int main() {
 	    }
 	    while(bandicoot!=1);
 	    ja=Characterbuilder(var);
-		printf("Le joueur choisie son deuxieme personnage... \n");
+		printf("\n\n\n\n\nLe joueur choisie son deuxieme personnage... \n");
 		do{
 		    AffichPersoChoix(27, 120, 1, 1);
 	        Choose(&var);
@@ -3359,7 +3662,7 @@ int main() {
 	    }
 	    while(bandicoot!=1);
 	    jb=Characterbuilder(var);
-		printf("Le joueur choisie son troixieme personnage... \n");
+		printf("\n\n\n\n\nLe joueur choisie son troixieme personnage... \n");
 		do{
 		    AffichPersoChoix(27, 120, 1, 1);
 	        Choose(&var);
@@ -3368,34 +3671,107 @@ int main() {
 	    while(bandicoot!=1);
 	    jc=Characterbuilder(var);
 	}
-	do {
-		Turn(1, mode, &dif, &choixP, &choixA, &choixD, &ja, &jb, &jc, &ba, &bb, &bc, nameA, nameB);
-		Checkup(&ja, &jb, &jc, &ba, &bb, &bc, &tour);
-		if((ja.dead==1 && jb.dead==1 && jc.dead==1) || (ba.dead==1 && bb.dead==1 && bc.dead==1)) {
-			fin=1;
-		} else {
-			fin=0;
-		}
-		Turn(0, mode, &dif, &choixP, &choixA, &choixD, &ba, &bb, &bc, &ja, &jb, &jc, nameA, nameB);
-		Checkup(&ja, &jb, &jc, &ba, &bb, &bc, &tour);
-		if((ja.dead==1 && jb.dead==1 && jc.dead==1) || (ba.dead==1 && bb.dead==1 && bc.dead==1)) {
-			fin=1;
-		} else {
-			fin=0;
-		}
-	}
-	while(fin==0);
-	if(ja.dead==1 && jb.dead==1 && jc.dead==1 && ba.dead==1 && bb.dead==1 && bc.dead==1) {
-		printf("Egalite\n");
-		exit(0);
-	} else if(ja.dead==1 && jb.dead==1 && jc.dead==1) {
-		printf("Le joueur A a perdu\n");
-		exit(0);
-	} else if(ba.dead==1 && bb.dead==1 && bc.dead==1) {
-		printf("Le joueur B a perdu\n");
-		exit(0);
-	}
-	free(nameA);
-	free(nameB);
-	return 0;
+if(mode==0){
+    do{
+        do {
+		    Turn(1, mode, &dif, &choixP, &choixA, &choixD, &ja, &jb, &jc, &ba, &bb, &bc, nameA, nameB);
+		    Checkup(&ja, &jb, &jc, &ba, &bb, &bc, &tour);
+		    if((ja.dead==1 && jb.dead==1 && jc.dead==1) || (ba.dead==1 && bb.dead==1 && bc.dead==1)) {
+		    	fin=1;
+		    } else {
+			    fin=0;
+	    	}
+		    if(fin==0){
+		        Turn(0, mode, &dif, &choixP, &choixA, &choixD, &ba, &bb, &bc, &ja, &jb, &jc, nameA, nameB);
+		        Checkup(&ja, &jb, &jc, &ba, &bb, &bc, &tour);
+		    if((ja.dead==1 && jb.dead==1 && jc.dead==1) || (ba.dead==1 && bb.dead==1 && bc.dead==1)) {
+			    fin=1;
+		    } else {
+			    fin=0;
+		    }
+		    }
+	    }
+	    while(fin==0);
+	    if(ja.dead==1 && jb.dead==1 && jc.dead==1 && ba.dead==1 && bb.dead==1 && bc.dead==1) {
+	    	printf("Egalite\n");
+		    win=-1;
+	    } else if(ja.dead==1 && jb.dead==1 && jc.dead==1) {
+		    printf("Le joueur A a perdu\n");
+		    win=-1;
+	    } else if(ba.dead==1 && bb.dead==1 && bc.dead==1) {
+	    	printf("Le joueur B a perdu\n");
+	    	win=1;
+	    }
+	    if(win==1 || win==-1){
+	        GameEnd(&win, position, &ja, &jb, &jc);
+	        for(int i=0; i<6; i++){
+	            sleep(1);
+	            printf(".\n");
+	        }
+	        ImprimeMap(26, 121, 1, 1, position);
+	        position=Secteur(position, &ba, &bb, &bc);
+	    }
+    }
+    while(position!=12);
+    do {
+		    Turn(1, mode, &dif, &choixP, &choixA, &choixD, &ja, &jb, &jc, &ba, &bb, &bc, nameA, nameB);
+		    Checkup(&ja, &jb, &jc, &ba, &bb, &bc, &tour);
+		    if((ja.dead==1 && jb.dead==1 && jc.dead==1) || (ba.dead==1 && bb.dead==1 && bc.dead==1)) {
+		    	fin=1;
+		    } else {
+			    fin=0;
+	    	}
+		    if(fin==0){
+		        Turn(0, mode, &dif, &choixP, &choixA, &choixD, &ba, &bb, &bc, &ja, &jb, &jc, nameA, nameB);
+		        Checkup(&ja, &jb, &jc, &ba, &bb, &bc, &tour);
+		    if((ja.dead==1 && jb.dead==1 && jc.dead==1) || (ba.dead==1 && bb.dead==1 && bc.dead==1)) {
+			    fin=1;
+		    } else {
+			    fin=0;
+		    }
+		    }
+	    }
+	    while(fin==0);
+	    if(ja.dead==1 && jb.dead==1 && jc.dead==1 && ba.dead==1 && bb.dead==1 && bc.dead==1) {
+	    	printf("Egalite\n");
+		    win=0;
+	    } else if(ja.dead==1 && jb.dead==1 && jc.dead==1) {
+		    printf("Le joueur A a perdu\n");
+		    win=0;
+	    } else if(ba.dead==1 && bb.dead==1 && bc.dead==1) {
+	    	printf("Le joueur B a perdu\n");
+	    	win=1;
+	    }
+	    if(win==1){
+	        GameEnd(&win, position, &ja, &jb, &jc);
+	    }
+}else{
+    do {
+		    Turn(1, mode, &dif, &choixP, &choixA, &choixD, &ja, &jb, &jc, &ba, &bb, &bc, nameA, nameB);
+		    Checkup(&ja, &jb, &jc, &ba, &bb, &bc, &tour);
+		    if((ja.dead==1 && jb.dead==1 && jc.dead==1) || (ba.dead==1 && bb.dead==1 && bc.dead==1)) {
+		    	fin=1;
+		    } else {
+			    fin=0;
+	    	}
+		    if(fin==0){
+		        Turn(0, mode, &dif, &choixP, &choixA, &choixD, &ba, &bb, &bc, &ja, &jb, &jc, nameA, nameB);
+		        Checkup(&ja, &jb, &jc, &ba, &bb, &bc, &tour);
+		    if((ja.dead==1 && jb.dead==1 && jc.dead==1) || (ba.dead==1 && bb.dead==1 && bc.dead==1)) {
+			    fin=1;
+		    } else {
+			    fin=0;
+		    }
+		    }
+	    }
+	    while(fin==0);
+	    if(ja.dead==1 && jb.dead==1 && jc.dead==1 && ba.dead==1 && bb.dead==1 && bc.dead==1) {
+	    	printf("Egalite\n");
+	    } else if(ja.dead==1 && jb.dead==1 && jc.dead==1) {
+		    printf("Le joueur A a perdu\n");
+	    } else if(ba.dead==1 && bb.dead==1 && bc.dead==1) {
+	    	printf("Le joueur B a perdu\n");
+	    }
+    }
+return 0;
 }
