@@ -94,7 +94,91 @@ typedef struct {
 	float defence;
 	Attack normal, special, unique;
 } Bot;
-
+/////////////////////// map.c
+void ImprimeMap(int l, int c, int lp, int cp, int position) {//(26, 121, 1, 1, position sur la map);
+	int k=0;
+	if(lp>l) {
+		return;
+	}
+	if(cp>=c) {
+		printf("|\n");
+		ImprimeMap(l, c, lp+1, 1, position);
+	} else if(cp==2 && lp==2) {
+		printf(UWHT"Carte du dongeon:"RESETT);
+		ImprimeMap(l, c, lp, cp+17, position);
+	} else if(lp==1) {
+		printf("_________________________________________________________________________________________________________________________\n");
+		ImprimeMap(l, c, lp+1, 1, position);
+	} else if(lp==l) {
+		printf("|_______________________________________________________________________________________________________________________|\n");
+		ImprimeMap(l, c, lp+1, 1, position);
+	} else if(cp==1) {
+		printf("|");
+		ImprimeMap(l, c, lp, 2, position);
+	} else if((lp==6 && cp==60) || (lp==7 && cp==59) || (lp==9 && cp==57) || (lp==10 && cp==55) || (lp==13 && cp==62) || (lp==12 && cp==63) || (lp==15 && cp==67) || (lp==16 && cp==66) || (lp==18 && cp==64) || (lp==19 && cp==62)) {
+		printf(BWHT"/"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if((lp==6 && cp==62) || (lp==7 && cp==63) || (lp==9 && cp==65) || (lp==10 && cp==67) || (lp==13 && cp==60) || (lp==12 && cp==59) || (lp==15 && cp==55) || (lp==16 && cp==56) || (lp==18 && cp==58) || (lp==19 && cp==60)) {
+		printf(BWHT"\\"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if((lp==9 && cp==58) || (lp==10 && cp==58) || (lp==9 && cp==64) || (lp==10 && cp==64) || (lp==13 && cp==54) || (lp==13 && cp==68) || (lp==12 && cp==54) || (lp==12 && cp==68)) {
+		printf(BWHT"|"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if((lp==9 && cp==56) || (lp==9 && cp==66) || (lp==18 && cp==59) || (lp==18 && cp==63)) {
+		printf(BWHT"_"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==5 && cp==61) {
+		printf(BWHT"0"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==8 && cp==58) {
+		printf(BWHT"1"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==8 && cp==64) {
+		printf(BWHT"2"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==11 && cp==54) {
+		printf(BWHT"3"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==11 && cp==58) {
+		printf(BWHT"4"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==11 && cp==64) {
+		printf(BWHT"5"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==11 && cp==68) {
+		printf(BWHT"6"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==14 && cp==54) {
+		printf(BWHT"7"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==14 && cp==61) {
+		printf(BWHT"8"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==14 && cp==68) {
+		printf(BWHT"9"RESETT);
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else if(lp==17 && cp==57) {
+		printf(BWHT"10"RESETT);
+		ImprimeMap(l, c, lp, cp+2, position);
+	} else if(lp==17 && cp==64) {
+		printf(BWHT"11"RESETT);
+		ImprimeMap(l, c, lp, cp+2, position);
+	} else if(lp==20 && cp==59) {
+		printf(BWHT"FINAL"RESETT);
+		ImprimeMap(l, c, lp, cp+5, position);
+	} else if(lp==8 && cp==64) {
+		if(position==100){
+		    printf(BWHT"?"RESETT);
+		}else{
+		    printf(" ");
+		}
+		ImprimeMap(l, c, lp, cp+1, position);
+	} else {
+		printf(" ");
+		ImprimeMap(l, c, lp, cp+1, position);
+	}
+}
+//////////////////////
 
 Attack Attackbuilder(int num) {
 	Attack att;
@@ -2978,6 +3062,11 @@ int main() {
 	Bot bc=Characterbuilder(1000);
 	int dif=0;
 	int mode=0;
+	
+	///////////// map.cha
+	int position=100;
+	ImprimeMap(26, 121, 1, 1, position);
+	/////////////
 	
 	char *nameA=malloc(sizeof(char)*NAMESIZE);
 	if(nameA==NULL) {
