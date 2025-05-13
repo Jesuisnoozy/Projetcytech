@@ -204,7 +204,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*12);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -218,7 +218,7 @@ Attack Attackbuilder(int num) {
 		att.poison=1;
 		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*16);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -232,7 +232,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*12);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -247,11 +247,11 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=1;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*19);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
-		strcpy(att.name, "Frappe du Destrier");
+		strcpy(att.name, "Frappe du Destin");
 		break;
 
 	case 4:
@@ -262,7 +262,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*16);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -277,7 +277,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*16);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -292,11 +292,11 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*17);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
-		strcpy(att.name, "FlC(che Spectrale");
+		strcpy(att.name, "Fleche Spectrale");
 		break;
 
 	case 7:
@@ -307,7 +307,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*14);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -323,11 +323,11 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=0;
 		att.confused=1;
-		att.name=malloc(sizeof(char)*12);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
-		strcpy(att.name, "Rayon SacrC)");
+		strcpy(att.name, "Rayon Sacre");
 		break;
 
 
@@ -339,7 +339,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=1;
 		att.confused=1;
-		att.name=malloc(sizeof(char)*12);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -354,11 +354,51 @@ Attack Attackbuilder(int num) {
 		att.poison=1;
 		att.stun=0;
 		att.confused=1;
-		att.name=malloc(sizeof(char)*12);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
 		strcpy(att.name, "Dague Ambre");
+	    break;
+	 
+	case 96:
+		att.damage=0;
+		att.focusdamage=30;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=1;
+		break;    
+	    
+	case 97:
+		att.damage=0;
+		att.focusdamage=60;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		break;    
+	    
+	case 98:
+		att.damage=0;
+		att.focusdamage=40;
+		att.heal=10;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		break;
+		
+	case 99:
+		att.damage=0;
+		att.focusdamage=30;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=1;
+		att.stun=0;
+		att.confused=0;
 		break;
 
 	case 100:
@@ -369,7 +409,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*12);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -383,7 +423,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*19);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -397,7 +437,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*12);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -412,7 +452,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=1;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*14);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -427,7 +467,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=1;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*16);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -442,7 +482,7 @@ Attack Attackbuilder(int num) {
 		att.poison=1;
 		att.stun=1;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*15);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -456,12 +496,12 @@ Attack Attackbuilder(int num) {
 		att.focusheal=0;
 		att.poison=1;
 		att.stun=1;
-		att.confused=1;
-		att.name=malloc(sizeof(char)*15);
+		att.confused=0;
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
-		strcpy(att.name, "PiC(ge Sylvestre");
+		strcpy(att.name, "Piege Sylvestre");
 		break;
 
 	case 107:
@@ -472,11 +512,11 @@ Attack Attackbuilder(int num) {
 		att.poison=1;
 		att.stun=1;
 		att.confused=1;
-		att.name=malloc(sizeof(char)*15);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
-		strcpy(att.name, "Souffle CendrC)");
+		strcpy(att.name, "Souffle Cendre");
 		break;
 
 
@@ -486,9 +526,9 @@ Attack Attackbuilder(int num) {
 		att.heal=10;
 		att.focusheal=60;
 		att.poison=1;
-		att.stun=1;
-		att.confused=1;
-		att.name=malloc(sizeof(char)*20);
+		att.stun=0;
+		att.confused=0;
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -504,7 +544,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=1;
 		att.confused=1;
-		att.name=malloc(sizeof(char)*17);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -519,13 +559,52 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=0;
 		att.confused=1;
-		att.name=malloc(sizeof(char)*16);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
 		strcpy(att.name, "Main des Morts");
 		break;
-
+	
+	case 196:
+		att.damage=10;
+		att.focusdamage=60;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		break;
+	
+	case 197:
+		att.damage=10;
+		att.focusdamage=60;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=1;
+		break;
+	
+	case 198:
+		att.damage=0;
+		att.focusdamage=60;
+		att.heal=40;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		break;
+	
+	case 199:
+		att.damage=15;
+		att.focusdamage=70;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		break;
 
 	case 200:
 		att.damage=0;
@@ -535,7 +614,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*12);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -551,7 +630,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*19);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -567,7 +646,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*12);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -583,7 +662,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=1;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*20);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -599,7 +678,7 @@ Attack Attackbuilder(int num) {
 		att.poison=1;
 		att.stun=0;
 		att.confused=1;
-		att.name=malloc(sizeof(char)*19);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -615,7 +694,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=1;
 		att.confused=1;
-		att.name=malloc(sizeof(char)*16);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -631,7 +710,7 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*15);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -646,23 +725,23 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*15);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
-		strcpy(att.name, "ComC(te Ardente");
+		strcpy(att.name, "Comete Ardente");
 		break;
 
 
 	case 208:
 		att.damage=0;
-		att.focusdamage=120;
-		att.heal=0;
+		att.focusdamage=100;
+		att.heal=40;
 		att.focusheal=0;
 		att.poison=0;
-		att.stun=1;
+		att.stun=0;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*15);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
@@ -677,11 +756,11 @@ Attack Attackbuilder(int num) {
 		att.poison=0;
 		att.stun=1;
 		att.confused=0;
-		att.name=malloc(sizeof(char)*15);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
-		strcpy(att.name, "Cauchemar RC)el");
+		strcpy(att.name, "Cauchemar");
 		break;
 
 
@@ -693,11 +772,51 @@ Attack Attackbuilder(int num) {
 		att.poison=1;
 		att.stun=1;
 		att.confused=1;
-		att.name=malloc(sizeof(char)*16);
+		att.name=malloc(sizeof(char)*NAMESIZE);
 		if(att.name==NULL) {
 			exit(1);
 		}
-		strcpy(att.name, "Marque du NC)ant");
+		strcpy(att.name, "Marque du Neant");
+		break;
+	
+	case 296:
+		att.damage=10;
+		att.focusdamage=90;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=0;
+		break;
+		
+	case 297:
+		att.damage=10;
+		att.focusdamage=100;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=1;
+		break;
+	
+	case 298:
+		att.damage=10;
+		att.focusdamage=70;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=1;
+		att.stun=0;
+		att.confused=0;
+		break;
+		
+	case 299:
+		att.damage=0;
+		att.focusdamage=80;
+		att.heal=0;
+		att.focusheal=0;
+		att.poison=0;
+		att.stun=0;
+		att.confused=1;
 		break;
 
 	default:
@@ -731,50 +850,50 @@ Bot Characterbuilder(int num) {
 	switch(num) {
 	// defence, agility, points de vie, att normal, att special, att unique)
 	case 1:
-		a=Builder(25, 5, 200, 0, 100, 200, num);
+		a=Builder(55, 5, 200, 3, 102, 103, num);
 		a.name=malloc(sizeof(char)*9);
 		if(a.name==NULL) {
 			exit(1);
 		}
 		strcpy(a.name, "Forgeron");
-		break;// trC(s bonne dC)fense
+		break;
 	case 2:
-		a=Builder(75, 25, 120, 0, 100, 200, num);
+		a=Builder(5, 25, 120, 0, 102, 210, num);
 		a.name=malloc(sizeof(char)*7);
 		if(a.name==NULL) {
 			exit(1);
 		}
 		strcpy(a.name, "Oracle");
-		break;// trC(s bonne agilitC)
+		break;
 
 	case 3:
-		a=Builder(45, 50, 225, 0, 100, 200, num);
+		a=Builder(5, 50, 225, 7, 107, 207, num);
 		a.name=malloc(sizeof(char)*9);
 		if(a.name==NULL) {
 			exit(1);
 		}
 		strcpy(a.name, "Magicien ");
-		break;// haut taux de PV
+		break;
 
 	case 4:
-		a=Builder(2, 50, 240, 0, 100, 200, num);
+		a=Builder(20, 30, 240, 0, 106, 206, num);
 		a.name=malloc(sizeof(char)*7);
 		if(a.name==NULL) {
 			exit(1);
 		}
 		strcpy(a.name, "Raideur");
-		break;// Tout++ car trop d'aura enfaite
+		break;
 	case 5:
-		a=Builder(80, 35, 180, 5, 105, 209, num);
+		a=Builder(20, 35, 180, 10, 110, 204, num);
 		a.name=malloc(sizeof(char)*13);
 		if(a.name==NULL) {
 			exit(1);
 		}
 		strcpy(a.name, "Necromancien");
-		break;// PV/agilitC)+
+		break;
 
 	case 6:
-		a=Builder(30, 40, 200, 0, 100, 200, num);
+		a=Builder(30, 10, 200, 8, 101, 208, num);
 		a.name=malloc(sizeof(char)*6);
 		if(a.name==NULL) {
 			exit(1);
@@ -783,7 +902,7 @@ Bot Characterbuilder(int num) {
 		break;// PV++
 
 	case 7:
-		a=Builder(0, 50, 100, 0, 100, 200, num);
+		a=Builder(0, 50, 100, 4, 109, 104, num);
 		a.name=malloc(sizeof(char)*14);
 		if(a.name==NULL) {
 			exit(1);
@@ -794,7 +913,7 @@ Bot Characterbuilder(int num) {
 
 
 	case 8:
-		a=Builder(90, 10, 190, 0, 100, 200, num);
+		a=Builder(40, 10, 190, 2, 104, 102, num);
 		a.name=malloc(sizeof(char)*7);
 		if(a.name==NULL) {
 			exit(1);
@@ -803,7 +922,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 9:
-		a=Builder(5, 30, 135, 0, 100, 200, num);
+		a=Builder(5, 30, 135, 0, 109, 209, num);
 		a.name=malloc(sizeof(char)*11);
 		if(a.name==NULL) {
 			exit(1);
@@ -812,7 +931,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 10:
-		a=Builder(5, 45, 225, 0, 100, 200, num);
+		a=Builder(5, 45, 225, 10, 107, 105, num);
 		a.name=malloc(sizeof(char)*9);
 		if(a.name==NULL) {
 			exit(1);
@@ -821,7 +940,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 11:
-		a=Builder(66, 37, 111, 0, 100, 200, num);
+		a=Builder(26, 37, 111, 6, 107, 200, num);
 		a.name=malloc(sizeof(char)*11);
 		if(a.name==NULL) {
 			exit(1);
@@ -830,7 +949,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 12:
-		a=Builder(50, 39, 168, 0, 100, 200, num);
+		a=Builder(10, 39, 168, 3, 102, 210, num);
 		a.name=malloc(sizeof(char)*14);
 		if(a.name==NULL) {
 			exit(1);
@@ -839,7 +958,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 13:
-		a=Builder(15, 30, 175, 0, 100, 200, num);
+		a=Builder(15, 30, 175, 5, 105, 104, num);
 		a.name=malloc(sizeof(char)*9);
 		if(a.name==NULL) {
 			exit(1);
@@ -848,7 +967,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 14:
-		a=Builder(35, 18, 190, 0, 100, 200, num);
+		a=Builder(35, 18, 190, 2, 104, 203, num);
 		a.name=malloc(sizeof(char)*5);
 		if(a.name==NULL) {
 			exit(1);
@@ -857,7 +976,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 15:
-		a=Builder(55, 34, 250, 0, 100, 200, num);
+		a=Builder(5, 34, 250, 1, 101, 209, num);
 		a.name=malloc(sizeof(char)*13);
 		if(a.name==NULL) {
 			exit(1);
@@ -866,7 +985,7 @@ Bot Characterbuilder(int num) {
 		break;
 
 	case 16:
-		a=Builder(5, 0, 187, 0, 100, 200, num);
+		a=Builder(5, 0, 187, 0, 103, 200, num);
 		a.name=malloc(sizeof(char)*11);
 		if(a.name==NULL) {
 			exit(1);
@@ -906,6 +1025,47 @@ Bot Characterbuilder(int num) {
 		}
 		strcpy(a.name, "GOD");
 		break;
+	case 101:
+		a=Builder(25, 5, 200, 98, 100, 296, num);
+		a.name=malloc(sizeof(char)*9);
+		if(a.name==NULL) {
+			exit(1);
+		}
+		strcpy(a.name, "Squelette");
+		break;
+	case 102:
+		a=Builder(25, 5, 200, 0, 196, 296, num);
+		a.name=malloc(sizeof(char)*9);
+		if(a.name==NULL) {
+			exit(1);
+		}
+		strcpy(a.name, "Zombie");
+		break;
+	case 103:
+		a=Builder(25, 25, 200, 98, 196, 297, num);
+		a.name=malloc(sizeof(char)*9);
+		if(a.name==NULL) {
+			exit(1);
+		}
+		strcpy(a.name, "Dark Squelette");
+		break;
+	case 104:
+		a=Builder(25, 25, 200, 97, 198, 299, num);
+		a.name=malloc(sizeof(char)*9);
+		if(a.name==NULL) {
+			exit(1);
+		}
+		strcpy(a.name, "Dark Zombie");
+		break;
+	case 105:
+		a=Builder(25, 25, 400, 99, 199, 298, num);
+		a.name=malloc(sizeof(char)*9);
+		if(a.name==NULL) {
+			exit(1);
+		}
+		strcpy(a.name, "GABRIEL LE SLIME");
+		break;
+		
 	default:
 		printf("ERREUR: Mauvais numero saisie pour le switchcase Characterbuilder\n");
 		exit(1);
@@ -1109,6 +1269,9 @@ void Computer(int *dif, int *choixP, int *choixA, int *choixD, Bot *ra, Bot *rb,
 	switch(*dif) {
 	case 1:
 		proba=100-60;
+		ra->utiliunique=1;
+		rb->utiliunique=1;
+		rc->utiliunique=1;
 		break;
 	case 2:
 		proba=100-40;
@@ -2329,6 +2492,7 @@ void Turn(int who, int mo, int *dif, int *choixP, int *choixA, int *choixD, Bot 
 		do {
 			printf("|Choisir son personnage (1,2,3): ");
 			scanf("%d", choixP);
+			getchar();
 		}
 		while(CheckPerso1(*choixP, aa, ab, ac));
 		Affichage(21, 120, 1, 1, mo, aa, ab, ac, da, db, dc, nameA, nameB);
@@ -2336,6 +2500,7 @@ void Turn(int who, int mo, int *dif, int *choixP, int *choixA, int *choixD, Bot 
 		do {
 			printf("Choisir son attaque: ");
 			scanf("%d", choixA);
+			getchar();
 			if(*choixA==4) {
 				Turn(who, mo, dif, choixP, choixA, choixD, aa, ab, ac, da, db, dc, nameA, nameB);
 				return;
@@ -2345,6 +2510,7 @@ void Turn(int who, int mo, int *dif, int *choixP, int *choixA, int *choixD, Bot 
 		do {
 			printf("Choisir le personnage affecte (1,2,3): ");
 			scanf("%d", choixD);
+			getchar();
 			if(*choixD==4) {
 				Turn(who, mo, dif, choixP, choixA, choixD, aa, ab, ac, da, db, dc, nameA, nameB);
 				return;
@@ -2935,7 +3101,23 @@ void Turn(int who, int mo, int *dif, int *choixP, int *choixA, int *choixD, Bot 
 
 
 
-void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc) {
+void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc, int *turn) {
+    turn+=1;
+    if((*turn%2)==0){
+        ja->stun=0;
+        ja->confused=0;
+        jb->stun=0;
+        jb->confused=0;
+        jc->stun=0;
+        jc->confused=0;
+    }else{
+        ra->stun=0;
+        ra->confused=0;
+        rb->stun=0;
+        rb->confused=0;
+        rc->stun=0;
+        rc->confused=0;
+    }
 	if(ja->poison==1) {
 		ja->pv=ja->pv-10;
 	}
@@ -3046,6 +3228,7 @@ void ChooseBunny(int var, int *bandicoot){
 	do{
 	    printf("(Selectionez:1  Retour:2)---> ");
 		scanf("%d", bandicoot);
+		getchar();
 	}
 	while(*bandicoot!=1 && *bandicoot!=2);
 }
@@ -3054,6 +3237,7 @@ void Choose(int *var){
     do{
         printf("Selectioner un Bunny pour les détailes (1-16): ");
 		scanf("%d", var);
+		getchar();
 	}
 	while(*var!=1 && *var!=2 && *var!=3 && *var!=4 && *var!=5 && *var!=6 && *var!=7 && *var!=8 && *var!=9 && *var!=10 && *var!=11 && *var!=12 && *var!=13 && *var!=14 && *var!=15 && *var!=16 && *var!=100);
     AffichPersoAttaque(*var);
@@ -3067,6 +3251,7 @@ int main() {
 	int choixP=0;
 	int var=0;
 	int bandicoot=0;
+	int tour=0;
 	Bot ja=Characterbuilder(1000);
 	Bot jb=Characterbuilder(1000);
 	Bot jc=Characterbuilder(1000);
@@ -3087,9 +3272,11 @@ int main() {
 	}
 	printf("Nom du joueur A (20 caracteres MAX sans espace)--> ");
 	scanf("%s", nameA);
+	getchar();
 	do {
 		printf("Choisir solo: 0 ou Multijoueur: 1 |--> ");
 		scanf("%d", &mode);
+		getchar();
 	}
 	while(mode!=1 && mode!=0);
 	char *nameB=malloc(sizeof(char)*NAMESIZE);
@@ -3099,6 +3286,7 @@ int main() {
 	if(mode==1) {
 		printf("Nom du joueur B (20 caracteres MAX sans espace)--> ");
 		scanf("%s\n", nameB);
+		getchar();
 	    printf("Joueur A choisie son premier personnage... \n");
 	    do{
 	    AffichPersoChoix(27, 120, 1, 1);
@@ -3151,44 +3339,45 @@ int main() {
 		do {
 			printf("Choisir sa difficulte (1, 2 ou 3)--> ");
 			scanf("%d", &dif);
+			getchar();
 		}
 		while(dif!=1 && dif!=2 && dif!=3);
 		nameB="Computer";
 		printf("Le joueur choisie son premier personnage... \n");
 		do{
-	    AffichPersoChoix(27, 120, 1, 1);
-	    Choose(&var);
-	    ChooseBunny(var, &bandicoot);
+		    AffichPersoChoix(27, 120, 1, 1);
+	        Choose(&var);
+	        ChooseBunny(var, &bandicoot);
 	    }
 	    while(bandicoot!=1);
 	    ja=Characterbuilder(var);
 		printf("Le joueur choisie son deuxieme personnage... \n");
 		do{
-	    AffichPersoChoix(27, 120, 1, 1);
-	    Choose(&var);
-	    ChooseBunny(var, &bandicoot);
+		    AffichPersoChoix(27, 120, 1, 1);
+	        Choose(&var);
+	        ChooseBunny(var, &bandicoot);
 	    }
 	    while(bandicoot!=1);
 	    jb=Characterbuilder(var);
 		printf("Le joueur choisie son troixieme personnage... \n");
 		do{
-	    AffichPersoChoix(27, 120, 1, 1);
-	    Choose(&var);
-	    ChooseBunny(var, &bandicoot);
+		    AffichPersoChoix(27, 120, 1, 1);
+	        Choose(&var);
+	        ChooseBunny(var, &bandicoot);
 	    }
 	    while(bandicoot!=1);
 	    jc=Characterbuilder(var);
 	}
 	do {
 		Turn(1, mode, &dif, &choixP, &choixA, &choixD, &ja, &jb, &jc, &ba, &bb, &bc, nameA, nameB);
-		Checkup(&ja, &jb, &jc, &ba, &bb, &bc);
+		Checkup(&ja, &jb, &jc, &ba, &bb, &bc, &tour);
 		if((ja.dead==1 && jb.dead==1 && jc.dead==1) || (ba.dead==1 && bb.dead==1 && bc.dead==1)) {
 			fin=1;
 		} else {
 			fin=0;
 		}
 		Turn(0, mode, &dif, &choixP, &choixA, &choixD, &ba, &bb, &bc, &ja, &jb, &jc, nameA, nameB);
-		Checkup(&ja, &jb, &jc, &ba, &bb, &bc);
+		Checkup(&ja, &jb, &jc, &ba, &bb, &bc, &tour);
 		if((ja.dead==1 && jb.dead==1 && jc.dead==1) || (ba.dead==1 && bb.dead==1 && bc.dead==1)) {
 			fin=1;
 		} else {
