@@ -1785,11 +1785,20 @@ void Computer(int *dif, int *choixP, int *choixA, int *choixD, Bot *ra, Bot *rb,
 			}
 		}
 	}
-	if(CheckPerso1(*choixP, ra, rb, rc) && CheckStamina(*choixP, *choixA, ra, rb, rc) && CheckPerso2(*choixD, ja, jb, jc)){
-		/// un vide monstrueux
-	}else{
-	    Computer(dif, choixP, choixA, choixD, ra, rb, rc, ja, jb, jc);
-	}
+	do {
+			*choixP=(rand()%3)+1;
+		}
+		while(CheckPerso1(*choixP, ra, rb, rc));
+
+		do {
+			*choixA=(rand()%3)+1;
+		}
+		while(CheckStamina(*choixP, *choixA, ra, rb, rc));
+
+		do {
+			*choixD=(rand()%3)+1;
+		}
+		while(CheckPerso2(*choixD, ja, jb, jc));
 }
 void AffichAttaque(int *choixP, Bot *aa, Bot *ab, Bot *ac) { //affiche les attaques du personnage selectionner durant le tour
 	int k=0;
