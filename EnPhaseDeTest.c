@@ -1785,20 +1785,24 @@ void Computer(int *dif, int *choixP, int *choixA, int *choixD, Bot *ra, Bot *rb,
 			}
 		}
 	}
+	if(CheckPerso1(*choixP, ra, rb, rc)){
 	do {
-			*choixP=(rand()%3)+1;
-		}
-		while(CheckPerso1(*choixP, ra, rb, rc));
-
-		do {
-			*choixA=(rand()%3)+1;
-		}
-		while(CheckStamina(*choixP, *choixA, ra, rb, rc));
-
-		do {
-			*choixD=(rand()%3)+1;
-		}
-		while(CheckPerso2(*choixD, ja, jb, jc));
+		*choixP=(rand()%3)+1;
+	}
+	while(CheckPerso1(*choixP, ra, rb, rc));
+	}
+	if(CheckStamina(*choixP, *choixA, ra, rb, rc)){
+	do {
+		*choixA=(rand()%3)+1;
+	}
+	while(CheckStamina(*choixP, *choixA, ra, rb, rc));
+	}
+	if(CheckPerso2(*choixD, ja, jb, jc)){
+	do {
+		*choixD=(rand()%3)+1;
+	}
+	while(CheckPerso2(*choixD, ja, jb, jc));
+	}
 }
 void AffichAttaque(int *choixP, Bot *aa, Bot *ab, Bot *ac) { //affiche les attaques du personnage selectionner durant le tour
 	int k=0;
@@ -3514,6 +3518,24 @@ void Checkup(Bot *ja, Bot *jb, Bot *jc, Bot *ra, Bot *rb, Bot *rc, int *turn) { 
 	ra->stamina+=1;
 	rb->stamina+=1;
 	rc->stamina+=1;
+	if(ja->stamina<0) {
+		ja->stamina=0;
+	}
+	if(jb->stamina<0) {
+		jb->stamina=0;
+	}
+	if(jc->stamina<0) {
+		jc->stamina=0;
+	}
+	if(ra->stamina<0) {
+		ra->stamina=0;
+	}
+	if(rb->stamina<0) {
+		rb->stamina=0;
+	}
+	if(rc->stamina<0) {
+		rc->stamina=0;
+	}
 	if(ja->stamina>16) {
 		ja->stamina=16;
 	}
